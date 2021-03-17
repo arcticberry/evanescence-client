@@ -2,7 +2,8 @@ name: Staging Build and Deploy
 
 on:
   push:
-    - release
+    branches:
+      - 'release/**'
 
 jobs:
   build:
