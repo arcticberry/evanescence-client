@@ -1,0 +1,33 @@
+@import "styles/base.scss";
+
+:export {
+  logoColor: $brand-primary;
+}
+
+.hero__section {
+  position: relative;
+  padding: 80px 0 120px 0;
+  color: $brand-primary;
+
+  &:after {
+    content: " ";
+    // background-image:-webkit-gradient(linear,left top,left bottom,from($brand-tertiary),to($brand-primary));
+    // background-image: linear-gradient(
+    //   to top,
+    //   $brand-secondary,
+    //   $brand-primary,
+    //   $brand-primary,
+    //   $brand-primary
+    // );
+    background-color: $brand-tertiary;
+    position: absolute;
+    top: -400px;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    width: 100%;
+    border-radius: 0;
+    -webkit-transform: skewY(-3deg);
+    transform: skewY(-3deg);
+  }
+}

@@ -1,0 +1,81 @@
+.label {
+  color: grey;
+}
+
+.info {
+  color: gray;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.input-label {
+  font-size: 12px;
+}
+
+.wizard-btn {
+  float: right;
+}
+
+.input-container {
+  height: 80%;
+}
+
+.accordion {
+  color: gray;
+}
+
+.accordion label {
+  font-weight: 400 !important;
+}
+
+input:checked ~ .custom-control-label::before {
+  color: #00f37a;
+  border-color: #fff !important;
+  background-color: #0a6236 !important;
+}
+.vendor:hover {
+  cursor: pointer;
+}
+
+.uil-eye {
+  font-size: 22px;
+}
+
+.uil-eye-slash {
+  font-size: 22px;
+}
+
+.uil-copy {
+  font-size: 22px;
+}
+
+.apikey:focus {
+  border: none !important;
+}
+.api_key_font {
+  font-size: 14px;
+}
+
+.api_key_hidden_font {
+  font-size: 32px;
+}
+
+.vendor-card {
+  margin: 0;
+  border: 1px solid rgb(243, 243, 243);
+  border-radius: 10px;
+  padding: auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.vendor-card:hover {
+  border: 1px solid rgb(212, 245, 212);
+}
+
+.edit-btn {
+  font-size: 20px;
+}
+.edit-btn:hover {
+  color: #00f37a;
+}

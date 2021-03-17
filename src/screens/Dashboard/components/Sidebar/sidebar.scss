@@ -1,0 +1,63 @@
+@import "styles/_variables.scss";
+
+$sidebar-active-color: $brand-primary;
+$sidebar-text-color: $text-color-3;
+$sidebar-bg: $brand-tertiary;
+
+:export {
+  sidebarActiveColor: $sidebar-active-color;
+  sidebarTextColor: $sidebar-text-color;
+  sidebarBg: $sidebar-bg;
+}
+
+.sidebar {
+  min-height: 100vh;
+  -webkit-transition: margin 0.25s ease-out;
+  -moz-transition: margin 0.25s ease-out;
+  -o-transition: margin 0.25s ease-out;
+  transition: margin 0.25s ease-out;
+  background-color: $sidebar-bg;
+  margin-left: -24rem;
+
+  .sidebar-heading {
+    font-size: 1.2rem;
+  }
+
+  .sidebar-heading,
+  .list-group-item {
+    padding: 1.5rem 4rem;
+  }
+
+  .list-group-item {
+    color: $brand-primary;
+    background-color: $sidebar-bg;
+    padding: 1.5rem 4rem;
+    font-weight: 600;
+    color: $text-color-3;
+    width: 24rem;
+
+    .icon {
+      width: 24px;
+      display: inline-block;
+      font-size: 24px;
+      margin-right: 8px;
+    }
+
+    &.active {
+      background-color: rgba($sidebar-text-color, 0.09);
+      border-width: 1px 0 0 0;
+      color: $sidebar-active-color;
+    }
+  }
+
+  .list-group-bottom {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    margin-left: 0;
+  }
+}

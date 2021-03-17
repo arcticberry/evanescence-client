@@ -1,0 +1,26 @@
+@import "styles/base.scss";
+
+.card-body-form {
+  display: flex;
+  justify-content: center;
+}
+
+.auth-fluid .auth-fluid-form-box {
+  background-color: white;
+}
+
+.btn-dark {
+  color: #fff;
+  background-color: #313a46;
+  border-color: #313a46;
+}
+.invalid-feedback {
+  display: block !important;
+}
+
+body .left-side-menu {
+  background: #313a46 !important;
+}
+.navbar-custom {
+  background: white !important;
+}

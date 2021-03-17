@@ -1,0 +1,48 @@
+$cerulean-crayola: #00b4d8;
+$star-command-blue: #0077b6;
+$sky-blue-crayola: #90e0ef;
+$powder-blue: #caf0f8;
+$carribean-green: #06d6a0;
+$oxford-blue: #001b2e;
+$sweet-pink: #ef476f;
+$yangtze: #ffd166;
+$cement: #87a4c1;
+$asbestos: #f0f1f3;
+$gray-light: #d3d4d8;
+$gray-lighter: #fafafc;
+
+// Color Assignments
+$brand-primary: $cerulean-crayola;
+// $brand-secondary: $star-command-blue;
+$brand-secondary: $carribean-green;
+$brand-tertiary: $oxford-blue;
+
+$primary: $brand-primary;
+$secondary: $brand-tertiary;
+$success: $carribean-green;
+$warning: $yangtze;
+$danger: $sweet-pink;
+
+$ui-2: $gray-lighter;
+$ui-3: $asbestos;
+$ui-4: $gray-light;
+
+$body-color: $oxford-blue;
+$text-color-3: $cement;
+
+$font-size-base: 1rem;
+$link-hover-decoration: none;
+
+$input-btn-padding-x: 1rem;
+$input-bg: $ui-3;
+$input-border-color: $ui-3;
+
+$headings-font-weight: 600;
+$h1-font-size: $font-size-base * 2.75;
+
+$btn-font-weight: 500;
+$border-radius: 0.5em;
+
+$breadcrumb-bg: "transparent";
+$breadcrumb-color: $cement;
+$breadcrumb-divider: quote(">");

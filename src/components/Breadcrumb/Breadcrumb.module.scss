@@ -1,0 +1,18 @@
+@import "node_modules/bootstrap/scss/_functions";
+@import "node_modules/bootstrap/scss/_variables";
+
+@import "styles/_variables";
+
+.Breadcrumb {
+  &__Item {
+    font-weight: bold;
+  }
+
+  &__Link {
+    color: $link-color;
+  }
+
+  &__Link_active {
+    color: $breadcrumb-active-color;
+  }
+}

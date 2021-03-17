@@ -1,0 +1,36 @@
+input:focus {
+  background-color: #eee;
+  color: gray !important;
+  border: 1px solid green !important;
+}
+
+input {
+  background-color: #eee !important;
+  color: gray;
+}
+.form-control {
+  background-color: white !important;
+  color: gray !important;
+}
+
+.height-full {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.bg-color {
+  background-color: #00b4d8;
+}
+
+.text-blue {
+  color: #00b4d8;
+}
+html,
+body {
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}

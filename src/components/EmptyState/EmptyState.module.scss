@@ -1,0 +1,18 @@
+.EmptyState {
+  width: inherit;
+  height: inherit;
+  position: absolute;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  &__Art {
+    margin: 1rem auto;
+
+    svg {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}
