@@ -1,4 +1,4 @@
-name: Staging VPS Deployment
+name: Staging VPS Deployment on pull
 
 on: 
   push:
@@ -24,8 +24,12 @@ jobs:
         PORT: ${{ secrets.PORT }}
         KEY: ${{ secrets.SSHKEY }}
       with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
         source: "."
-        target: "/var/www/payreflect"
+        target: "/var/www/evanecence-client"
 
     - name: Executing remote command
       uses: appleboy/ssh-action@master
