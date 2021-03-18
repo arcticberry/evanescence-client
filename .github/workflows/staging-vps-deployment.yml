@@ -1,4 +1,4 @@
-name: Staging VPS Deployment
+name: Staging VPS Deployment on pull
 
 on: 
   push:
