@@ -39,5 +39,5 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /var/www/evanescence-client
-          npm install --prefer-offline
+          npm install --prefer-offline --no-audit --progress=false
           npm build
