@@ -37,7 +37,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-      script: |
-        cd /var/www/evanescence-client
-        npm install --prefer-offline
-        npm build
+        script: |
+          cd /var/www/evanescence-client
+          npm install --prefer-offline
+          npm build
