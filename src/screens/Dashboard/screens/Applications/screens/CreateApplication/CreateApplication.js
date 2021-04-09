@@ -40,8 +40,6 @@ const CreateApplication = ({
 
   const [vendorSecrets, setVendorSecrets] = React.useState({});
 
-  const [step, setStep] = React.useState(0);
-
   const [applicationName, setApplicationName] = React.useState("");
 
   React.useEffect(() => {
