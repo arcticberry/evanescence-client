@@ -8,12 +8,6 @@ function AppRouter({ fetchMetaData }) {
   const Login = lazy(() => import("screens/Login"));
   const Register = lazy(() => import("screens/Register"));
   const Dashboard = lazy(() => import("screens/Dashboard/Dashboard"));
-  // const Applications = lazy(() =>
-  //   import("./screens/Dashboard/screens/Applications")
-  // );
-  // const ApplicationDetail = lazy(() =>
-  //   import("./screens/Applications/screens/ApplicationDetail")
-  // );
 
   return (
     <BrowserRouter>

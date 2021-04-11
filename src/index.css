@@ -1,0 +1,11 @@
+@tailwind base;
+
+/* Perform resets here */
+@layer base {
+    a {
+        @apply hover:no-underline;
+    }
+}
+
+@tailwind components;
+@tailwind utilities;

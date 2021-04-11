@@ -4,10 +4,16 @@
   "private": true,
   "homepage": "https://payreflect.com",
   "dependencies": {
+    "@craco/craco": "^5.8.0",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@zendeskgarden/scripts": "^0.1.11",
+    "@zendeskgarden/svg-icons": "^6.30.1",
+    "@zendeskgarden/tailwindcss": "^2.0.0",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.3",
     "classnames": "^2.2.6",
@@ -20,6 +26,7 @@
     "node-sass": "^4.14.1",
     "normalizr": "^3.6.1",
     "nprogress": "^0.2.0",
+    "postcss-focus-visible": "^5.0.0",
     "prettier": "^2.2.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -39,10 +46,10 @@
     ]
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "REACT_APP_ENVIRONMENT=production react-scripts build",
-    "build:staging": "REACT_APP_ENVIRONMENT=staging react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "REACT_APP_ENVIRONMENT=production craco build",
+    "build:staging": "REACT_APP_ENVIRONMENT=staging craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -66,5 +73,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss7-compat": "^2.1.0",
+    "autoprefixer": "^9.8.6",
+    "postcss": "^7.0.35",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0"
   }
 }
