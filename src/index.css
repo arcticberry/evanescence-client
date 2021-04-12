@@ -2,6 +2,10 @@
 
 /* Perform resets here */
 @layer base {
+    html {
+        font-size: 14px;
+    }
+
     a {
         @apply hover:no-underline;
     }

@@ -1,7 +1,30 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
+const colors = {
+  'cerulean-crayola': '#00b4d8',
+  'star-command-blue': '#0077b6',
+  'sky-blue-crayola': '#90e0ef',
+  'powder-blue': '#caf0f8',
+  'carribean-green': '#06d6a0',
+  'oxford-blue': '#001b2e',
+  'sweet-pink': '#ef476f',
+  'yangtze': '#ffd166'
+}
+
 module.exports = {
     purge: ['./src/**/*.jsx', './src/**/*.tsx'],
     theme: {
+      fontFamily: {
+        ...defaultTheme.fontFamily,
+        sans: ['Poppins', ...defaultTheme.fontFamily.sans],
+      },
+
       extend: {
+        colors: {
+          'brand-primary': colors['cerulean-crayola'],
+          'brand-secondary': colors['star-command-blue'],
+          'brand-tertiary': colors['oxford-blue']
+        },  
         borderRadius: theme => ({
           2: theme('spacing.2'),
           4: theme('spacing.4')
@@ -13,10 +36,7 @@ module.exports = {
           10: '0.1',
           20: '0.2'
         },
-        fill: theme => ({
-          kale: theme('colors.kale')
-        })
       }
     },
-    plugins: [require('@zendeskgarden/tailwindcss')]
+    // plugins: [require('@zendeskgarden/tailwindcss')]
   };

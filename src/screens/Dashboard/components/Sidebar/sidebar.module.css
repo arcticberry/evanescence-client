@@ -1,11 +1,10 @@
 .sidebar {
-  display: flex;
+  @apply w-16;
+  @apply flex;
   position: relative;
   flex-direction: column;
   flex-shrink: 0;
   order: -1;
-
-  @apply w-16;
 }
 
 .sidebar--expanded {
@@ -13,16 +12,35 @@
 }
 
 .sidebar--primary {
-  @apply bg-kale-600;
+  @apply bg-brand-primary;
+}
+
+.sidebar--tertiary {
+  @apply bg-brand-tertiary;
+}
+
+.sidebar--primary .sidebar__item,
+.sidebar--tertiary .sidebar__item {
+  @apply text-white;
+  @apply hover:text-white;
 }
 
 .sidebar__item {
-  @apply text-white;
+  @apply bg-transparent;
+  @apply hover:bg-opacity-5;
+}
+
+.sidebar__item--isCurrent {
+  @apply bg-white;
+  @apply bg-opacity-50;
+  @apply text-opacity-100;
+  @apply hover:bg-opacity-50;
+}
+
+.sidebar__item {
   @apply text-opacity-60;
   @apply py-4;
   @apply px-3;
-  @apply hover:text-white;
-  @apply hover:bg-kale-700;
 
   min-height: 52px;
   display: flex;
@@ -30,18 +48,9 @@
   -webkit-box-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  background: transparent;
   font-size: inherit;
   order: 0;
   border: none;
-}
-
-.sidebar__item--isCurrent {
-  @apply bg-white;
-  @apply bg-opacity-25;
-  @apply text-opacity-100;
-  @apply hover:bg-white;
-  @apply hover:bg-opacity-25;
 }
 
 .sidebar__item__text {

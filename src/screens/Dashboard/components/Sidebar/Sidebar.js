@@ -8,8 +8,7 @@ import { Dashboard as DashboardIcon, Apps as AppsIcon, PowerSettingsNew as Logou
 const Sidebar = ({ isExpanded = true }) => {
   return (
     <nav
-      className={classNames(styles.sidebar, {
-        [styles["sidebar--primary"]]: true,
+      className={classNames([styles.sidebar, styles["sidebar--primary"]], {
         [styles["sidebar--expanded"]]: isExpanded,
       })}
     >
@@ -41,7 +40,7 @@ const Sidebar = ({ isExpanded = true }) => {
       </Link>
 
       <button
-        className={classNames(styles.sidebar__item, ['mt-auto'])}
+        className={classNames([styles.sidebar__item, 'mt-auto'])}
       >
         <LogoutIcon className="mx-2" />
         <span className={styles.sidebar__item__text}>Logout</span>
