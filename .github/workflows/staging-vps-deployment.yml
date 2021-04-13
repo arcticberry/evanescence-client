@@ -17,7 +17,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
 
     - name: Copy repository contents via scp
       uses: appleboy/scp-action@master
@@ -25,6 +33,7 @@ jobs:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
         PORT: ${{ secrets.PORT }}
+        BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
@@ -42,10 +51,15 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        envs: STAGING_API_BASE_URL
+        envs: STAGING_API_BASE_URL, BRANCH_NAME
         script: |
           export REACT_API_BASE_URL=$STAGING_API_BASE_URL
 
           cd /var/www/evanescence-client
+
+          git fetch
+          git checkout $BRANCH_NAME
+          git pull origin
+
           npm install --prefer-offline --no-audit --progress=false
           npm run build:staging
