@@ -32,12 +32,17 @@ jobs:
 
     - name: Executing remote command
       uses: appleboy/ssh-action@master
+      env:
+        STAGING_API_BASE_URL: ${{ secrets.STAGING_API_BASE_URL }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
+        envs: STAGING_API_BASE_URL
         script: |
+          export REACT_API_BASE_URL=$STAGING_API_BASE_URL
+
           cd /var/www/evanescence-client
           npm install --prefer-offline --no-audit --progress=false
-          npm build
+          npm run build:staging
