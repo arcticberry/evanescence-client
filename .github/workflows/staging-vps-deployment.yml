@@ -1,12 +1,15 @@
 name: Staging VPS Deployment on pull
 
-on: 
+on:
   push:
     branches:
-      - 'release/*.*.*'
+      - 'release/**'
+      - 'hotfix/**'
+
   pull_request:
     branches:
-      - 'release/*.*.*'
+      - 'release/**'
+      - 'hotfix/**'
 
 jobs:
   build:
