@@ -43,9 +43,6 @@ jobs:
       run: |
         export REACT_API_BASE_URL=$STAGING_API_BASE_URL
         export REACT_APP_ENVIRONMENT=staging
-        export BUILD_PATH='./staging'
-
-        env
 
         npm install
         CI=false npm run build:staging
