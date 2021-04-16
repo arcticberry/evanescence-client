@@ -42,6 +42,9 @@ jobs:
         STAGING_API_BASE_URL: ${{ secrets.STAGING_API_BASE_URL }}
       run: |
         export REACT_API_BASE_URL=$STAGING_API_BASE_URL
+        export REACT_API_BASE_URL=staging
+        export BUILD_PATH='./staging'
+        env
         npm install
         npm run build:staging
 
