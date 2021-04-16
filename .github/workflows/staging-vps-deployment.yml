@@ -48,7 +48,7 @@ jobs:
         env
 
         npm install
-        npm run build:staging
+        CI=false npm run build:staging
 
     - name: Executing remote command
       uses: appleboy/ssh-action@master
