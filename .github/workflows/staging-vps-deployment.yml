@@ -1,20 +1,53 @@
 name: Staging VPS Deployment on pull
 
-on: 
+on:
   push:
     branches:
-      - 'release/*.*.*'
+      - 'release/**'
+      - 'hotfix/**'
+
   pull_request:
     branches:
-      - 'release/*.*.*'
+      - 'release/**'
+      - 'hotfix/**'
 
 jobs:
-  build:
+  build-and-deploy:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [14.x]
+
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        persist-credentials: false
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      env:
+        STAGING_API_BASE_URL: ${{ secrets.STAGING_API_BASE_URL }}
+      run: |
+        export REACT_API_BASE_URL=$STAGING_API_BASE_URL
+        export REACT_APP_ENVIRONMENT=staging
+
+        cp .env.example .env
+
+        npm install
+        CI=false npm run build:staging
 
     - name: Copy repository contents via scp
       uses: appleboy/scp-action@master
@@ -26,18 +59,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
+        rm: true
         port: ${{ secrets.PORT }}
-        source: "."
+        source: "build/"
         target: "/var/www/evanescence-client"
-
-    - name: Executing remote command
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: |
-          cd /var/www/evanescence-client
-          npm install --prefer-offline --no-audit --progress=false
-          npm build
