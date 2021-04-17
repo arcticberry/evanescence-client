@@ -2,7 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Switch, useRouteMatch } from "react-router-dom";
 
 import AuthenticatedHoc from "HOC/WithAuthenticated";
-import SideBar from "screens/Dashboard/components/Sidebar";
+import Sidebar from "screens/Dashboard/components/Sidebar";
 import "./dashboard.scss";
 import routes from "./routes";
 import { RenderRoutes } from "components/AppRouter";
@@ -12,7 +12,8 @@ const Dashboard = () => {
 
   return (
     <div className="h-screen flex" id="wrapper">
-      <SideBar isExpanded={true} />
+      <Sidebar isExpanded={true} />
+
       <section className="h-full" id="page-content-wrapper">
         <BrowserRouter>
           <Suspense fallback={() => <>Loading...</>}>

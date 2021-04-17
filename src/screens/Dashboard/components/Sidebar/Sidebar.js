@@ -8,7 +8,7 @@ import { Dashboard as DashboardIcon, Apps as AppsIcon, PowerSettingsNew as Logou
 const Sidebar = ({ isExpanded = true }) => {
   return (
     <nav
-      className={classNames([styles.sidebar, styles["sidebar--primary"]], {
+      className={classNames([styles.sidebar, styles["sidebar--tertiary"]], {
         [styles["sidebar--expanded"]]: isExpanded,
       })}
     >
