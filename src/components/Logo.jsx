@@ -8,9 +8,7 @@ const logoTheme = {
 function Logo({ collapsed, color }) {
   return (
     <svg
-      width="205"
-      height="24"
-      viewBox="0 0 205 32"
+      viewBox={`0 0 ${collapsed ? "45" : "205"} 32`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
