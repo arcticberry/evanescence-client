@@ -1,16 +1,16 @@
 import React from 'react';
-import { Field, Form, Formik } from 'formik';
-
-import { Label } from '@zendeskgarden/react-forms';
-import { Button } from '@zendeskgarden/react-buttons';
-
 import { Link } from 'react-router-dom';
-import Logo from 'components/Logo/Logo';
-import { loginUser } from 'services/login/login.slice';
 import { connect } from 'react-redux';
-import { PasswordInput, Input } from 'components/Form';
+import { Form, Formik } from 'formik';
 
-const Login = ({ loginUser, history }) => {
+import { Button } from '@zendeskgarden/react-buttons';
+import { Spinner } from '@zendeskgarden/react-loaders';
+
+import Logo from 'components/Logo/Logo';
+import { PasswordInput, Input } from 'components/Form';
+import { loginUser } from 'services/login/login.slice';
+
+const Login = ({ loginUser, isPerformingLogin, history }) => {
 	const loginDetails = {
 		uid: '',
 		password: '',
@@ -24,43 +24,32 @@ const Login = ({ loginUser, history }) => {
 		<div className="grid md:grid-cols-2">
 			<section className="md:h-screen" style={{ backgroundImage: 'url(/img/account-page-bg.png)' }}></section>
 
-			<section className="md:h-screen flex flex-col justify-center p-16 md:px-48">
+			<section className="md:h-screen flex flex-col justify-center p-16 lg:px-48">
 				<a href="/" className="w-48">
 					<Logo variant="primary" />
 				</a>
-				<div className="">
+				<div>
 					<h1 className="text-3xl py-16 font-light">Log In</h1>
-					<Formik initialValues={loginDetails} onSubmit={async (values) => handleFormSubmission(values)}>
-						<Form action="#">
+					<Formik initialValues={loginDetails} onSubmit={handleFormSubmission}>
+						<Form action="/">
 							<div className="mb-8">
-								<Label>Email</Label>
-								<Input name={'uid'} type="email" />
+								<Input label="Email" name={'uid'} type="email" required />
 							</div>
 
 							<div>
 								<section className="mb-4">
-									<Label>Password</Label>
+									<label className="text-gray-500">Password</label>
 									<a href="/" className="float-right font-bold text-brand-primary">
 										<small>Forgot your password?</small>
 									</a>
 								</section>
 
-								<PasswordInput name="password" />
+								<PasswordInput name="password" required />
 							</div>
 
-							<div className="form-group">
-								<div className="input-group input-group-merge">
-									<div className="input-group-append" data-password="false">
-										<div className="input-group-text">
-											<span className="password-eye"></span>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div className="mt-16 mb-8">
-								<Button isStretched isPrimary>
-									Log In
+							<div className="my-8">
+								<Button isStretched isPrimary type="submit">
+									{isPerformingLogin ? <Spinner delayMS={0} size={32} /> : 'Log In'}
 								</Button>
 							</div>
 						</Form>
@@ -79,6 +68,14 @@ const Login = ({ loginUser, history }) => {
 	);
 };
 
+const mapStateToProps = ({ login }) => {
+	const { isPerformingLogin } = login;
+
+	return {
+		isPerformingLogin,
+	};
+};
+
 const mapDispatchToProps = { loginUser };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
