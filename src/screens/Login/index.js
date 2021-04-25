@@ -1,110 +1,82 @@
-import React from "react";
-import { Field, Form, Formik, FormikProps } from "formik";
-import { Link } from "react-router-dom";
-import Logo from "components/Logo";
-import { loginUser } from "services/login/login.slice";
-import { connect } from "react-redux";
-import "./login.css";
+import React from 'react';
+import { Field, Form, Formik } from 'formik';
+
+import { Label } from '@zendeskgarden/react-forms';
+import { Button } from '@zendeskgarden/react-buttons';
+
+import { Link } from 'react-router-dom';
+import Logo from 'components/Logo/Logo';
+import { loginUser } from 'services/login/login.slice';
+import { connect } from 'react-redux';
+import { PasswordInput, Input } from 'components/Form';
 
 const Login = ({ loginUser, history }) => {
-  const loginDetails = {
-    uid: "",
-    password: "",
-  };
+	const loginDetails = {
+		uid: '',
+		password: '',
+	};
 
-  const handleFormSubmission = async (values) => {
-    await loginUser(values, history);
-  };
-  return (
-    <div className="account-pages height-full">
-      <div className="container-fluid height-full">
-        <div className="row justify-content-center height-full">
-          <div className="col-md-6">
-            <div className="mt-5">
-              <a href="index.html">
-                <span>
-                  <Logo />
-                </span>
-              </a>
-            </div>
-            <div className="row align-items-center h-100">
-              <div className="w-75">
-                <div className="card-body p-4">
-                  <div>
-                    <h4 className="text-dark-50 mt-0 font-weight-bold">
-                      Log In
-                    </h4>
-                  </div>
-                  <Formik
-                    initialValues={loginDetails}
-                    onSubmit={async (values) => handleFormSubmission(values)}
-                  >
-                    <Form action="#">
-                      <div className="form-group">
-                        <label htmlFor="emailaddress">Email</label>
-                        <Field
-                          className="form-control"
-                          type="email"
-                          id="emailaddress"
-                          required=""
-                          name="uid"
-                          placeholder="Enter your email"
-                        />
-                      </div>
+	const handleFormSubmission = async (values) => {
+		await loginUser(values, history);
+	};
 
-                      <div className="form-group">
-                        <a
-                          href="pages-recoverpw.html"
-                          className="float-right text-blue"
-                        >
-                          <small>Forgot your password?</small>
-                        </a>
-                        <label htmlFor="password">Password</label>
-                        <div className="input-group input-group-merge">
-                          <Field
-                            name="password"
-                            type="password"
-                            id="password"
-                            className="form-control"
-                            placeholder="Enter your password"
-                          />
-                          <div
-                            className="input-group-append"
-                            data-password="false"
-                          >
-                            <div className="input-group-text">
-                              <span className="password-eye"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+	return (
+		<div className="grid md:grid-cols-2">
+			<section className="md:h-screen" style={{ backgroundImage: 'url(/img/account-page-bg.png)' }}></section>
 
-                      <div className="form-group mb-0 text-center w-100">
-                        <button className="btn btn-primary w-100" type="submit">
-                          Log In
-                        </button>
-                      </div>
-                    </Form>
-                  </Formik>
-                </div>
-                <div className="col-md-12 mt-3">
-                  <div className="col-12 text-center">
-                    <p className="text-muted text-left">
-                      Don't have an account?{" "}
-                      <Link to="/register" className="text-blue ml-1">
-                        <b>Sign Up</b>
-                      </Link>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 bg-color"></div>
-        </div>
-      </div>
-    </div>
-  );
+			<section className="md:h-screen flex flex-col justify-center p-16 md:px-48">
+				<a href="/" className="w-48">
+					<Logo variant="primary" />
+				</a>
+				<div className="">
+					<h1 className="text-3xl py-16 font-light">Log In</h1>
+					<Formik initialValues={loginDetails} onSubmit={async (values) => handleFormSubmission(values)}>
+						<Form action="#">
+							<div className="mb-8">
+								<Label>Email</Label>
+								<Input name={'uid'} type="email" />
+							</div>
+
+							<div>
+								<section className="mb-4">
+									<Label>Password</Label>
+									<a href="/" className="float-right font-bold text-brand-primary">
+										<small>Forgot your password?</small>
+									</a>
+								</section>
+
+								<PasswordInput name="password" />
+							</div>
+
+							<div className="form-group">
+								<div className="input-group input-group-merge">
+									<div className="input-group-append" data-password="false">
+										<div className="input-group-text">
+											<span className="password-eye"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div className="mt-16 mb-8">
+								<Button isStretched isPrimary>
+									Log In
+								</Button>
+							</div>
+						</Form>
+					</Formik>
+					<div className="col-12 text-center">
+						<p className="text-muted text-left">
+							Don't have an account?{' '}
+							<Link to="/register" className="text-brand-primary ml-1">
+								<b>Sign Up</b>
+							</Link>
+						</p>
+					</div>
+				</div>
+			</section>
+		</div>
+	);
 };
 
 const mapDispatchToProps = { loginUser };

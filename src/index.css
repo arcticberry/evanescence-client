@@ -2,13 +2,13 @@
 
 /* Perform resets here */
 @layer base {
-    html {
-        font-size: 14px;
-    }
+	html {
+		font-size: 14px;
+	}
 
-    a {
-        @apply hover:no-underline;
-    }
+	a {
+		@apply hover:no-underline;
+	}
 }
 
 @tailwind components;
