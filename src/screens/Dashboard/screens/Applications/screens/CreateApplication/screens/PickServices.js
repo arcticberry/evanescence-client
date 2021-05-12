@@ -13,13 +13,14 @@ import SectionTitle from 'components/SectionTitle';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 
 import '../../../application.css';
+import { toast } from 'react-toastify';
 
 const VendorsList = ({ service, selectedVendors, vendors }) => {
 	return (
 		<FieldArray
 			name={`services.${service.id}`}
 			render={(arrayHelpers) => (
-				<section className="grid grid-cols-3 gap-6 py-4 px-8">
+				<section className="grid lg:grid-cols-3 grid-cols-2 gap-6 py-4 px-8">
 					{vendors.map((vendor, key) => {
 						const vendorSelected = selectedVendors.includes(vendor.id);
 						const onVendorChange = (e) => {
@@ -34,6 +35,7 @@ const VendorsList = ({ service, selectedVendors, vendors }) => {
 
 						return (
 							<div
+								key={key}
 								onClick={onVendorChange}
 								className={classNames(['rounded-sm p-4 cursor-pointer'], {
 									'border-brand-primary border-2': vendorSelected,
@@ -56,9 +58,7 @@ const VendorsList = ({ service, selectedVendors, vendors }) => {
 	);
 };
 
-const ServicesList = ({ selectedServices, services, vendors }) => {
-	const servicesWithVendors = Object.keys(services).filter((serviceKey) => services[serviceKey].vendors.length);
-
+const ServicesList = ({ selectedServices, servicesWithVendors, services, vendors }) => {
 	return (
 		<Accordion level={4} isExpandable>
 			{servicesWithVendors.map((serviceKey, idx) => {
@@ -91,14 +91,22 @@ const ServicesList = ({ selectedServices, services, vendors }) => {
 	);
 };
 
-const PickServices = ({ crumbs, services, vendors }) => {
+const PickServices = ({ history, crumbs, services, vendors }) => {
 	const { values, setFieldValue } = useFormikContext();
+	const servicesWithVendors = Object.keys(services).filter((serviceKey) => services[serviceKey].vendors.length);
+
+	useEffect(() => {
+		if (!values.name.length) {
+			history.push('/dashboard/applications/create');
+			toast.info('Please add a name');
+		}
+	}, [values.name, history]);
 
 	useEffect(() => {
 		const servicesKeys = Object.keys(services);
 		// Preselect all vendors by reducing the services list
 		if (servicesKeys.length) {
-			let servicesUpdate = servicesKeys.reduce((acc, id) => {
+			let servicesUpdate = servicesWithVendors.reduce((acc, id) => {
 				return {
 					...acc,
 					[id]: services[id].vendors,
@@ -123,7 +131,12 @@ const PickServices = ({ crumbs, services, vendors }) => {
 
 			<div className="flex w-full justify-around mb-16">
 				<section>
-					<ServicesList selectedServices={values.services} services={services} vendors={vendors} />
+					<ServicesList
+						servicesWithVendors={servicesWithVendors}
+						selectedServices={values.services}
+						services={services}
+						vendors={vendors}
+					/>
 
 					<div className="py-6 flex justify-between">
 						<Link
@@ -133,12 +146,10 @@ const PickServices = ({ crumbs, services, vendors }) => {
 							<ChevronLeft />
 							Back
 						</Link>
-						<Link to="/dashboard/applications/create/pick-services">
-							<Button isPrimary>
-								<span className="font-bold">Submit</span>
-								<ChevronRight />
-							</Button>
-						</Link>
+						<Button type="submit" isPrimary>
+							<span className="font-bold">Create application</span>
+							<ChevronRight />
+						</Button>
 					</div>
 				</section>
 			</div>

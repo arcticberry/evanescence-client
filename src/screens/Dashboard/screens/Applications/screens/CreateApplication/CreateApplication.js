@@ -1,11 +1,11 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
-
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { useMutation } from 'react-query';
 import { Formik } from 'formik';
-
 import routes from './routes';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
+import api from 'services/api';
 import { fetchServices } from 'services/application/service.slice';
 import { createApplication } from 'services/application/application.slice';
 
@@ -14,7 +14,13 @@ import Breadcrumb from 'components/Breadcrumb';
 
 const NotFound = lazy(() => import('screens/NotFound'));
 
-const CreateApplication = ({ crumbs, fetchServices, services, createApplication, history }) => {
+const transformServices = (services) =>
+	Object.keys(services).map((serviceId) => ({
+		service_id: serviceId,
+		vendors: services[serviceId],
+	}));
+
+const CreateApplication = ({ match: { path }, crumbs, fetchServices, services, createApplication, history }) => {
 	React.useEffect(() => {
 		if (!services.hasOwnProperty('entities')) {
 			fetchServices();
@@ -22,8 +28,26 @@ const CreateApplication = ({ crumbs, fetchServices, services, createApplication,
 	}, [services, fetchServices]);
 
 	const formValues = {
-		applicationName: '',
+		name: '',
 		services: {},
+	};
+
+	const applicationCreationRequest = async (payload) => api.post('applications', payload);
+
+	const mutation = useMutation(applicationCreationRequest, {
+		onSuccess: () => {
+			history.push(`${path}/success`);
+		},
+	});
+
+	const handleFormSubmit = (values) => {
+		const { name: label, services } = values;
+		const payload = {
+			label,
+			services: transformServices(services),
+		};
+
+		mutation.mutate(payload);
 	};
 
 	return (
@@ -35,15 +59,21 @@ const CreateApplication = ({ crumbs, fetchServices, services, createApplication,
 					</div>
 				</div>
 			</div>
-			<Formik initialValues={formValues}>
-				<BrowserRouter>
-					<Suspense fallback={() => <>Loading...</>}>
-						<Switch>
-							<RenderRoutes routes={routes} />
-							<Redirect to="/dashboard" />
-						</Switch>
-					</Suspense>
-				</BrowserRouter>
+			<Formik initialValues={formValues} onSubmit={handleFormSubmit}>
+				{({ handleSubmit }) => (
+					<form onSubmit={handleSubmit}>
+						<BrowserRouter>
+							<Suspense fallback={() => <p>Loading...</p>}>
+								<Switch>
+									<RenderRoutes routes={routes} />
+									<Route path="/success" component={NotFound} />
+									<Route component={NotFound} />
+									<Redirect to="/dashboard" />
+								</Switch>
+							</Suspense>
+						</BrowserRouter>
+					</form>
+				)}
 			</Formik>
 		</>
 	);

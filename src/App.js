@@ -14,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App({ fetchMetaData }) {
 	const queryClient = new QueryClient();
 
-	useEffect(() => fetchMetaData(), []);
+	useEffect(() => fetchMetaData(), [fetchMetaData]);
 
 	return (
 		<QueryClientProvider client={queryClient}>

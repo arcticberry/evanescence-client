@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useQuery } from 'react-query';
@@ -8,7 +8,7 @@ import EmptyState from 'components/EmptyState';
 import LoadingState from 'components/LoadingState';
 import { ReactComponent as CreateApplicationIllustration } from 'assets/create-application.svg';
 import { ReactComponent as ErrorOccurredIllustration } from 'assets/error-occurred.svg';
-import { fetchApplications, toggleApplicationStatus } from 'services/application/application.slice';
+import { toggleApplicationStatus } from 'services/application/application.slice';
 import api from 'services/api';
 import { Button } from '@zendeskgarden/react-buttons';
 
