@@ -1,18 +1,25 @@
-// @import "node_modules/bootstrap/scss/_functions";
-// @import "node_modules/bootstrap/scss/_variables";
+.Breadcrumb {
+	&__Item {
+		@apply inline-flex;
+		@apply p-1;
 
-// @import "styles/_variables";
+		&:last-child {
+			&:after {
+				content: '';
+			}
+		}
 
-// .Breadcrumb {
-//   &__Item {
-//     font-weight: bold;
-//   }
+		&:after {
+			content: '\003E';
+			@apply ml-2;
+			@apply text-gray-400;
+		}
+	}
 
-//   &__Link {
-//     color: $link-color;
-//   }
+	&__Link {
+		@apply text-brand-secondary;
+	}
 
-//   &__Link_active {
-//     color: $breadcrumb-active-color;
-//   }
-// }
+	&__Link_active {
+	}
+}

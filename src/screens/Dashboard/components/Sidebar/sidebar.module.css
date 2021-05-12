@@ -1,83 +1,84 @@
 .sidebar {
-  @apply w-16;
-  @apply flex;
-  position: relative;
-  flex-direction: column;
-  flex-shrink: 0;
-  order: -1;
+	@apply w-16;
+	@apply flex;
+	@apply h-full;
+	position: fixed;
+	flex-direction: column;
+	flex-shrink: 0;
+	order: -1;
 }
 
 .sidebar--expanded {
-  @apply w-48;
+	@apply w-48;
 }
 
 .sidebar--primary {
-  @apply bg-brand-primary;
+	@apply bg-brand-primary;
 }
 
 .sidebar--tertiary {
-  @apply bg-brand-tertiary;
+	@apply bg-brand-tertiary;
 }
 
 .sidebar--primary .sidebar__item,
 .sidebar--tertiary .sidebar__item {
-  @apply text-white;
-  @apply hover:text-white;
+	@apply text-white;
+	@apply hover:text-white;
 }
 
 .sidebar__item {
-  @apply bg-transparent;
-  @apply hover:bg-opacity-5;
+	@apply bg-transparent;
+	@apply hover:bg-opacity-5;
 }
 
 .sidebar__item--isCurrent {
-  @apply bg-white;
-  @apply bg-opacity-50;
-  @apply text-opacity-100;
-  @apply hover:bg-opacity-50;
+	@apply bg-white;
+	@apply bg-opacity-50;
+	@apply text-opacity-100;
+	@apply hover:bg-opacity-50;
 }
 
 .sidebar__item {
-  @apply text-opacity-60;
-  @apply py-4;
-  @apply px-3;
+	@apply text-opacity-60;
+	@apply py-4;
+	@apply px-3;
 
-  min-height: 52px;
-  display: flex;
-  flex-shrink: 0;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  font-size: inherit;
-  order: 0;
-  border: none;
+	min-height: 52px;
+	display: flex;
+	flex-shrink: 0;
+	-webkit-box-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	font-size: inherit;
+	order: 0;
+	border: none;
 }
 
 .sidebar__item__text {
-  position: absolute;
-  order: 1;
-  clip: rect(1px, 1px, 1px, 1px);
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-align: start;
+	position: absolute;
+	order: 1;
+	clip: rect(1px, 1px, 1px, 1px);
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-align: start;
 }
 
 .sidebar--expanded .sidebar__item {
-  justify-content: start;
+	justify-content: start;
 }
 
 .sidebar--expanded .sidebar__item__text {
-  position: static;
-  flex: 1 1 0%;
-  clip: auto;
-  width: auto;
-  height: auto;
-  text-overflow: ellipsis;
+	position: static;
+	flex: 1 1 0%;
+	clip: auto;
+	width: auto;
+	height: auto;
+	text-overflow: ellipsis;
 }
 
 .sidebar--expanded .sidebar__item--hasLogo,
 .sidebar__item {
-  justify-content: center;
+	justify-content: center;
 }

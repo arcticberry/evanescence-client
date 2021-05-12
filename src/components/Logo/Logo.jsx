@@ -88,7 +88,9 @@ Logo.defaultProps = {
 	variant: 'primary',
 };
 
-export const LogoHaloed = ({ color, haloColor }) => {
+export const LogoHaloed = ({ color, variant }) => {
+	const { color: haloColor } = themes[variant];
+
 	return (
 		<svg version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 2000 2000">
 			<circle fill={haloColor} cx="998.5" cy="999.9" r="968.5" />
