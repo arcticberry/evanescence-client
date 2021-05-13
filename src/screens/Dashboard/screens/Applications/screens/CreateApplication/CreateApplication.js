@@ -66,7 +66,6 @@ const CreateApplication = ({ match: { path }, crumbs, fetchServices, services, c
 							<Suspense fallback={() => <p>Loading...</p>}>
 								<Switch>
 									<RenderRoutes routes={routes} />
-									<Route path="/success" component={NotFound} />
 									<Route component={NotFound} />
 									<Redirect to="/dashboard" />
 								</Switch>

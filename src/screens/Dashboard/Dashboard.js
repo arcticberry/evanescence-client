@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Route, Switch, useRouteMatch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import Sidebar from 'screens/Dashboard/components/Sidebar';
@@ -18,6 +18,8 @@ const Dashboard = () => {
 				<BrowserRouter>
 					<Suspense fallback={() => <>Loading...</>}>
 						<Switch>
+							<Route path="/dashboard/applications/create/success" exact={true} component={NotFound} />
+
 							<RenderRoutes routes={routes} />
 							<Route component={NotFound} />
 						</Switch>

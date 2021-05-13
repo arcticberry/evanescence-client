@@ -1,11 +1,10 @@
-import React, { lazy } from 'react';
-import { Redirect } from 'react-router-dom';
+import React from 'react';
 
-const AddApplicationName = lazy(() =>
+const AddApplicationName = React.lazy(() =>
 	import('screens/Dashboard/screens/Applications/screens/CreateApplication/screens/AddApplicationName')
 );
 
-const PickServices = lazy(() =>
+const PickServices = React.lazy(() =>
 	import('screens/Dashboard/screens/Applications/screens/CreateApplication/screens/PickServices')
 );
 

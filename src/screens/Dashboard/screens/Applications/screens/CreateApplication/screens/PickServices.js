@@ -15,6 +15,9 @@ import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import '../../../application.css';
 import { toast } from 'react-toastify';
 
+const getServicesWithVendors = (services) =>
+	Object.keys(services).filter((serviceKey) => services[serviceKey].vendors.length);
+
 const VendorsList = ({ service, selectedVendors, vendors }) => {
 	return (
 		<FieldArray
@@ -93,7 +96,6 @@ const ServicesList = ({ selectedServices, servicesWithVendors, services, vendors
 
 const PickServices = ({ history, crumbs, services, vendors }) => {
 	const { values, setFieldValue } = useFormikContext();
-	const servicesWithVendors = Object.keys(services).filter((serviceKey) => services[serviceKey].vendors.length);
 
 	useEffect(() => {
 		if (!values.name.length) {
@@ -103,6 +105,7 @@ const PickServices = ({ history, crumbs, services, vendors }) => {
 	}, [values.name, history]);
 
 	useEffect(() => {
+		const servicesWithVendors = getServicesWithVendors(services);
 		const servicesKeys = Object.keys(services);
 		// Preselect all vendors by reducing the services list
 		if (servicesKeys.length) {
@@ -132,7 +135,7 @@ const PickServices = ({ history, crumbs, services, vendors }) => {
 			<div className="flex w-full justify-around mb-16">
 				<section>
 					<ServicesList
-						servicesWithVendors={servicesWithVendors}
+						servicesWithVendors={getServicesWithVendors(services)}
 						selectedServices={values.services}
 						services={services}
 						vendors={vendors}
