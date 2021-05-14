@@ -9,7 +9,7 @@ function Breadcrumb({ items }) {
 				const activeClass = active ? 'active' : '';
 
 				return (
-					<li className={`${activeClass} ${styles.Breadcrumb__Item}`}>
+					<li className={`${activeClass} ${styles.Breadcrumb__Item}`} key={idx}>
 						{active ? (
 							<button className={styles.Breadcrumb__Link_active}>{label}</button>
 						) : (

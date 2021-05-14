@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { Formik } from 'formik';
 import routes from './routes';
@@ -9,10 +9,12 @@ import api from 'services/api';
 import { fetchServices } from 'services/application/service.slice';
 import { createApplication } from 'services/application/application.slice';
 
+import Loading from 'components/LoadingState';
 import { RenderRoutes } from 'components/AppRouter';
 import Breadcrumb from 'components/Breadcrumb';
 
 const NotFound = lazy(() => import('screens/NotFound'));
+const AppCreationSuccess = lazy(() => import('./screens/AppCreationSuccess'));
 
 const transformServices = (services) =>
 	Object.keys(services).map((serviceId) => ({
@@ -35,7 +37,7 @@ const CreateApplication = ({ match: { path }, crumbs, fetchServices, services, c
 	const applicationCreationRequest = async (payload) => api.post('applications', payload);
 
 	const mutation = useMutation(applicationCreationRequest, {
-		onSuccess: () => {
+		onSuccess: async () => {
 			history.push(`${path}/success`);
 		},
 	});
@@ -62,15 +64,18 @@ const CreateApplication = ({ match: { path }, crumbs, fetchServices, services, c
 			<Formik initialValues={formValues} onSubmit={handleFormSubmit}>
 				{({ handleSubmit }) => (
 					<form onSubmit={handleSubmit}>
-						<BrowserRouter>
-							<Suspense fallback={() => <p>Loading...</p>}>
-								<Switch>
-									<RenderRoutes routes={routes} />
-									<Route component={NotFound} />
-									<Redirect to="/dashboard" />
-								</Switch>
-							</Suspense>
-						</BrowserRouter>
+						<Suspense fallback={<Loading />}>
+							<Switch>
+								<Route
+									path="/dashboard/applications/create/success"
+									exact
+									component={AppCreationSuccess}
+								/>
+								<RenderRoutes routes={routes} />
+								<Route component={NotFound} />
+								<Redirect to="/dashboard" />
+							</Switch>
+						</Suspense>
 					</form>
 				)}
 			</Formik>

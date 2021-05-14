@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { ChevronRight, ChevronLeft, Star } from '@material-ui/icons';
 import { Field, Label, Checkbox } from '@zendeskgarden/react-forms';
 import { Accordion } from '@zendeskgarden/react-accordions';
-import { Button } from '@zendeskgarden/react-buttons';
+import Button from 'components/Button';
 import Steps from 'components/Steps';
 import SectionTitle from 'components/SectionTitle';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
@@ -142,14 +142,13 @@ const PickServices = ({ history, crumbs, services, vendors }) => {
 					/>
 
 					<div className="py-6 flex justify-between">
-						<Link
-							to="/dashboard/applications/create"
-							className="border-gray-200 border-2 py-2 px-8 text-brand-tertiary"
-						>
-							<ChevronLeft />
-							Back
+						<Link to="/dashboard/applications/create">
+							<Button>
+								<ChevronLeft />
+								Back
+							</Button>
 						</Link>
-						<Button type="submit" isPrimary>
+						<Button type="submit" variant={'primary'}>
 							<span className="font-bold">Create application</span>
 							<ChevronRight />
 						</Button>

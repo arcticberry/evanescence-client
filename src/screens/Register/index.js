@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 
-import { Button } from '@zendeskgarden/react-buttons';
+import Button from 'components/Button';
 import { Spinner } from '@zendeskgarden/react-loaders';
 
 import Logo from 'components/Logo/Logo';
@@ -85,7 +85,7 @@ const Register = ({ createUser, isCreatingUser, countries, history }) => {
 									</div>
 
 									<div className="my-8">
-										<Button isStretched isPrimary type="submit">
+										<Button isStretched variant="primary" type="submit">
 											{isCreatingUser ? <Spinner size={32} delayMS={0} /> : 'Sign up'}
 										</Button>
 									</div>

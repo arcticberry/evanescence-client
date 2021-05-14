@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
+import Loading from 'components/LoadingState';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import Sidebar from 'screens/Dashboard/components/Sidebar';
 import './dashboard.scss';
@@ -15,16 +16,12 @@ const Dashboard = () => {
 			<Sidebar isExpanded={true} />
 
 			<section className="h-full w-full bg-gray-100" id="page-content-wrapper">
-				<BrowserRouter>
-					<Suspense fallback={() => <>Loading...</>}>
-						<Switch>
-							<Route path="/dashboard/applications/create/success" exact={true} component={NotFound} />
-
-							<RenderRoutes routes={routes} />
-							<Route component={NotFound} />
-						</Switch>
-					</Suspense>
-				</BrowserRouter>
+				<Suspense fallback={<Loading />}>
+					<Switch>
+						<RenderRoutes routes={routes} />
+						<Route component={NotFound} />
+					</Switch>
+				</Suspense>
 			</section>
 		</div>
 	);

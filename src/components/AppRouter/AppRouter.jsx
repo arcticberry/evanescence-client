@@ -11,7 +11,7 @@ function AppRouter({ fetchMetaData }) {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={() => <LoadingState />}>
+      <Suspense fallback={<LoadingState />}>
         <Switch>
           <Route component={LandingPage} exact path="/" />
           <Route component={Login} exact path="/login" />

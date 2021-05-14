@@ -1,0 +1,21 @@
+.Button {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 3.6rem;
+	min-width: 3.6rem;
+	margin: 0;
+	padding: 0.7rem 1.6rem;
+	line-height: 1;
+	text-align: center;
+	cursor: pointer;
+	-webkit-user-select: none;
+	user-select: none;
+	text-decoration: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.Button--Basic {
+	@apply bg-white text-gray-500 border rounded-md shadow-sm border-gray-300;
+}

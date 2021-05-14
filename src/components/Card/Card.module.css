@@ -1,0 +1,13 @@
+.Card {
+	width: inherit;
+	height: inherit;
+	display: flex;
+}
+
+.Card--Callout {
+	@apply justify-center items-center flex-col;
+}
+
+.Card--Callout--alpha {
+	background: linear-gradient(231.56deg, #ef476f 0%, #0077b6 100%), #ffffff;
+}

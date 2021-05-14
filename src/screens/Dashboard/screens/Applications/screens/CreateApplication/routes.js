@@ -13,6 +13,7 @@ export default [
 		path: '/dashboard/applications/create',
 		label: 'Create',
 		Component: AddApplicationName,
+		exact: true,
 	},
 	{
 		path: '/dashboard/applications/create/pick-services',

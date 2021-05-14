@@ -12,9 +12,17 @@ import { ThemeProvider, DEFAULT_THEME } from '@zendeskgarden/react-theming';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App({ fetchMetaData }) {
-	const queryClient = new QueryClient();
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				refetchOnWindowFocus: false,
+			},
+		},
+	});
 
-	useEffect(() => fetchMetaData(), [fetchMetaData]);
+	useEffect(() => {
+		fetchMetaData();
+	}, [fetchMetaData]);
 
 	return (
 		<QueryClientProvider client={queryClient}>

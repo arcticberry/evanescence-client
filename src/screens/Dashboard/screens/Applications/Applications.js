@@ -10,7 +10,7 @@ import { ReactComponent as CreateApplicationIllustration } from 'assets/create-a
 import { ReactComponent as ErrorOccurredIllustration } from 'assets/error-occurred.svg';
 import { toggleApplicationStatus } from 'services/application/application.slice';
 import api from 'services/api';
-import { Button } from '@zendeskgarden/react-buttons';
+import Button from 'components/Button';
 
 const ErrorLoading = ({ title = 'Something unexpected happened', message }) => {
 	return (
@@ -104,7 +104,7 @@ const Applications = ({ fetchApplications, controlAppActivation }) => {
 				message="Apps allow you to gain total control of all of Payreflect’s goodies."
 			>
 				<Link to="/dashboard/applications/create">
-					<Button isPrimary>
+					<Button variant="primary">
 						<span className="font-semibold">
 							Create first application
 							<i className="mdi mdi-chevron-right" />
@@ -115,7 +115,7 @@ const Applications = ({ fetchApplications, controlAppActivation }) => {
 		</section>
 	);
 };
-const mapStateToProps = ({ application }) => ({});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = { toggleApplicationStatus };
 export default AuthenticatedHoc(connect(mapStateToProps, mapDispatchToProps)(Applications));

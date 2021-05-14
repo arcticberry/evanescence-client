@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useFormikContext } from 'formik';
 import { ChevronRight, ChevronLeft } from '@material-ui/icons';
 import Steps from 'components/Steps';
-import { Button } from '@zendeskgarden/react-buttons';
+import Button from 'components/Button';
 import SectionTitle from 'components/SectionTitle';
 import { Input } from 'components/Form';
 import { generateName } from 'utils';
@@ -47,7 +47,7 @@ const AddApplicationName = ({ crumbs }) => {
 							Back
 						</Link>
 						<Link to="/dashboard/applications/create/pick-services">
-							<Button isPrimary>
+							<Button variant="primary">
 								<span className="font-bold">Pick services</span>
 								<ChevronRight />
 							</Button>
