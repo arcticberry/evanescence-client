@@ -31,7 +31,15 @@ function capFirst(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function getRandomInt(min, max) {
+/**
+ * Returns a random integer between min and max.
+ *
+ * @param {Number} min
+ * @param {Number} max
+ *
+ * @returns {Number}
+ */
+export function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
 

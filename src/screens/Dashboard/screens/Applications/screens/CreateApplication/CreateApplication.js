@@ -56,27 +56,23 @@ const CreateApplication = ({ match: { path }, crumbs, fetchServices, services, c
 		<>
 			<div className="px-16 md:px-24">
 				<div className="row">
-					<div className="mt-3 mb-8">
+					<div className="mt-3 ">
 						<Breadcrumb items={crumbs} />
 					</div>
 				</div>
 			</div>
 			<Formik initialValues={formValues} onSubmit={handleFormSubmit}>
 				{({ handleSubmit }) => (
-					<form onSubmit={handleSubmit}>
-						<Suspense fallback={<Loading />}>
-							<Switch>
-								<Route
-									path="/dashboard/applications/create/success"
-									exact
-									component={AppCreationSuccess}
-								/>
+					<Suspense fallback={<Loading />}>
+						<Switch>
+							<Route path="/dashboard/applications/create/success" exact component={AppCreationSuccess} />
+							<form onSubmit={handleSubmit}>
 								<RenderRoutes routes={routes} />
-								<Route component={NotFound} />
-								<Redirect to="/dashboard" />
-							</Switch>
-						</Suspense>
-					</form>
+							</form>
+							<Route component={NotFound} />
+							<Redirect to="/dashboard" />
+						</Switch>
+					</Suspense>
 				)}
 			</Formik>
 		</>

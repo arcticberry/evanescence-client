@@ -17,7 +17,7 @@ const Sidebar = ({ isExpanded = true }) => {
 					[styles['sidebar--expanded']]: isExpanded,
 				})}
 			>
-				<a href={'/'} className={classNames(styles.sidebar__item, [styles['sidebar__item--hasLogo']])}>
+				<a href={'/dashboard'} className={classNames(styles.sidebar__item, [styles['sidebar__item--hasLogo']])}>
 					<span className="w-8">
 						<LogoHaloed collapsed color={'#fff'} />
 						<span className={'sr-only'}>PayReflect</span>
@@ -33,7 +33,7 @@ const Sidebar = ({ isExpanded = true }) => {
 					<span className={styles.sidebar__item__text}>Overview</span>
 				</Link>
 
-				<Link to="/dashboard/transactions" className={classNames(styles.sidebar__item)}>
+				<Link to="/dashboard/applications" className={classNames(styles.sidebar__item)}>
 					<AppsIcon className="mx-2 text-brand-primary" />
 					<span className={styles.sidebar__item__text}>Apps</span>
 				</Link>

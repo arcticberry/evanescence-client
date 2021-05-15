@@ -17,5 +17,5 @@
 }
 
 .Button--Basic {
-	@apply bg-white text-gray-500 border rounded-md shadow-sm border-gray-300;
+	@apply bg-white text-gray-500 border-2 rounded-md shadow-sm border-gray-300;
 }

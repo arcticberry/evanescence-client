@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { FieldArray, useFormikContext } from 'formik';
 import classNames from 'classnames';
 
@@ -12,8 +13,7 @@ import Steps from 'components/Steps';
 import SectionTitle from 'components/SectionTitle';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 
-import '../../../application.css';
-import { toast } from 'react-toastify';
+import '../../../applications.css';
 
 const getServicesWithVendors = (services) =>
 	Object.keys(services).filter((serviceKey) => services[serviceKey].vendors.length);
@@ -121,7 +121,7 @@ const PickServices = ({ history, crumbs, services, vendors }) => {
 	}, [services, setFieldValue]);
 
 	return (
-		<div className="app-creation-shell">
+		<div className="container app-creation-shell">
 			<section className="mb-16">
 				<SectionTitle title="Access the wealth of services." message="Pick as many services as you wish." />
 			</section>

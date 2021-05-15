@@ -73,7 +73,7 @@ export const fetchApplications = () => async (dispatch) => {
 	try {
 		const response = await Axios.get('/applications');
 
-		//const normalized = normalize(response.data.results, [applicationsSchema]);
+		// const normalized = normalize(response.data.results, [applicationsSchema]);
 
 		// console.log(normalized);
 

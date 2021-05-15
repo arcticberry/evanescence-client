@@ -12,10 +12,10 @@ const Dashboard = () => {
 	const NotFound = lazy(() => import('screens/NotFound'));
 
 	return (
-		<div className="flex" id="wrapper">
+		<div className="flex bg-gray-100" id="wrapper">
 			<Sidebar isExpanded={true} />
 
-			<section className="h-full w-full bg-gray-100" id="page-content-wrapper">
+			<section className="h-full w-full" id="page-content-wrapper">
 				<Suspense fallback={<Loading />}>
 					<Switch>
 						<RenderRoutes routes={routes} />
@@ -28,4 +28,3 @@ const Dashboard = () => {
 };
 
 export default AuthenticatedHoc(Dashboard);
-// export default Dashboard;

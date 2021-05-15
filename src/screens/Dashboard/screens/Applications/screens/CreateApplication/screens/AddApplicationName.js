@@ -7,13 +7,13 @@ import Button from 'components/Button';
 import SectionTitle from 'components/SectionTitle';
 import { Input } from 'components/Form';
 import { generateName } from 'utils';
-import '../../../application.css';
+import '../../../applications.css';
 
 const AddApplicationName = ({ crumbs }) => {
 	const { setFieldValue } = useFormikContext();
 
 	return (
-		<div className="app-creation-shell">
+		<div className="container app-creation-shell">
 			<section className="mb-16">
 				<SectionTitle title="It starts with a name." message="A simple name is always a nice start." />
 			</section>

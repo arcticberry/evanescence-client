@@ -1,14 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { StarHalf } from '@material-ui/icons';
 import Card from 'components/Card';
-import '../../../application.css';
 import Button from 'components/Button';
+import '../../../applications.css';
 
 const AppCreationSuccess = () => {
 	return (
-		<div className="px-16 md:px-24 h-screen">
+		<div className="container h-screen">
 			<section className="mb-16 h-3/4">
-				<Card.Callout title="Application Successfully Created" message="Your application has been created">
+				<Card.Callout
+					icon={<StarHalf size="md" fontSize="large" htmlColor="#fff" />}
+					title="Application Successfully Created"
+					message="Your application has been created"
+				>
 					<Link to="/dashboard/applications">
 						<Button>View applications</Button>
 					</Link>
