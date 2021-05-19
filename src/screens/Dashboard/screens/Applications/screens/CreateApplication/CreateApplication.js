@@ -7,11 +7,9 @@ import routes from './routes';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import api from 'services/api';
 import { fetchServices } from 'services/application/service.slice';
-import { createApplication } from 'services/application/application.slice';
 
 import Loading from 'components/LoadingState';
 import { RenderRoutes } from 'components/AppRouter';
-import Breadcrumb from 'components/Breadcrumb';
 
 const NotFound = lazy(() => import('screens/NotFound'));
 const AppCreationSuccess = lazy(() => import('./screens/AppCreationSuccess'));
@@ -22,7 +20,7 @@ const transformServices = (services) =>
 		vendors: services[serviceId],
 	}));
 
-const CreateApplication = ({ match: { path }, crumbs, fetchServices, services, createApplication, history }) => {
+const CreateApplication = ({ match: { path }, fetchServices, services, history }) => {
 	React.useEffect(() => {
 		if (!services.hasOwnProperty('entities')) {
 			fetchServices();
@@ -54,13 +52,6 @@ const CreateApplication = ({ match: { path }, crumbs, fetchServices, services, c
 
 	return (
 		<>
-			<div className="px-16 md:px-24">
-				<div className="row">
-					<div className="mt-3 ">
-						<Breadcrumb items={crumbs} />
-					</div>
-				</div>
-			</div>
 			<Formik initialValues={formValues} onSubmit={handleFormSubmit}>
 				{({ handleSubmit }) => (
 					<Suspense fallback={<Loading />}>
@@ -85,6 +76,6 @@ const mapStateToProps = ({ service }) => {
 	};
 };
 
-const mapDispatchToProps = { fetchServices, createApplication };
+const mapDispatchToProps = { fetchServices };
 
 export default AuthenticatedHoc(connect(mapStateToProps, mapDispatchToProps)(CreateApplication));

@@ -13,7 +13,7 @@ function Breadcrumb({ items }) {
 						{active ? (
 							<button className={styles.Breadcrumb__Link_active}>{label}</button>
 						) : (
-							<Link to={href} className={styles.Breadcrumb__Link}>
+							<Link to={href || ''} className={styles.Breadcrumb__Link}>
 								{label}
 							</Link>
 						)}

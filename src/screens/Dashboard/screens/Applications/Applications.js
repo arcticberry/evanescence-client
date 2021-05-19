@@ -1,18 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { useQuery } from 'react-query';
 import { StarHalf } from '@material-ui/icons';
 
+import useApplications from 'hooks/useApplications';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import Button from 'components/Button';
 import EmptyState from 'components/EmptyState';
 import LoadingState from 'components/LoadingState';
+import { setSelectedApplication } from 'services/application/application.slice';
 
 import { ReactComponent as CreateApplicationIllustration } from 'assets/create-application.svg';
 import { ReactComponent as ErrorOccurredIllustration } from 'assets/error-occurred.svg';
-import { toggleApplicationStatus } from 'services/application/application.slice';
-import api from 'services/api';
 
 import './applications.css';
 import CalloutCard, { variants } from 'components/Card/CalloutCard';
@@ -28,8 +27,27 @@ const ErrorLoading = ({ title = 'Something unexpected happened', message }) => {
 	);
 };
 
+const NoApplicationsFound = () => (
+	<section className="w-full h-full">
+		<EmptyState
+			artwork={<CreateApplicationIllustration />}
+			title="Start with your first app."
+			message="Apps allow you to gain total control of all of Payreflect’s goodies."
+		>
+			<Link to="/dashboard/applications/create">
+				<Button variant="primary">
+					<span className="font-semibold">
+						Create first application
+						<i className="mdi mdi-chevron-right" />
+					</span>
+				</Button>
+			</Link>
+		</EmptyState>
+	</section>
+);
+
 const Applications = () => {
-	const { isLoading: loadingApplications, error, data } = useQuery('applications', () => api.getAll('applications'));
+	const { isLoading: loadingApplications, error, data } = useApplications();
 
 	if (loadingApplications)
 		return (
@@ -45,7 +63,12 @@ const Applications = () => {
 	return applications.length ? (
 		<>
 			<CalloutCard variant="mu">
-				<div className="py-8 text-gray-100">You have {applications.length} active applications</div>
+				<div className="px-24 pb-8 flex items-center justify-between text-gray-100">
+					<span>You have {applications.length} active applications</span>
+					<Link to="/dashboard/applications/create" exact>
+						<Button>Create new application</Button>
+					</Link>
+				</div>
 			</CalloutCard>
 			<div className="container mt-5">
 				<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
@@ -59,9 +82,11 @@ const Applications = () => {
 									title={application.label}
 								/>
 								<div className="w-full bg-white py-4 text-center">
-									<Button>
-										<b>Manage Application</b>
-									</Button>
+									<Link to={`/dashboard/applications/${application.id}`} exact>
+										<Button>
+											<b>Select application</b>
+										</Button>
+									</Link>
 								</div>
 							</section>
 						);
@@ -70,25 +95,12 @@ const Applications = () => {
 			</div>
 		</>
 	) : (
-		<section className="w-full h-full">
-			<EmptyState
-				artwork={<CreateApplicationIllustration />}
-				title="Start with your first app."
-				message="Apps allow you to gain total control of all of Payreflect’s goodies."
-			>
-				<Link to="/dashboard/applications/create">
-					<Button variant="primary">
-						<span className="font-semibold">
-							Create first application
-							<i className="mdi mdi-chevron-right" />
-						</span>
-					</Button>
-				</Link>
-			</EmptyState>
-		</section>
+		<NoApplicationsFound />
 	);
 };
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ application: { selectedApplication } }) => ({
+	selectedApplication,
+});
 
-const mapDispatchToProps = { toggleApplicationStatus };
+const mapDispatchToProps = { setSelectedApplication };
 export default AuthenticatedHoc(connect(mapStateToProps, mapDispatchToProps)(Applications));

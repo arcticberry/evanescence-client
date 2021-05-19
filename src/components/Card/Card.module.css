@@ -1,9 +1,9 @@
 .Card {
-	@apply w-full h-full flex rounded;
+	@apply w-full h-full flex flex-col rounded;
 }
 
-.Card--Callout {
-	@apply justify-center items-center flex-col p-4;
+.Card__inner {
+	@apply w-full h-full flex justify-center items-center flex-col p-4;
 }
 
 .Card--Callout--alpha {

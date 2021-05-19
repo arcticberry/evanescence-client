@@ -1,4 +1,4 @@
-import { NOUN_POOL, ADJECTIVE_POOL } from './constants';
+import { NOUN_POOL, ADJECTIVE_POOL } from '../constants';
 
 /**
  * Generates crumbs for a particular route

@@ -10,9 +10,9 @@ function AppRouter() {
 	const Dashboard = lazy(() => import('screens/Dashboard/Dashboard'));
 
 	return (
-		<BrowserRouter className="bg-black">
+		<BrowserRouter>
 			<Suspense fallback={<LoadingState />}>
-				<Switch className="bg-blue-100">
+				<Switch>
 					<Route component={LandingPage} exact path="/" />
 					<Route component={Login} exact path="/login" />
 					<Route component={Register} exact path="/register" />

@@ -6,7 +6,7 @@ import Steps from 'components/Steps';
 import Button from 'components/Button';
 import SectionTitle from 'components/SectionTitle';
 import { Input } from 'components/Form';
-import { generateName } from 'utils';
+import { generateName } from 'utils/index';
 import '../../../applications.css';
 
 const AddApplicationName = ({ crumbs }) => {

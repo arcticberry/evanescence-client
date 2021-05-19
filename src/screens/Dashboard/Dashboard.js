@@ -1,14 +1,15 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
-
+import Breadcrumb from 'components/Breadcrumb';
 import Loading from 'components/LoadingState';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
+import WithBreadcrumbs from 'HOC/WithBreadcrumbs';
 import Sidebar from 'screens/Dashboard/components/Sidebar';
 import './dashboard.scss';
 import routes from './routes';
 import { RenderRoutes } from 'components/AppRouter';
 
-const Dashboard = () => {
+const Dashboard = ({ breadcrumbs }) => {
 	const NotFound = lazy(() => import('screens/NotFound'));
 
 	return (
@@ -16,6 +17,14 @@ const Dashboard = () => {
 			<Sidebar isExpanded={true} />
 
 			<section className="h-full w-full" id="page-content-wrapper">
+				<div className="px-16 md:px-24 py-6">
+					<div className="row">
+						<div className="">
+							<Breadcrumb items={breadcrumbs} />
+						</div>
+					</div>
+				</div>
+
 				<Suspense fallback={<Loading />}>
 					<Switch>
 						<RenderRoutes routes={routes} />
@@ -27,4 +36,4 @@ const Dashboard = () => {
 	);
 };
 
-export default AuthenticatedHoc(Dashboard);
+export default WithBreadcrumbs(routes)(AuthenticatedHoc(Dashboard));

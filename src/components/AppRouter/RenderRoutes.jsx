@@ -1,6 +1,6 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
-import { generateCrumbsForRoute } from 'utils';
+import { Route, Switch } from 'react-router-dom';
+import { generateCrumbsForRoute } from 'utils/index';
 
 function renderRoute(props, routes, Component) {
 	const { match, location } = props;
@@ -17,7 +17,7 @@ function renderRoute(props, routes, Component) {
 
 function RenderRoutes({ routes }) {
 	return (
-		<>
+		<Switch>
 			{routes.map(({ path, exact, Component }, key) => (
 				<Route
 					exact={exact === undefined ? true : exact}
@@ -26,7 +26,7 @@ function RenderRoutes({ routes }) {
 					render={(props) => renderRoute(props, routes, Component)}
 				/>
 			))}
-		</>
+		</Switch>
 	);
 }
 
