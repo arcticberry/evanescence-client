@@ -1,321 +1,247 @@
-import React from "react";
-import styles from "./Landing.module.scss";
-import { Link } from "react-router-dom";
-import Logo from "components/Logo";
-import { ReactComponent as Gauntlet } from "assets/gauntlet.svg";
+import React from 'react';
+import './Landing.css';
+import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
+
+import { ReactComponent as Gauntlet } from 'assets/svg/gauntlet.svg';
+import logo from 'assets/svg/logo.svg';
+import paystackLogo from 'assets/svg/paystack-grayscale.svg';
+import flutterwaveLogo from 'assets/svg/flutterwave-grayscale.svg';
+import flower from 'assets/svg/flower.svg';
+import line from 'assets/svg/line.svg';
+import quotemark from 'assets/svg/quotemark.svg';
+import paysolution from 'assets/svg/payeee.svg';
+import floating from 'assets/svg/floating.svg';
+import arrowblue from 'assets/svg/arrowblue.svg';
+
+const { REACT_APP_NAME, PUBLIC_URL } = process.env;
+
+const testimonials = [
+	{
+		description:
+			'Switching payment providers with Payreflect is so easy. I can switch from one provider to the other and it just works.',
+		testifier: 'Caleb Mathew',
+		affiliation: 'Software Engineer, Kudi',
+		avatarUrl: 'https://ca.slack-edge.com/TV2GDUVUZ-UVCK9FRRB-6460df44fc14-512',
+	},
+	{
+		description: 'A central dashboard for managing stuff makes life easier.',
+		testifier: 'Emmanuel Ogbiyoyo',
+		affiliation: 'Software Engineer, Cowellness',
+		avatarUrl: 'https://ca.slack-edge.com/TV2GDUVUZ-U0100ERTVNK-561282ab68f9-512',
+	},
+];
+
+const benefits = [
+	{
+		title: 'Time To Focus More On Your Business',
+		description: `${REACT_APP_NAME} is here to make your payments super easy. Switch between payment solutions in one-click.`,
+		callToAction: `Switch Payment Solutions`,
+		artwork: paysolution,
+	},
+	{
+		title: 'Time To Focus More On Your Business',
+		description: `${REACT_APP_NAME} is here to make your payments super easy. Switch between payment solutions in one-click.`,
+		callToAction: `Switch Payment Solutions`,
+		artwork: floating,
+	},
+];
+
+const features = [
+	{
+		title: 'Stay In Total Control',
+		description: `${REACT_APP_NAME} is here to make your payments super easy. Switch between payment solutions in one-click.`,
+		callToAction: `Take Control`,
+	},
+	{
+		title: 'Stay In Total Control',
+		description: `${REACT_APP_NAME} is here to make your payments super easy. Switch between payment solutions in one-click.`,
+		callToAction: `Take Control`,
+	},
+];
+
+const PromoButton = ({ callToAction, href = `${PUBLIC_URL}/register`, gotDropShadow = false }) => (
+	<a
+		className={`bg-gradient-to-r text-xl from-brand-primary to-green-200 p-8 ${gotDropShadow && 'dropshadow'}`}
+		href={href}
+	>
+		{callToAction}
+		<ArrowForwardIcon className="ml-1" />
+	</a>
+);
+
+function Navbar({ title, description, callToAction }) {
+	return (
+		<nav className="w-full pt-16 flex px-8 md:px-32 bg-gray-100">
+			<a
+				className="text-sm font-bold inline-block w-40 mr-4 py-2 whitespace-nowrap uppercase text-blueGray-700"
+				href="/"
+			>
+				<img src={logo} alt="" />
+			</a>
+			<ul className="flex list-none ml-32">
+				<li className="nav-item">
+					<a href={`${PUBLIC_URL}/register`} className="px-3 py-2 flex items-center">
+						Sign Up <img src={arrowblue} className="w-6 ml-4" alt="" />
+					</a>
+				</li>
+				<li className="nav-item">
+					<a href={`${PUBLIC_URL}/login`} className="px-3 py-2 flex items-center">
+						Login <img src={arrowblue} className="w-6 ml-4" alt="" />
+					</a>
+				</li>
+			</ul>
+		</nav>
+	);
+}
+
+function Hero({ title, description, callToAction }) {
+	return (
+		<>
+			<section className="grid md:grid-cols-3 gap-4 px-8 md:px-32 bg-gray-100">
+				<div className="col-span-2 md:w-9/12 xs:w-full">
+					<h1 className="text-4xl lg:text-6xl lg:leading-snug font-extrabold md:tracking-wide text-gray-700 mt-10 mb-6 sm:mt-14">
+						{title}
+					</h1>
+					<p className="text-2xl text-gray-500 mb-16 leading-10">{description}</p>
+					<PromoButton gotDropShadow callToAction={callToAction} />
+				</div>
+
+				<div className="w-10/12">
+					<Gauntlet />
+				</div>
+			</section>
+			<section className="py-20 bg-gray-100">
+				<ul className="flex justify-center">
+					<li>
+						<img className="w-48 mr-8" src={paystackLogo} alt=""></img>
+					</li>
+					<li>
+						<img className="w-48" src={flutterwaveLogo} alt=""></img>
+					</li>
+				</ul>
+			</section>
+		</>
+	);
+}
+
+function Banner({ title, description, callToAction }) {
+	return (
+		<section className="banner dropshadow clearfix">
+			<h2>{title}</h2>
+			<p>{description}</p>
+
+			<PromoButton gotDropShadow={false} callToAction={callToAction} />
+		</section>
+	);
+}
+
+function Benefits({ benefits }) {
+	return (
+		<section className="bg-white">
+			{benefits.map(({ title, description, callToAction, artwork }, key) => (
+				<div className="items-center grid md:grid-cols-2 gap-4 mb-32 px-16" key={key}>
+					<div className="benefit-content w-10/12">
+						<h2 className="text-5xl mb-8">{title}</h2>
+						<p className="mb-8 text-2xl">{description}</p>
+						<a className="primarybtn primarybtn-border" href="/hello">
+							{callToAction}
+							<ArrowForwardIcon className="ml-1" />
+						</a>
+					</div>
+					<img className="dropshadow-lighter rounded" alt="" src={artwork}></img>
+				</div>
+			))}
+		</section>
+	);
+}
+
+function Features({ features }) {
+	return (
+		<section className="features clearfix">
+			{features.map(({ title, description, callToAction }, key) => (
+				<div className="feature dropshadow-lighter" key={key}>
+					<img className="features-icon dropshadow-lighter" src={flower} alt="" />
+					<img className="features-image" src={line} alt="" />
+					<div className="features-content">
+						<h3>{title}</h3>
+						<p>{description}</p>
+						<a href="/" className="primarybtn primarybtn-border">
+							{callToAction}
+							<ArrowForwardIcon className="ml-4" />
+						</a>
+					</div>
+				</div>
+			))}
+		</section>
+	);
+}
+
+function Testimonials({ testimonials }) {
+	return (
+		<div className="grid md:grid-cols-2 gap-4 px-8 my-16">
+			{testimonials.map(({ description, testifier, affiliation, avatarUrl }, key) => (
+				<section className="testimonial p-8 filter drop-shadow-lg" key={key}>
+					<img className="filter drop-shadow-md w-8 mb-8" alt="" src={quotemark}></img>
+					<p className="text-2xl mb-8">{description}</p>
+					<div className="flex align-center">
+						<img
+							className="inline-block w-12 h-12 rounded-full mr-4 filter drop-shadow-lg"
+							alt=""
+							src={avatarUrl}
+						></img>
+						<div className="">
+							<h3 className="text-xl font-bold text-gray-700">{testifier}</h3>
+							<p className="text-base text-gray-500">{affiliation}</p>
+						</div>
+					</div>
+				</section>
+			))}
+		</div>
+	);
+}
+
+function Footer({ description, copyright }) {
+	return (
+		<section className="dropshadow-lighter grid grid-cols-2 py-32 px-16">
+			<div className="">
+				<img src={logo} className="w-48" alt="" />
+			</div>
+			<div className="">
+				<p className="text-2xl w-10/12 mb-8">{description}</p>
+				{/* <ul>
+                  <li><a href=""><img src={github}></img></a></li>
+                  <li><a href=""><img src={facebook}></img></a></li>
+                  <li><a href=""><img src={twitter}></img></a></li>
+              </ul> */}
+				<p>{copyright}</p>
+			</div>
+		</section>
+	);
+}
 
 const LandingPage = () => {
-  const { REACT_APP_NAME } = process.env;
-  return (
-    <>
-      <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark">
-        <div class="container">
-          <a href="index.html" class="navbar-brand mr-lg-5">
-            <Logo color={styles.logoColor} />
-          </a>
-
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <i class="mdi mdi-menu"></i>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav mr-auto align-items-center">
-              <li class="nav-item mx-lg-1">
-                <a class="nav-link active" href="#">
-                  {REACT_APP_NAME}
-                </a>
-              </li>
-              <li class="nav-item mx-lg-1">
-                <a class="nav-link" href="#">
-                  Features
-                </a>
-              </li>
-              <li class="nav-item mx-lg-1">
-                <a class="nav-link" href="#faq">
-                  Frequently Asked Questions
-                </a>
-              </li>
-            </ul>
-            <ul class="navbar-nav ml-auto align-items-center">
-              <li class="nav-item mr-0">
-                <Link to="/login" class="nav-link d-lg-none">
-                  Login
-                </Link>
-                <Link
-                  to="/login"
-                  class="btn btn-md btn-link font-weight-bold border-primary btn-rounded d-none d-lg-inline-flex"
-                >
-                  Sign in <i class="mdi mdi-chevron-right mr-2"></i>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-      <section className={styles.hero__section}>
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-md-6">
-              <div class="">
-                <h1 class="text-primary font-weight-semibold mb-4 mt-3 hero-title">
-                  Stressless payment integrations now easier with{" "}
-                  {REACT_APP_NAME}.
-                </h1>
-
-                <p class="mb-4 text-light">
-                  {REACT_APP_NAME} is the simplest way to collect payments using
-                  solutions you already know and love.
-                </p>
-
-                <a
-                  href="#"
-                  target="_blank"
-                  class="btn btn-md btn-rounded btn-primary text-secondary font-weight-bold"
-                >
-                  Start now <i class="mdi mdi-chevron-right ml-2"></i>
-                </a>
-              </div>
-            </div>
-            <div class="col-md-5 offset-md-1">
-              <div class="text-md-right mt-3 mt-md-0">
-                <Gauntlet />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="py-5">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="text-center">
-                <i class="mdi mdi-heart-multiple-outline h2 text-muted"></i>
-                <h3>
-                  Ease of <span class="text-danger">thought</span>
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="row my-5 py-5 align-items-center">
-            <div class="col-lg-5">
-              <img
-                src="assets/images/features-1.svg"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="col-lg-5 offset-lg-2">
-              <h3 className="text-secondary">
-                One tap to{" "}
-                <span className="text-secondary">
-                  switch any payment provider
-                </span>
-              </h3>
-              <p class="mt-4 text-muted">
-                You don't have to setup an account for each provider. With{" "}
-                {REACT_APP_NAME}, you can manage your payment providers from one
-                super-friendly dashboard.
-              </p>
-
-              <a href="#" class="btn btn-light btn-rounded mt-3">
-                Learn more <i class="mdi mdi-arrow-right ml-1"></i>
-              </a>
-            </div>
-          </div>
-
-          <div class="row py-5 align-items-center my-6">
-            <div class="col-lg-5">
-              <h3 class="text-secondary">Connecting Payments</h3>
-              <p class="text-muted mt-4">
-                {REACT_APP_NAME} brings you the power of Paystack, Flutterwave
-                and more. <br />
-                Whenever we add support for a new provider, you can seamlessly
-                integrate. Sounds like magic.
-              </p>
-
-              <a href="#" class="btn btn-light btn-rounded mt-3">
-                Sign up <i class="mdi mdi-arrow-right ml-1"></i>
-              </a>
-            </div>
-            <div class="col-lg-5 offset-lg-1">
-              <img
-                src="assets/images/features-2.svg"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-          </div>
-
-          <div class="row my-5 py-5 align-items-center">
-            <div class="col-lg-5">
-              <img
-                src="assets/images/features-1.svg"
-                class="img-fluid"
-                alt=""
-              />
-            </div>
-            <div class="col-lg-4 offset-lg-2">
-              <h3 class="">Take Control</h3>
-              <p class="mt-3 text-muted">
-                Already got existing integrations? You can still bring them over
-                with you. Just point us to it and you're good to go!
-              </p>
-
-              <a href="#" class="btn btn-light btn-rounded mt-3">
-                Learn more <i class="mdi mdi-arrow-right ml-1"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="py-5" id="faq">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12 mb-5">
-              <div class="text-center">
-                <h1 class="mt-0">
-                  <i class="mdi mdi-frequently-asked-questions text-primary"></i>
-                </h1>
-                <h3>
-                  Frequently Asked <span class="text-secondary">Questions</span>
-                </h3>
-                <p class="text-muted mt-2">
-                  A lot of customers ask us these questions.
-                  <br />
-                  Got more questions? You can contact us.
-                </p>
-
-                <button type="button" class="btn btn-info btn-sm mt-2 ml-1">
-                  <i class="mdi mdi-twitter mr-1"></i> Send us a tweet
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-5">
-            <div class="col-lg-5 mb-5 offset-lg-1">
-              <div>
-                <div class="faq-question-q-box mr-3">Q.</div>
-                <h4 className={`h5 faq-question text-body`}>
-                  Can I use {REACT_APP_NAME} with my current setup?
-                </h4>
-                <p class="faq-answer mb-5 py-2 text-muted">
-                  Yup, the marketplace license allows you to use this theme in
-                  any end products. For more information on licenses, please
-                  refere{" "}
-                  <a
-                    href="https://themes.getbootstrap.com/licenses/"
-                    target="_blank"
-                  >
-                    here
-                  </a>
-                  .
-                </p>
-              </div>
-
-              <div>
-                <div class="faq-question-q-box mr-3">Q.</div>
-                <h4 class="h5 text-brand">Do you provide support?</h4>
-                <p class="faq-answer mb-5 py-2 text-muted">
-                  Use our dedicated support email (support@coderthemes.com) to
-                  send your issues or feedback. We are here to help anytime.
-                </p>
-              </div>
-            </div>
-            <div class="col-lg-5 mb-5 offset-lg-1">
-              <div>
-                <div class="faq-question-q-box mr-3">Q.</div>
-                <h4 className={`h5 faq-question text-body`}>
-                  Can I use {REACT_APP_NAME} with my current setup?
-                </h4>
-                <p class="faq-answer mb-5 py-2 text-muted">
-                  Yup, the marketplace license allows you to use this theme in
-                  any end products. For more information on licenses, please
-                  refere{" "}
-                  <a
-                    href="https://themes.getbootstrap.com/licenses/"
-                    target="_blank"
-                  >
-                    here
-                  </a>
-                  .
-                </p>
-              </div>
-
-              <div>
-                <div class="faq-question-q-box mr-3">Q.</div>
-                <h4 class="h5 faq-question text-body">
-                  Do you provide support?
-                </h4>
-                <p class="faq-answer mb-5 py-2 text-muted">
-                  Use our dedicated support email (support@coderthemes.com) to
-                  send your issues or feedback. We are here to help anytime.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <footer class="bg-secondary py-5">
-        <div class="container py-5">
-          <div class="row">
-            <div class="col-lg-10">
-              <img src="assets/images/payreflect.svg" alt="" height={40} />
-              <p class="text-primary mt-4">
-                {REACT_APP_NAME} makes it easier to collect payments <br />{" "}
-                using processors you already integrate.
-              </p>
-
-              <ul class="social-list mt-5 list-inline mt-3">
-                <li class="list-inline-item text-center">
-                  <a
-                    href="javascript: void(0);"
-                    class="social-list-item border-info text-info"
-                  >
-                    <i class="mdi mdi-twitter"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="col-lg-2 mt-3 mt-lg-0">
-              <ul class="list-unstyled pl-0 mb-0 mt-3">
-                <li class="mt-2">
-                  <a href="javascript: void(0);" class="text-white-50">
-                    About Us
-                  </a>
-                </li>
-                <li class="mt-2">
-                  <a href="javascript: void(0);" class="text-white-50">
-                    Documentation
-                  </a>
-                </li>
-                <li class="mt-2">
-                  <a href="javascript: void(0);" class="text-white-50">
-                    Blog
-                  </a>
-                </li>
-              </ul>
-              <div class="my-5">
-                <p class="text-white-50 mt-4 mb-0">
-                  {`© 2020 ${REACT_APP_NAME}`}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </>
-  );
+	return (
+		<>
+			<Navbar />
+			<Hero
+				title={`Seamless Payment Integration Using ${REACT_APP_NAME}.`}
+				description={`${REACT_APP_NAME} is here to make your payments super easy. Switch between payment solutions in one-click.`}
+				callToAction={`Start using ${REACT_APP_NAME}`}
+			/>
+			<Testimonials testimonials={testimonials} />
+			<Benefits benefits={benefits} />
+			<Features features={features} />
+			<Banner
+				title={'Time To Focus More On Your Business'}
+				description={`Start Using ${REACT_APP_NAME} For Free Today!`}
+				callToAction={`Start Using ${REACT_APP_NAME}`}
+			/>
+			<Footer
+				description={`${REACT_APP_NAME} is the easiest way to seamlessly switch between payment solution providers.`}
+				copyright={'2021. All rights reserved.'}
+			/>
+		</>
+	);
 };
 
 export default LandingPage;

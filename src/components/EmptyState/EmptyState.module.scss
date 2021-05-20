@@ -1,18 +1,17 @@
 .EmptyState {
-  width: inherit;
-  height: inherit;
-  position: absolute;
-  display: flex;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
 
-  &__Art {
-    margin: 1rem auto;
+	&__Art {
+		margin: 1rem auto;
 
-    svg {
-      max-width: 100%;
-      max-height: 100%;
-    }
-  }
+		svg {
+			max-width: 100%;
+			max-height: 100%;
+		}
+	}
 }

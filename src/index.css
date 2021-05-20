@@ -1,0 +1,23 @@
+@tailwind base;
+
+/* Perform resets here */
+@layer base {
+	html {
+		font-size: 14px;
+	}
+
+	html,
+	body,
+	#root,
+	#root > div:first-child,
+	#page-content-wrapper > div:first-child {
+		@apply w-full h-full;
+	}
+
+	a {
+		@apply hover:no-underline;
+	}
+}
+
+@tailwind components;
+@tailwind utilities;

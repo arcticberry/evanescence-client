@@ -1,138 +1,106 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { useQuery } from "react-query";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { StarHalf } from '@material-ui/icons';
 
-import AuthenticatedHoc from "HOC/WithAuthenticated";
-import EmptyState from "components/EmptyState";
-import LoadingState from "components/LoadingState";
-import { ReactComponent as CreateApplicationIllustration } from "assets/create-application.svg";
-import { ReactComponent as ErrorOccurredIllustration } from "assets/error-occurred.svg";
-import {
-  fetchApplications,
-  toggleApplicationStatus,
-} from "services/application/application.slice";
-import api from "services/api";
+import useApplications from 'hooks/useApplications';
+import AuthenticatedHoc from 'HOC/WithAuthenticated';
+import Button from 'components/Button';
+import EmptyState from 'components/EmptyState';
+import LoadingState from 'components/LoadingState';
+import { setSelectedApplication } from 'services/application/application.slice';
 
-const ErrorLoading = ({ title = "Something unexpected happened", message }) => {
-  return (
-    <EmptyState
-      artwork={<ErrorOccurredIllustration />}
-      title={title}
-      message={message}
-    >
-      <Link
-        to="/dashboard/applications"
-        className="btn btn-primary btn-md font-weight-bold px-4"
-      >
-        Retry
-        <i className="ml-1 mdi mdi-reload" />
-      </Link>
-    </EmptyState>
-  );
+import { ReactComponent as CreateApplicationIllustration } from 'assets/create-application.svg';
+import { ReactComponent as ErrorOccurredIllustration } from 'assets/error-occurred.svg';
+
+import './applications.css';
+import CalloutCard, { variants } from 'components/Card/CalloutCard';
+
+const ErrorLoading = ({ title = 'Something unexpected happened', message }) => {
+	return (
+		<EmptyState artwork={<ErrorOccurredIllustration />} title={title} message={message}>
+			<Link to="/dashboard/applications" className="btn btn-primary btn-md font-weight-bold px-4">
+				Retry
+				<i className="ml-1 mdi mdi-reload" />
+			</Link>
+		</EmptyState>
+	);
 };
 
-const Applications = ({ fetchApplications, controlAppActivation }) => {
-  const {
-    isLoading: loadingApplications,
-    error,
-    data: applications,
-  } = useQuery("applications", () => api.getAll("applications"));
+const NoApplicationsFound = () => (
+	<section className="w-full h-full">
+		<EmptyState
+			artwork={<CreateApplicationIllustration />}
+			title="Start with your first app."
+			message="Apps allow you to gain total control of all of Payreflect’s goodies."
+		>
+			<Link to="/dashboard/applications/create">
+				<Button variant="primary">
+					<span className="font-semibold">
+						Create first application
+						<i className="mdi mdi-chevron-right" />
+					</span>
+				</Button>
+			</Link>
+		</EmptyState>
+	</section>
+);
 
-  const toggleApplicationStatus = async ({ applicationId, isActive }) => {};
+const Applications = () => {
+	const { isLoading: loadingApplications, error, data } = useApplications();
 
-  if (loadingApplications) return <LoadingState />;
+	if (loadingApplications)
+		return (
+			<div className="w-full h-full flex items-center justify-center">
+				<LoadingState />
+			</div>
+		);
 
-  if (error)
-    return (
-      <ErrorLoading
-        title="Oops..."
-        message="Something unexpected happened. Please retry."
-      />
-    );
+	if (error) return <ErrorLoading title="Oops..." message="Something unexpected happened. Please retry." />;
 
-  return applications.length ? (
-    <div className="row mt-5">
-      <div className="col-md-12">
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex align-items-baseline justify-content-between">
-              <div>
-                <h4 className="header-title">Applications</h4>
-                <p className="text-muted font-14">
-                  View All Applications Within The System
-                </p>
-              </div>
-              <Link
-                to="/account/create-application"
-                className="float-right btn btn-primary wizard-btn"
-              >
-                Create Application
-              </Link>
-            </div>
-            <table className="table table-centered mb-0">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>API Keys</th>
-                  <th>Active?</th>
-                </tr>
-              </thead>
-              <tbody>
-                {applications.map((application, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{application.label}</td>
-                      <td>{application.api_key.toUpperCase()}</td>
-                      <td>
-                        <div>
-                          <input
-                            type="checkbox"
-                            id={`switch${index}`}
-                            checked={application.is_active}
-                            onChange={(event) =>
-                              toggleApplicationStatus(event, application)
-                            }
-                            data-switch="success"
-                          />
-                          <label
-                            htmlFor={`switch${index}`}
-                            data-on-label="Yes"
-                            data-off-label="No"
-                            className="mb-0 d-block"
-                          ></label>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  ) : (
-    <EmptyState
-      artwork={<CreateApplicationIllustration />}
-      title="Start with your first app."
-      message="Apps allow you to gain total control of all of Payreflect’s goodies."
-    >
-      <Link
-        to="/dashboard/applications/create"
-        className="btn btn-primary btn-md font-weight-bold px-4"
-      >
-        Create first application
-        <i className="mdi mdi-chevron-right" />
-      </Link>
-    </EmptyState>
-  );
+	const applications = data.results;
+
+	return applications.length ? (
+		<>
+			<CalloutCard variant="mu">
+				<div className="px-24 pb-8 flex items-center justify-between text-gray-100">
+					<span>You have {applications.length} active applications</span>
+					<Link to="/dashboard/applications/create" exact>
+						<Button>Create new application</Button>
+					</Link>
+				</div>
+			</CalloutCard>
+			<div className="container mt-5">
+				<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+					{applications.map((application, idx) => {
+						let variant = variants[idx % variants.length];
+						return (
+							<section className="mb-8 shadow-lg h-3/4" key={idx}>
+								<CalloutCard
+									icon={<StarHalf size="md" fontSize="large" htmlColor="#fff" />}
+									variant={variant}
+									title={application.label}
+								/>
+								<div className="w-full bg-white py-4 text-center">
+									<Link to={`/dashboard/applications/${application.id}`} exact>
+										<Button>
+											<b>Select application</b>
+										</Button>
+									</Link>
+								</div>
+							</section>
+						);
+					})}
+				</section>
+			</div>
+		</>
+	) : (
+		<NoApplicationsFound />
+	);
 };
-const mapStateToProps = ({ application }) => ({});
+const mapStateToProps = ({ application: { selectedApplication } }) => ({
+	selectedApplication,
+});
 
-const mapDispatchToProps = { toggleApplicationStatus };
-// export default AuthenticatedHoc(
-//   connect(mapStateToProps, mapDispatchToProps)(Applications)
-// );
-export default connect(mapStateToProps, mapDispatchToProps)(Applications);
+const mapDispatchToProps = { setSelectedApplication };
+export default AuthenticatedHoc(connect(mapStateToProps, mapDispatchToProps)(Applications));

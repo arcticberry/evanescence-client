@@ -1,65 +1,74 @@
-@import "node_modules/bootstrap/scss/_functions";
-@import "node_modules/bootstrap/scss/_variables";
-
-@import "styles/_variables";
-
 .Steps__Wrapper {
-  width: inherit;
+	width: 100%;
 }
 
 .Steps {
-  position: relative;
-  display: flex;
-  padding: 0;
-  list-style: none;
-  width: inherit;
+	position: relative;
+	display: flex;
+	padding: 0;
+	list-style: none;
+	width: inherit;
 }
 
 .Step {
-  position: relative;
-  font-size: 12px;
-  flex: 1;
+	@apply text-sm;
+	position: relative;
+	flex: 1;
 }
 
 .Step {
-  &::before {
-    content: "";
-    width: 100%;
-    height: 8px;
-    background-color: #ccc;
-    position: absolute;
-  }
+	&::before {
+		content: '';
 
-  &__Milestone {
-    width: 32px;
-    height: 32px;
-    border-radius: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fff;
-    border: 2px solid $ui-4;
-    position: relative;
-    bottom: 10px;
-    position: relative;
-  }
+		@apply w-full;
+		@apply bg-gray-200;
+		position: absolute;
+		height: 4px;
+	}
 
-  &__Current {
-  }
+	&__Milestone {
+		@apply border-2;
+		@apply border-brand-primary;
+		@apply text-brand-primary;
+		@apply bg-white;
+		@apply items-center;
+		@apply justify-center;
+		@apply flex;
+		@apply w-8;
+		@apply h-8;
 
-  &__Label {
-  }
+		border-radius: 100%;
+		bottom: 10px;
+		position: relative;
+	}
+
+	&__Completed {
+		&::before {
+			@apply bg-brand-primary;
+			@apply bg-opacity-50;
+		}
+	}
+
+	&__Label {
+		@apply text-brand-primary;
+		@apply absolute;
+		@apply w-24;
+	}
 }
 
 .Step__Current {
-  .Step__Milestone {
-    background: $secondary;
-    color: $primary;
-    border-color: $secondary;
-  }
+	.Step__Milestone {
+		@apply bg-brand-primary;
+		@apply text-blue-100;
+	}
 }
 
-.Step__Last::before {
-  content: "";
-  display: none;
+.Step__Last {
+	@apply w-64;
+	flex: 0;
+
+	&::before {
+		content: '';
+		display: none;
+	}
 }

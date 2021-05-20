@@ -1,65 +1,43 @@
-import React, { Suspense, lazy } from "react";
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  Switch,
-  useRouteMatch,
-} from "react-router-dom";
+import React, { Suspense, lazy } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Breadcrumb from 'components/Breadcrumb';
+import Loading from 'components/LoadingState';
+import AuthenticatedHoc from 'HOC/WithAuthenticated';
+import WithBreadcrumbs from 'HOC/WithBreadcrumbs';
+import Sidebar from 'screens/Dashboard/components/Sidebar';
+import './dashboard.scss';
+import routes from './routes';
+import { RenderRoutes } from 'components/AppRouter';
 
-import AuthenticatedHoc from "HOC/WithAuthenticated";
-import SideBar from "screens/Dashboard/components/Sidebar";
-import "./dashboard.scss";
-import routes from "./routes";
-import { RenderRoutes } from "components/AppRouter";
-import { generateCrumbsForRoute } from "utils";
+const Dashboard = ({ breadcrumbs, history }) => {
+	const NotFound = lazy(() => import('screens/NotFound'));
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		history.push('/login');
+	};
 
-const Dashboard = () => {
-  let { path, url } = useRouteMatch();
+	return (
+		<div className="flex bg-gray-100" id="wrapper">
+			<Sidebar isExpanded={true} onLogout={handleLogout} />
 
-  const Applications = lazy(() =>
-    import("screens/Dashboard/screens/Applications")
-  );
-  const CreateApplication = lazy(() =>
-    import("screens/Dashboard/screens/Applications/screens/CreateApplication")
-  );
-  const NotFound = lazy(() => import("screens/NotFound"));
+			<section className="h-full w-full" id="page-content-wrapper">
+				<div className="px-16 md:px-24 py-6">
+					<div className="row">
+						<div className="">
+							<Breadcrumb items={breadcrumbs} />
+						</div>
+					</div>
+				</div>
 
-  return (
-    <div className="d-flex dashboard-wrapper h-100" id="wrapper">
-      <SideBar />
-      <section className="h-100" id="page-content-wrapper">
-        <BrowserRouter>
-          <Suspense fallback={() => <>Loading...</>}>
-            <Switch>
-              <RenderRoutes routes={routes} />
-              <Route component={NotFound} />
-            </Switch>
-          </Suspense>
-        </BrowserRouter>
-        {/* <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              <div className="page-title-box">
-                <div className="page-title-right">
-                  <ol className="breadcrumb m-0">
-                    <li className="breadcrumb-item">
-                      <a href="#">Evanescence</a>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <a href="#">Dashboard</a>
-                    </li>
-                    <li className="breadcrumb-item active">Projects</li>
-                  </ol>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
-      </section>
-    </div>
-  );
+				<Suspense fallback={<Loading />}>
+					<Switch>
+						<RenderRoutes routes={routes} />
+						<Route component={NotFound} />
+					</Switch>
+				</Suspense>
+			</section>
+		</div>
+	);
 };
 
-export default AuthenticatedHoc(Dashboard);
-// export default Dashboard;
+export default WithBreadcrumbs(routes)(AuthenticatedHoc(Dashboard));

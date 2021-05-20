@@ -1,0 +1,23 @@
+.Card {
+	@apply w-full h-full flex flex-col rounded;
+}
+
+.Card__inner {
+	@apply w-full h-full flex justify-center items-center flex-col p-4;
+}
+
+.Card--Callout--alpha {
+	background: linear-gradient(265.01deg, #ffd166 1.02%, #ef476f 131.07%), #f7fbff;
+}
+
+.Card--Callout--beta {
+	background: linear-gradient(265.01deg, #00b4d8 1.02%, #06d6a0 131.07%), #f7fbff;
+}
+
+.Card--Callout--gamma {
+	background: linear-gradient(231.56deg, #ef476f 0%, #0077b6 100%), #ffffff;
+}
+
+.Card--Callout--mu {
+	background: linear-gradient(263.7deg, #06d6a0 1%, #0077b6 98.72%), #f7fbff;
+}

@@ -1,18 +1,25 @@
-@import "node_modules/bootstrap/scss/_functions";
-@import "node_modules/bootstrap/scss/_variables";
-
-@import "styles/_variables";
-
 .Breadcrumb {
-  &__Item {
-    font-weight: bold;
-  }
+	&__Item {
+		@apply inline-flex;
+		@apply p-1;
 
-  &__Link {
-    color: $link-color;
-  }
+		&:last-child {
+			&:after {
+				content: '';
+			}
+		}
 
-  &__Link_active {
-    color: $breadcrumb-active-color;
-  }
+		&:after {
+			content: '\003E';
+			@apply ml-2;
+			@apply text-gray-400;
+		}
+	}
+
+	&__Link {
+		@apply text-brand-secondary;
+	}
+
+	&__Link_active {
+	}
 }
