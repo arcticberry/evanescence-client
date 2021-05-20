@@ -1,3 +1,7 @@
+.sidebar-container {
+	@apply hidden md:block;
+}
+
 .sidebar {
 	@apply w-16;
 	@apply flex;

@@ -21,7 +21,7 @@ const Dashboard = ({ breadcrumbs, history }) => {
 			<Sidebar isExpanded={true} onLogout={handleLogout} />
 
 			<section className="h-full w-full" id="page-content-wrapper">
-				<div className="px-16 md:px-24 py-6">
+				<div className="px-8 md:px-16 lg:px-24 py-6">
 					<div className="row">
 						<div className="">
 							<Breadcrumb items={breadcrumbs} />

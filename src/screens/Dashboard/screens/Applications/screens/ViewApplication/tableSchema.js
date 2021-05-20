@@ -5,8 +5,6 @@ import Badge from 'components/Badge';
 
 import { getBadgeStatus } from 'utils';
 
-console.log({ a: getBadgeStatus('pending') });
-
 export default () => {
 	return [
 		{
@@ -53,8 +51,8 @@ export default () => {
 			),
 		},
 		{
-			Header: () => <div className="text-right">Amount</div>,
-			Cell: ({ value }) => <div className="text-right">{value}</div>,
+			Header: () => <div className="md:text-right">Amount</div>,
+			Cell: ({ value }) => <div className="md:text-right">{value}</div>,
 			accessor: 'amount',
 		},
 	];

@@ -8,7 +8,7 @@ import { Dashboard as DashboardIcon, Apps as AppsIcon, PowerSettingsNew as Logou
 const Sidebar = ({ isExpanded, onLogout }) => {
 	return (
 		<section
-			className={classNames({
+			className={classNames([styles['sidebar-container']], {
 				[styles['sidebar--expanded']]: isExpanded,
 			})}
 		>
