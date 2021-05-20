@@ -2,12 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
-
-import Button from 'components/Button';
 import { Spinner } from '@zendeskgarden/react-loaders';
 
+import Button from 'components/Button';
 import Logo from 'components/Logo/Logo';
+import Icon from 'components/Icon';
 import { PasswordInput, Input, TelephoneInput } from 'components/Form';
+
 import { createUser } from 'services/register/register.slice';
 import RegistrationSchema from './register.schema';
 
@@ -68,6 +69,7 @@ const Register = ({ createUser, isCreatingUser, countries, history }) => {
 											<TelephoneInput
 												codes={codes}
 												name={'phone'}
+												icon={<Icon name="flags/nigeria" />}
 												label="Phone Number"
 												type="telephone"
 											/>

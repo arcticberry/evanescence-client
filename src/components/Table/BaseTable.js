@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTable, usePagination } from 'react-table';
-import Button from 'components/Button';
 import Pagination from './Pagination';
 
 function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultPageIndex, defaultPageSize }) {
@@ -10,9 +9,6 @@ function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultP
 		headerGroups,
 		prepareRow,
 		page,
-		canPreviousPage,
-		canNextPage,
-		pageOptions,
 		pageCount,
 		gotoPage,
 		nextPage,
@@ -31,7 +27,7 @@ function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultP
 	const performPageNavigation = ({ page, direction }) => {
 		let newPageIndex = page;
 
-		if (direction === 'previous') {
+		if (direction === 'prev') {
 			newPageIndex = pageIndex - 1;
 			previousPage();
 		} else if (direction === 'next') {
@@ -43,16 +39,6 @@ function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultP
 
 		onPageNavigation(newPageIndex + 1);
 	};
-
-	const startOffset = pageIndex * pageSize + 1;
-	const endOffset = (pageIndex + 1) * pageSize;
-
-	const isFirstPage = pageIndex === 0;
-	const isLastPage = pageCount - 1 === pageIndex;
-
-	const midPoint = Math.ceil(parseInt(pageCount / 2));
-	const phase = midPoint >= pageIndex ? 'start' : 'end';
-	const pageGap = 3;
 
 	const handlePageSizeChange = (pageSize) => {
 		setPageSize(pageSize);

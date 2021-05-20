@@ -5,7 +5,7 @@ import { LogoHaloed } from 'components/Logo/Logo';
 import styles from './sidebar.module.css';
 import { Dashboard as DashboardIcon, Apps as AppsIcon, PowerSettingsNew as LogoutIcon } from '@material-ui/icons';
 
-const Sidebar = ({ isExpanded = true }) => {
+const Sidebar = ({ isExpanded, onLogout }) => {
 	return (
 		<section
 			className={classNames({
@@ -38,13 +38,17 @@ const Sidebar = ({ isExpanded = true }) => {
 					<span className={styles.sidebar__item__text}>Apps</span>
 				</Link>
 
-				<button className={classNames([styles.sidebar__item, 'mt-auto'])}>
+				<button className={classNames([styles.sidebar__item, 'mt-auto'])} onClick={onLogout}>
 					<LogoutIcon className="mx-2 text-brand-primary" />
 					<span className={styles.sidebar__item__text}>Logout</span>
 				</button>
 			</nav>
 		</section>
 	);
+};
+
+Sidebar.defaultProps = {
+	expanded: true,
 };
 
 export default Sidebar;

@@ -50,3 +50,27 @@ export function generateName() {
 		capFirst(ADJECTIVE_POOL[getRandomInt(0, ADJECTIVE_POOL.length + 1)])
 	);
 }
+
+/**
+ * Gets a key by the value;
+ *
+ * @param {*} object
+ * @param {*} value
+ * @returns
+ */
+export function getKeyByValue(object, value) {
+	return Object.keys(object).find((key) => {
+		return Array.isArray(object[key]) ? object[key].includes(value) : object[key] === value;
+	});
+}
+
+export function getBadgeStatus(status) {
+	const statusMap = {
+		warning: ['pending'],
+		error: ['failed'],
+	};
+
+	const key = getKeyByValue(statusMap, status);
+
+	return key in statusMap ? key : status;
+}

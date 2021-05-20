@@ -4,8 +4,8 @@ import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 
 import { ReactComponent as Gauntlet } from 'assets/svg/gauntlet.svg';
 import logo from 'assets/svg/logo.svg';
-import paystackLogo from 'assets/svg/paystack.svg';
-import flutterwaveLogo from 'assets/svg/flutterwave.svg';
+import paystackLogo from 'assets/svg/paystack-grayscale.svg';
+import flutterwaveLogo from 'assets/svg/flutterwave-grayscale.svg';
 import flower from 'assets/svg/flower.svg';
 import line from 'assets/svg/line.svg';
 import quotemark from 'assets/svg/quotemark.svg';

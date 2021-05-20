@@ -19,7 +19,7 @@ const StyledInputGroup = styled(InputGroup)`
 	}
 `;
 
-const TelephoneComponent = ({ name, label, codes, ...props }) => {
+const TelephoneComponent = ({ name, label, codes, icon, ...props }) => {
 	const [selectedItem, setSelectedItem] = useState(codes[0]);
 	const [inputValue, setInputValue] = useState('');
 	const [matchingOptions, setMatchingOptions] = useState(codes);
@@ -56,7 +56,12 @@ const TelephoneComponent = ({ name, label, codes, ...props }) => {
 								downshiftProps={{ defaultHighlightedIndex: 0 }}
 							>
 								<DropdownField>
-									<Autocomplete>{selectedItem}</Autocomplete>
+									<Autocomplete>
+										<div className="flex items-center justify-between">
+											<span className="mr-1">{icon}</span>
+											{selectedItem}
+										</div>
+									</Autocomplete>
 								</DropdownField>
 								<Menu>
 									{matchingOptions.length ? (

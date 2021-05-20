@@ -16,7 +16,7 @@ const newPerson = () => {
 		vendor_reference: namor.generate({ words: 1, numbers: 0 }),
 		date: `${getRandomInt(1, 30)}/${getRandomInt(1, 12)}/${getRandomInt(2000, 2020)}`,
 		status: statusChance > 0.66 ? 'success' : statusChance > 0.33 ? 'pending' : 'failed',
-		vendor: namor.generate({ words: 1, numbers: 0 }),
+		vendor: statusChance > 0.5 ? 'paystack' : 'flutterwave',
 		currency: 'NGN',
 		amount: getRandomInt(100, 30000),
 	};

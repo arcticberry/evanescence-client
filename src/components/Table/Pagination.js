@@ -41,19 +41,18 @@ function Pagination({
 							}
 
 							return (
-								<>
+								<React.Fragment key={key}>
 									{showEllipses ? <span className="pr-2 text-2xl">...</span> : null}
-									<span className={`mr-2 ${shouldHide ? 'hidden' : ''}`} key={key}>
+									<span className={`mx-1 ${shouldHide ? 'hidden' : ''}`}>
 										<Button
 											onClick={() => onGotoPage(idx)}
 											size="small"
 											variant={idx === pageIndex ? 'outline' : null}
-											key={key}
 										>
 											{idx + 1}
 										</Button>
 									</span>
-								</>
+								</React.Fragment>
 							);
 						})}
 						{!isLastPage ? (

@@ -69,7 +69,7 @@ const ViewApplication = () => {
 					<p className="text-md text-gray-400">A short breakdown of all records for this app</p>
 				</section>
 				<Table
-					columns={tableSchema}
+					columns={tableSchema()}
 					data={data}
 					onPageNavigation={setPageParamValue}
 					onPageSizeUpdate={setPageSizeParamValue}

@@ -9,12 +9,16 @@ import './dashboard.scss';
 import routes from './routes';
 import { RenderRoutes } from 'components/AppRouter';
 
-const Dashboard = ({ breadcrumbs }) => {
+const Dashboard = ({ breadcrumbs, history }) => {
 	const NotFound = lazy(() => import('screens/NotFound'));
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		history.push('/login');
+	};
 
 	return (
 		<div className="flex bg-gray-100" id="wrapper">
-			<Sidebar isExpanded={true} />
+			<Sidebar isExpanded={true} onLogout={handleLogout} />
 
 			<section className="h-full w-full" id="page-content-wrapper">
 				<div className="px-16 md:px-24 py-6">
