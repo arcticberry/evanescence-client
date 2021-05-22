@@ -21,8 +21,9 @@ const Login = ({ loginUser, isPerformingLogin, history }) => {
 	};
 
 	return (
-		<div className="grid md:grid-cols-2">
-			<section className="md:h-screen" style={{ backgroundImage: 'url(/img/account-page-bg.png)' }}></section>
+		<div className="md:grid md:grid-cols-2">
+			<section className="md:h-screen 
+			hidden md:block lg:block" style={{ backgroundImage: 'url(/img/account-page-bg.png)' }}></section>
 
 			<section className="md:h-screen flex flex-col justify-center p-16 lg:px-48">
 				<a href="/" className="w-48">
