@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTable, usePagination } from 'react-table';
 import Pagination from './Pagination';
+import './Table.css';
 
 function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultPageIndex, defaultPageSize }) {
 	const {
@@ -47,21 +48,15 @@ function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultP
 
 	return (
 		<>
-			<table
-				{...getTableProps()}
-				className="w-full whitespace-nowrap rounded-lg divide-y divide-gray-300 overflow-hidden"
-			>
-				<thead>
+			<table {...getTableProps()} className={'Table'}>
+				<thead className="Thead">
 					{headerGroups.map((headerGroup) => (
 						<tr {...headerGroup.getHeaderGroupProps()}>
-							<th className="py-4 px-6 text-gray-400 uppercase text-left">S/N</th>
+							<th className="Th">S/N</th>
 
 							{headerGroup.headers.map((column) => {
 								return (
-									<th
-										{...column.getHeaderProps()}
-										className="py-4 px-6 text-gray-400 uppercase text-left"
-									>
+									<th {...column.getHeaderProps()} className="Th">
 										{column.render('Header')}
 									</th>
 								);
@@ -69,16 +64,24 @@ function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultP
 						</tr>
 					))}
 				</thead>
-				<tbody {...getTableBodyProps()} className="divide-y divide-gray-20">
+				<tbody {...getTableBodyProps()} className="Tbody">
 					{page.map((row, i) => {
 						prepareRow(row);
 						return (
-							<tr {...row.getRowProps()}>
-								<td className="px-6 py-4">{row.index + 1}</td>
-								{row.cells.map((cell) => {
+							<tr {...row.getRowProps()} className="Tr">
+								<td className="Td row-index" data-label="S/N">
+									<div className="Td__inner"> {row.index + 1}</div>
+								</td>
+								{row.cells.map((cell, i) => {
+									const Header = cell.render('Header');
+
 									return (
-										<td {...cell.getCellProps()} className="px-6 py-4">
-											{cell.render('Cell')}
+										<td
+											{...cell.getCellProps()}
+											data-label={typeof Header === 'string' ? Header : cell.column.id}
+											className={`Td`}
+										>
+											<div className="Td__inner">{cell.render('Cell')}</div>
 										</td>
 									);
 								})}
@@ -87,6 +90,7 @@ function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultP
 					})}
 				</tbody>
 			</table>
+
 			<Pagination
 				pageIndex={pageIndex}
 				pageSize={pageSize}

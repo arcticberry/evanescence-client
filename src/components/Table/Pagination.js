@@ -25,6 +25,22 @@ function Pagination({
 		<>
 			<div className="pagination mt-3">
 				<section className="flex justify-between">
+					<div className="flex items-center">
+						<span className="mr-5">
+							Showing{' '}
+							<strong>
+								{startOffset} – {endOffset} of {dataCount}
+							</strong>{' '}
+						</span>
+
+						<select value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))}>
+							{[10, 20, 40, 60].map((pageSize) => (
+								<option key={pageSize} value={pageSize}>
+									Show {pageSize}
+								</option>
+							))}
+						</select>
+					</div>
 					<div>
 						{!isFirstPage ? (
 							<Button size="small" onClick={onPagePrev}>
@@ -60,20 +76,7 @@ function Pagination({
 								{'>'}
 							</Button>
 						) : null}
-						<select value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))}>
-							{[10, 20, 40, 60].map((pageSize) => (
-								<option key={pageSize} value={pageSize}>
-									Show {pageSize}
-								</option>
-							))}
-						</select>
 					</div>
-					<span>
-						Showing{' '}
-						<strong>
-							{startOffset} – {endOffset} of {dataCount}
-						</strong>{' '}
-					</span>
 				</section>
 			</div>
 		</>
