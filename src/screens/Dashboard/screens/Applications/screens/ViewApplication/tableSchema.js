@@ -51,9 +51,9 @@ export default () => {
 			),
 		},
 		{
+			accessor: 'amount',
 			Header: () => <div className="md:text-right">Amount</div>,
 			Cell: ({ value }) => <div className="md:text-right">{value}</div>,
-			accessor: 'amount',
 		},
 	];
 };

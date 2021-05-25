@@ -1,1 +1,3 @@
-@import "styles/_variables.scss";
+.has-sidebar-open {
+	@apply md:pl-48;
+}

@@ -65,7 +65,7 @@ const Applications = () => {
 			<CalloutCard variant="mu">
 				<div className="px-24 pb-8 flex items-center justify-between text-gray-100">
 					<span>You have {applications.length} active applications</span>
-					<Link to="/dashboard/applications/create" exact>
+					<Link to="/dashboard/applications/create">
 						<Button>Create new application</Button>
 					</Link>
 				</div>

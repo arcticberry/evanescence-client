@@ -1,15 +1,13 @@
-.sidebar-container {
-	@apply hidden md:block;
-}
-
 .sidebar {
-	@apply w-16;
 	@apply flex;
 	@apply h-full;
 	position: fixed;
 	flex-direction: column;
 	flex-shrink: 0;
 	order: -1;
+	top: 0;
+	left: 0;
+	@apply hidden md:block;
 }
 
 .sidebar--expanded {
@@ -31,7 +29,7 @@
 }
 
 .sidebar__item {
-	@apply bg-transparent;
+	@apply bg-transparent w-full;
 	@apply hover:bg-opacity-5;
 }
 

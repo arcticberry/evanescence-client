@@ -10,6 +10,8 @@ import routes from './routes';
 import { RenderRoutes } from 'components/AppRouter';
 
 const Dashboard = ({ breadcrumbs, history }) => {
+	const [isSidebarOpen] = React.useState(true);
+
 	const NotFound = lazy(() => import('screens/NotFound'));
 	const handleLogout = () => {
 		localStorage.removeItem('token');
@@ -17,10 +19,10 @@ const Dashboard = ({ breadcrumbs, history }) => {
 	};
 
 	return (
-		<div className="flex bg-gray-100" id="wrapper">
-			<Sidebar isExpanded={true} onLogout={handleLogout} />
+		<div className={`bg-gray-100 ${isSidebarOpen ? 'has-sidebar-open' : ''}`} id="wrapper">
+			<section className="h-full" id="page-content-wrapper">
+				<Sidebar isExpanded={true} onLogout={handleLogout} />
 
-			<section className="h-full w-full" id="page-content-wrapper">
 				<div className="px-8 md:px-16 lg:px-24 py-6">
 					<div className="row">
 						<div className="">
