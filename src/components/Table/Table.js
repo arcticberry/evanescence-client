@@ -19,7 +19,7 @@ function Table({ columns, data, defaultPageIndex, defaultPageSize, ...props }) {
 
 Table.defaultProps = {
 	defaultPageIndex: 0,
-	defaultPageSize: 40,
+	defaultPageSize: 20,
 };
 
 export default Table;

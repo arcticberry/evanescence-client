@@ -1,7 +1,6 @@
 .Breadcrumb {
 	&__Item {
-		@apply inline-flex;
-		@apply p-1;
+		@apply inline-flex p-1 items-center;
 
 		&:last-child {
 			&:after {
@@ -17,7 +16,7 @@
 	}
 
 	&__Link {
-		@apply text-brand-secondary;
+		@apply text-brand-secondary text-xs md:text-sm lg:text-base;
 	}
 
 	&__Link_active {

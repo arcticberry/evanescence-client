@@ -1,1 +1,6 @@
-@import "styles/_variables.scss";
+.dashboard {
+	@apply bg-gray-100 lg:pl-48;
+}
+
+.has-sidebar-open {
+}

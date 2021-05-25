@@ -1,0 +1,30 @@
+.Table {
+	@apply whitespace-nowrap rounded-lg divide-y divide-gray-300 overflow-scroll w-full border-collapse;
+}
+
+.Th {
+	@apply py-4 px-6 text-gray-400 uppercase text-left hidden md:table-cell;
+}
+
+.Tbody {
+	@apply divide-y bg-gray-300;
+}
+
+.Tr {
+	@apply w-full flex bg-white mb-12 lg:table-row flex-row lg:flex-row flex-wrap lg:flex-nowrap;
+}
+
+.Td {
+	@apply px-3 mb-2 lg:w-auto text-gray-800 block lg:table-cell relative lg:static;
+}
+
+.Td:first-child {
+	flex-grow: 1;
+	flex-direction: row;
+	display: flex;
+	justify-content: start;
+}
+
+.Td.row-index {
+	@apply hidden lg:block;
+}

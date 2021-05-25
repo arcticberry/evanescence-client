@@ -1,11 +1,11 @@
 .sidebar {
-	@apply w-16;
-	@apply flex;
-	@apply h-full;
-	position: fixed;
-	flex-direction: column;
+	@apply transition duration-300 flex h-full z-30 flex-col left-0 fixed transform;
 	flex-shrink: 0;
-	order: -1;
+	top: 0;
+}
+
+.sidebar--hidden {
+	@apply transform -translate-x-full lg:translate-x-0;
 }
 
 .sidebar--expanded {
@@ -27,7 +27,7 @@
 }
 
 .sidebar__item {
-	@apply bg-transparent;
+	@apply bg-transparent w-full;
 	@apply hover:bg-opacity-5;
 }
 

@@ -6,7 +6,6 @@ const useParamSearch = (paramName) => {
 	const urlParams = new URLSearchParams(location.search);
 
 	const setValue = (value) => {
-		console.log({ value });
 		if (!value) {
 			urlParams.delete(paramName);
 		} else if (urlParams.has(paramName)) {
