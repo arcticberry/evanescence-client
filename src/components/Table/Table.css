@@ -1,20 +1,23 @@
 .Table {
-	@apply w-full;
+	@apply w-full shadow-lg px-4;
 	border-collapse: collapse;
 	margin: 0;
-	padding: 0;
 }
 
 .Tr {
 	@apply p-3 bg-gray-100;
 }
 
+.Thead {
+	@apply shadow-lg rounded-lg;
+}
+
 .Th {
-	@apply p-3 text-xs uppercase tracking-wide text-left;
+	@apply p-6 text-xs uppercase bg-gray-100 text-gray-500  tracking-wide text-left;
 }
 
 .Td {
-	@apply p-3 text-sm;
+	@apply py-4 px-6 text-sm bg-white;
 }
 
 @media screen and (max-width: 600px) {

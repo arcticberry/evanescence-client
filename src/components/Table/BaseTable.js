@@ -49,7 +49,7 @@ function BaseTable({ columns, data, onPageNavigation, onPageSizeUpdate, defaultP
 	return (
 		<>
 			<table {...getTableProps()} className={'Table'}>
-				<thead>
+				<thead className="Thead">
 					{headerGroups.map((headerGroup) => (
 						<tr {...headerGroup.getHeaderGroupProps()}>
 							<th className="Th">S/N</th>

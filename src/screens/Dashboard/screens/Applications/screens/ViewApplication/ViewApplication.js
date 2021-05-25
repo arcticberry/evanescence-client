@@ -56,7 +56,7 @@ const ViewApplication = () => {
 	return (
 		<>
 			<CalloutCard variant="mu">
-				<div className="px-4 md:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
+				<div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
 					<span className="mb-2">You can switch between your apps easily</span>
 					<Link to="/dashboard/applications">
 						<Button>Switch application</Button>
@@ -69,7 +69,7 @@ const ViewApplication = () => {
 					<p className="text-md text-gray-400">A short breakdown of all records for this app</p>
 				</section>
 			</div>
-			<div className="mx-auto lg:px-16">
+			<div className="mx-auto lg:px-16 overflow-auto">
 				<Table
 					columns={tableSchema()}
 					data={data}

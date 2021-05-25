@@ -5,31 +5,28 @@ import Loading from 'components/LoadingState';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import WithBreadcrumbs from 'HOC/WithBreadcrumbs';
 import Sidebar from 'screens/Dashboard/components/Sidebar';
+import Header from 'screens/Dashboard/components/Header';
 import './dashboard.scss';
 import routes from './routes';
 import { RenderRoutes } from 'components/AppRouter';
 
 const Dashboard = ({ breadcrumbs, history }) => {
-	const [isSidebarOpen] = React.useState(true);
+	const [isSidebarOpen, setSidebarOpen] = React.useState(false);
 
 	const NotFound = lazy(() => import('screens/NotFound'));
 	const handleLogout = () => {
 		localStorage.removeItem('token');
 		history.push('/login');
 	};
+	const handleMenuToggle = () => setSidebarOpen(!isSidebarOpen);
 
 	return (
-		<div className={`bg-gray-100 ${isSidebarOpen ? 'has-sidebar-open' : ''}`} id="wrapper">
+		<div className={`dashboard ${isSidebarOpen ? 'has-sidebar-open' : ''}`} id="wrapper">
 			<section className="h-full" id="page-content-wrapper">
-				<Sidebar isExpanded={true} onLogout={handleLogout} />
-
-				<div className="px-8 md:px-16 lg:px-24 py-6">
-					<div className="row">
-						<div className="">
-							<Breadcrumb items={breadcrumbs} />
-						</div>
-					</div>
-				</div>
+				<Header onToggleMenu={handleMenuToggle}>
+					<Breadcrumb items={breadcrumbs} />
+				</Header>
+				<Sidebar isVisible={isSidebarOpen} isExpanded onToggleMenu={handleMenuToggle} onLogout={handleLogout} />
 
 				<Suspense fallback={<Loading />}>
 					<Switch>
