@@ -22,19 +22,17 @@ export const { loginFailure, toggleLoginRequest } = loginSlice.actions;
 
 export const loginUser = ({ uid, password }) => async (dispatch) => {
 	dispatch(toggleLoginRequest());
+
 	try {
 		const apiRequest = {
-			uid,
+			email: uid,
 			password,
 		};
 		const { data } = await Axios.post('/auth/login', apiRequest);
 
-		localStorage.setItem('token', JSON.stringify(data.results[0].token));
-		Axios.defaults.headers.common['Authorization'] = `Bearer ${data.results[0].token.token}`;
-
 		toast.success(data.message);
 
-		window.location.assign('/dashboard');
+		window.location.push('/dashboard');
 	} catch (err) {
 		dispatch(loginFailure(err.toString()));
 		toast.error(err.response.data.message);
