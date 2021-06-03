@@ -20,14 +20,14 @@ const loginSlice = createSlice({
 
 export const { loginFailure, toggleLoginRequest } = loginSlice.actions;
 
-export const loginUser = ({ uid, password }, history) => async (dispatch) => {
+export const loginUser = ({ uid, password }) => async (dispatch) => {
 	dispatch(toggleLoginRequest());
 	try {
 		const apiRequest = {
 			uid,
 			password,
 		};
-		const { data } = await Axios.post('/accounts/login', apiRequest);
+		const { data } = await Axios.post('/auth/login', apiRequest);
 
 		localStorage.setItem('token', JSON.stringify(data.results[0].token));
 		Axios.defaults.headers.common['Authorization'] = `Bearer ${data.results[0].token.token}`;
