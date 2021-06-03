@@ -1,7 +1,7 @@
 import React from 'react';
 import api from 'services/api';
 
-export default function usePasswordResetLink() {
+export default function usePasswordReset() {
 	const [state, setState] = React.useReducer((_, action) => action, {
 		isIdle: true,
 	});
@@ -10,7 +10,7 @@ export default function usePasswordResetLink() {
 		setState({ isLoading: true });
 
 		try {
-			const data = await api.post('/auth/forgot-password', payload);
+			const data = await api.post('/auth/reset-password', payload);
 
 			setState({ isSuccess: true, data });
 		} catch (error) {

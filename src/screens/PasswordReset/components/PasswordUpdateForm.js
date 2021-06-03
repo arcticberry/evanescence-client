@@ -1,17 +1,30 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
 import { Spinner } from '@zendeskgarden/react-loaders';
+import { toast } from 'react-toastify';
 
 import Button from 'components/Button';
 import { PasswordInput } from 'components/Form';
 
-const PasswordUpdateForm = ({ onSubmit, loading }) => {
+import usePasswordReset from 'hooks/usePasswordReset';
+
+const PasswordUpdateForm = ({ token }) => {
 	const defaults = {
 		password: '',
 	};
 
+	const [doPasswordReset, passwordResetState] = usePasswordReset();
+
+	React.useEffect(() => {
+		if (passwordResetState.isError) {
+			toast.error(passwordResetState.error.response.data.message);
+		} else if (passwordResetState.isSuccess) {
+			toast.success('Successfully reset password. Please login.');
+		}
+	}, [passwordResetState.isError, passwordResetState.isSuccess, passwordResetState.error]);
+
 	return (
-		<Formik initialValues={defaults} onSubmit={onSubmit}>
+		<Formik initialValues={defaults} onSubmit={(payload) => doPasswordReset({ ...payload, token })}>
 			<Form action="/">
 				<div>
 					<section className="mb-4">
@@ -23,7 +36,7 @@ const PasswordUpdateForm = ({ onSubmit, loading }) => {
 
 				<div className="my-8">
 					<Button isStretched variant="primary" type="submit">
-						{loading ? <Spinner delayMS={0} size={32} /> : 'Reset password'}
+						{passwordResetState.isLoading ? <Spinner delayMS={0} size={32} /> : 'Reset password'}
 					</Button>
 				</div>
 			</Form>

@@ -18,7 +18,7 @@ function AppRouter() {
 					<Route component={Login} exact path="/login" />
 					<Route component={Register} exact path="/register" />
 					<Route component={Dashboard} path="/dashboard" />
-					<Route component={PasswordReset} exact path="/password/reset/:token" />
+					<Route component={PasswordReset} exact path="/password/reset/:token?" />
 					<Route component={NotFound} />
 				</Switch>
 			</Suspense>
