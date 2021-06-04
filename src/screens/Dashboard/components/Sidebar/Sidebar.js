@@ -9,7 +9,7 @@ const Sidebar = ({ isExpanded, isVisible, onLogout, onToggleMenu }) => {
 	return (
 		<>
 			<div
-				class={`${
+				className={`${
 					isVisible ? 'block' : 'hidden'
 				} fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden `}
 				onClick={onToggleMenu}

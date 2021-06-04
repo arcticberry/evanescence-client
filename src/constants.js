@@ -1,3 +1,5 @@
+export const AUTH_TOKEN_IDENTIFIER = 'token';
+
 export const iconsDict = {
 	flags: {
 		ngn: 'flags/nigeria.svg',

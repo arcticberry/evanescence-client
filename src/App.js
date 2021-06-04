@@ -1,17 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { ToastContainer } from 'react-toastify';
 import { QueryClientProvider, QueryClient } from 'react-query';
 
 import themeCreator from 'config/theme';
-import { fetchMetaData } from 'services/core/core.slice';
 import { AppRouter } from 'components/AppRouter';
 import { ThemeProvider, DEFAULT_THEME } from '@zendeskgarden/react-theming';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-function App({ fetchMetaData }) {
+function App() {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
@@ -19,10 +17,6 @@ function App({ fetchMetaData }) {
 			},
 		},
 	});
-
-	useEffect(() => {
-		fetchMetaData();
-	}, [fetchMetaData]);
 
 	return (
 		<QueryClientProvider client={queryClient}>
@@ -45,7 +39,5 @@ function App({ fetchMetaData }) {
 	);
 }
 
-const mapDispatchToProps = (dispatch) => ({
-	fetchMetaData: bindActionCreators(fetchMetaData, dispatch),
-});
+const mapDispatchToProps = (dispatch) => ({});
 export default connect(null, mapDispatchToProps)(App);
