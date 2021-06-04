@@ -7,6 +7,7 @@ function AppRouter() {
 	const LandingPage = lazy(() => import('screens/Landing'));
 	const Login = lazy(() => import('screens/Login'));
 	const Register = lazy(() => import('screens/Register'));
+	const PasswordReset = lazy(() => import('screens/PasswordReset'));
 	const Dashboard = lazy(() => import('screens/Dashboard/Dashboard'));
 
 	return (
@@ -17,6 +18,7 @@ function AppRouter() {
 					<Route component={Login} exact path="/login" />
 					<Route component={Register} exact path="/register" />
 					<Route component={Dashboard} path="/dashboard" />
+					<Route component={PasswordReset} exact path="/password/reset/:token?" />
 					<Route component={NotFound} />
 				</Switch>
 			</Suspense>
