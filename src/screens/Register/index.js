@@ -17,6 +17,8 @@ const initialFormState = {
 	email: '',
 	confirmPassword: '',
 	businessName: '',
+	firstName: '',
+	lastName: '',
 	phone: '',
 	countryId: 1,
 };

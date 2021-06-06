@@ -18,12 +18,12 @@ function renderRoute(props, routes, Component) {
 function RenderRoutes({ routes }) {
 	return (
 		<Switch>
-			{routes.map(({ path, exact, Component }, key) => (
+			{routes.map(({ path, exact, component }, key) => (
 				<Route
 					exact={exact === undefined ? true : exact}
 					path={path}
 					key={key}
-					render={(props) => renderRoute(props, routes, Component)}
+					render={(props) => renderRoute(props, routes, component)}
 				/>
 			))}
 		</Switch>

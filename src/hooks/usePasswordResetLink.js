@@ -1,22 +1,8 @@
-import React from 'react';
+import { useMutation } from 'react-query';
 import api from 'services/api';
 
 export default function usePasswordResetLink() {
-	const [state, setState] = React.useReducer((_, action) => action, {
-		isIdle: true,
-	});
+	const { mutate, ...mutation } = useMutation((payload) => api.post('/auth/forgot-password', payload));
 
-	const mutate = React.useCallback(async (payload) => {
-		setState({ isLoading: true });
-
-		try {
-			const data = await api.post('/auth/forgot-password', payload);
-
-			setState({ isSuccess: true, data });
-		} catch (error) {
-			setState({ isError: true, error });
-		}
-	}, []);
-
-	return [mutate, state];
+	return [mutate, mutation];
 }
