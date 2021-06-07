@@ -4,6 +4,7 @@ const LandingPage = lazy(() => import('screens/Landing'));
 const Login = lazy(() => import('screens/Login'));
 const Register = lazy(() => import('screens/Register'));
 const PasswordReset = lazy(() => import('screens/PasswordReset'));
+const AccountConfirmation = lazy(() => import('screens/AccountConfirmation'));
 const Dashboard = lazy(() => import('screens/Dashboard/Dashboard'));
 
 // Dashboard Application routes
@@ -31,6 +32,12 @@ export default Object.freeze({
 		label: 'Login',
 		path: '/login',
 		component: Login,
+		exact: true,
+	},
+	ACCOUNT_CONFIRMATION: {
+		label: 'Confirm Account',
+		path: '/confirm',
+		component: AccountConfirmation,
 		exact: true,
 	},
 	REGISTER: {

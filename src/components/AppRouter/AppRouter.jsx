@@ -7,7 +7,7 @@ import NotFound from 'screens/NotFound';
 import RenderRoutes from './RenderRoutes';
 
 function AppRouter() {
-	const routes = [r.LANDING, r.LOGIN, r.REGISTER, r.PASSWORD_RESET, r.DASHBOARD];
+	const routes = [r.LANDING, r.LOGIN, r.REGISTER, r.ACCOUNT_CONFIRMATION, r.PASSWORD_RESET, r.DASHBOARD];
 
 	return (
 		<BrowserRouter>

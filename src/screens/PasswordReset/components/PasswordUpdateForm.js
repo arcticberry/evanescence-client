@@ -6,14 +6,14 @@ import { toast } from 'react-toastify';
 import Button from 'components/Button';
 import { PasswordInput } from 'components/Form';
 
-import usePasswordReset from 'hooks/usePasswordReset';
+import usePasswordResetMutation from 'hooks/queries/usePasswordResetMutation';
 
 const PasswordUpdateForm = ({ token }) => {
 	const defaults = {
 		password: '',
 	};
 
-	const [doPasswordReset, passwordResetState] = usePasswordReset();
+	const [doPasswordReset, passwordResetState] = usePasswordResetMutation();
 
 	React.useEffect(() => {
 		if (passwordResetState.isError) {
