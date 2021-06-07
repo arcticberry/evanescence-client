@@ -1,24 +1,19 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import r from 'constants/routes';
 import LoadingState from 'components/LoadingState';
 import NotFound from 'screens/NotFound';
+import RenderRoutes from './RenderRoutes';
 
 function AppRouter() {
-	const LandingPage = lazy(() => import('screens/Landing'));
-	const Login = lazy(() => import('screens/Login'));
-	const Register = lazy(() => import('screens/Register'));
-	const PasswordReset = lazy(() => import('screens/PasswordReset'));
-	const Dashboard = lazy(() => import('screens/Dashboard/Dashboard'));
+	const routes = [r.LANDING, r.LOGIN, r.REGISTER, r.ACCOUNT_CONFIRMATION, r.PASSWORD_RESET, r.DASHBOARD];
 
 	return (
 		<BrowserRouter>
 			<Suspense fallback={<LoadingState />}>
 				<Switch>
-					<Route component={LandingPage} exact path="/" />
-					<Route component={Login} exact path="/login" />
-					<Route component={Register} exact path="/register" />
-					<Route component={Dashboard} path="/dashboard" />
-					<Route component={PasswordReset} exact path="/password/reset/:token?" />
+					<RenderRoutes routes={routes} />
 					<Route component={NotFound} />
 				</Switch>
 			</Suspense>

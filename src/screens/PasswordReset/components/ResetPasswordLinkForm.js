@@ -6,14 +6,14 @@ import { toast } from 'react-toastify';
 import Button from 'components/Button';
 import { Input } from 'components/Form';
 
-import usePasswordResetLink from 'hooks/usePasswordResetLink';
+import usePasswordResetLinkMutation from 'hooks/queries/usePasswordResetLinkMutation';
 
 const ResetPasswordLinkForm = ({ onSuccess }) => {
 	const defaults = {
 		email: '',
 	};
 
-	const [generatePasswordResetLink, passwordResetLinkState] = usePasswordResetLink();
+	const [generatePasswordResetLink, passwordResetLinkState] = usePasswordResetLinkMutation();
 
 	React.useEffect(() => {
 		if (passwordResetLinkState.isError) {

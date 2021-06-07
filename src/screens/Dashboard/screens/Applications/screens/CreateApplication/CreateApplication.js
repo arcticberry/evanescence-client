@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { Formik } from 'formik';
-import routes from './routes';
+import r from 'constants/routes';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import api from 'services/api';
 import { fetchServices } from 'services/application/service.slice';
@@ -12,7 +12,8 @@ import Loading from 'components/LoadingState';
 import { RenderRoutes } from 'components/AppRouter';
 
 const NotFound = lazy(() => import('screens/NotFound'));
-const AppCreationSuccess = lazy(() => import('./screens/AppCreationSuccess'));
+
+const routes = [r.CREATE_APPLICATION, r.PICK_APPLICATION_SERVICES];
 
 const transformServices = (services) =>
 	Object.keys(services).map((serviceId) => ({
@@ -56,7 +57,11 @@ const CreateApplication = ({ match: { path }, fetchServices, services, history }
 				{({ handleSubmit }) => (
 					<Suspense fallback={<Loading />}>
 						<Switch>
-							<Route path="/dashboard/applications/create/success" exact component={AppCreationSuccess} />
+							<Route
+								path={r.APP_CREATION_SUCCESS.path}
+								exact
+								component={r.APP_CREATION_SUCCESS.component}
+							/>
 							<form onSubmit={handleSubmit}>
 								<RenderRoutes routes={routes} />
 							</form>

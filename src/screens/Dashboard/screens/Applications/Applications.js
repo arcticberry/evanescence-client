@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { StarHalf } from '@material-ui/icons';
 
-import useApplications from 'hooks/useApplications';
+import useApplications from 'hooks/queries/useApplicationsQuery';
 import AuthenticatedHoc from 'HOC/WithAuthenticated';
 import Button from 'components/Button';
 import EmptyState from 'components/EmptyState';

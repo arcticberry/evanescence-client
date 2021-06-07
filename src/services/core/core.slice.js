@@ -23,7 +23,7 @@ const coreSlice = createSlice({
 
 export const { error, toggleFetchingMetadata, setMetaData } = coreSlice.actions;
 
-export const fetchMetaData = () => async (dispatch) => {
+export const fetchMeta = () => async (dispatch) => {
 	dispatch(toggleFetchingMetadata());
 	try {
 		const response = await Axios.get('/meta');

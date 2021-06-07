@@ -7,8 +7,10 @@ import WithBreadcrumbs from 'HOC/WithBreadcrumbs';
 import Sidebar from 'screens/Dashboard/components/Sidebar';
 import Header from 'screens/Dashboard/components/Header';
 import './dashboard.scss';
-import routes from './routes';
+import r from 'constants/routes';
 import { RenderRoutes } from 'components/AppRouter';
+
+const routes = [r.DASHBOARD, r.CREATE_APPLICATION, r.APPLICATIONS_LIST, r.VIEW_APPLICATION];
 
 const Dashboard = ({ breadcrumbs, history }) => {
 	const [isSidebarOpen, setSidebarOpen] = React.useState(false);

@@ -7,7 +7,7 @@ import { Spinner } from '@zendeskgarden/react-loaders';
 import Button from 'components/Button';
 import Logo from 'components/Logo/Logo';
 import { PasswordInput, Input } from 'components/Form';
-import useLogin from 'hooks/useLogin';
+import useLoginMutation from 'hooks/queries/useLoginMutation';
 
 const Login = ({ history }) => {
 	const loginDetails = {
@@ -15,9 +15,8 @@ const Login = ({ history }) => {
 		password: '',
 	};
 
-	const [doLogin, loginState] = useLogin();
+	const [doLogin, loginState] = useLoginMutation();
 
-	console.log({ loginState });
 	React.useEffect(() => {
 		if (loginState.isError) {
 			toast.error(loginState.error.response.data.message);
