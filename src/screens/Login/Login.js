@@ -9,6 +9,8 @@ import Logo from 'components/Logo/Logo'
 import {PasswordInput, Input} from 'components/Form'
 import useLoginMutation from 'hooks/queries/useLoginMutation'
 
+import {storeAuthToken} from 'utils/authToken'
+
 const Login = ({history}) => {
   const loginDetails = {
     email: '',
@@ -21,9 +23,17 @@ const Login = ({history}) => {
     if (loginState.isError) {
       toast.error(loginState.error.response.data.message)
     } else if (loginState.isSuccess) {
+      console.log(loginState.data)
+      storeAuthToken(loginState.data.data.token)
       history.push('/dashboard')
     }
-  }, [loginState.isError, loginState.isSuccess, loginState.error, history])
+  }, [
+    loginState.isError,
+    loginState.data,
+    loginState.isSuccess,
+    loginState.error,
+    history,
+  ])
 
   return (
     <div className="grid md:grid-cols-2">

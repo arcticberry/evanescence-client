@@ -2,9 +2,17 @@ import e from '../../src/constants/endpoints'
 import {userBuilder} from './generate'
 
 const API_BASE_URL = Cypress.env('API_BASE_URL')
+const userCredentials = {
+  email: Cypress.env('USER_EMAIL'),
+  password: Cypress.env('USER_PASSWORD'),
+}
+
+const user = userBuilder({
+  email: userCredentials.email,
+  password: userCredentials.password,
+})
 
 Cypress.Commands.add('createUser', (overrides) => {
-  const user = userBuilder(overrides)
   return Promise.resolve(user)
   //   return cy
   //     .request({
@@ -39,5 +47,5 @@ Cypress.Commands.add('assertHome', () => {
 })
 
 Cypress.Commands.add('assertLoggedInAs', (user) => {
-  cy.window().its('localStorage.token').should('be.a', 'string')
+  cy.window().its('localStorage.authToken').should('be.a', 'string')
 })
