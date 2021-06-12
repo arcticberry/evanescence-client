@@ -41,7 +41,7 @@ const Dashboard = ({breadcrumbs, history}) => {
       }`}
       id="wrapper"
     >
-      <section className="h-full" id="page-content-wrapper">
+      <section className="h-full w-full" id="page-content-wrapper">
         <Header onToggleMenu={handleMenuToggle}>
           <Breadcrumb items={dashboard.breadcrumbs} />
         </Header>

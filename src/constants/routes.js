@@ -95,7 +95,7 @@ const routes = {
   },
 
   ADD_APPLICATION_NAME: {
-    label: 'Create Application',
+    label: 'Create App',
     path: '/dashboard/applications/create',
     component: AddApplicationName,
     exact: true,

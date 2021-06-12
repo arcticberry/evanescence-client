@@ -3,19 +3,21 @@ import {connect} from 'react-redux'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {useMutation} from 'react-query'
 import {Formik} from 'formik'
+import {isEqual} from 'lodash'
+
 import r from 'constants/routes'
 
+import Loading from 'components/LoadingState'
+import {RenderRoutes} from 'components/AppRouter'
+
 import {useDashboard} from 'hooks/useDashboard'
+import useCreateApplicationMutation from 'hooks/queries/useCreateApplicationMutation'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
 
 import api from 'services/api'
 import {fetchServices} from 'services/application/service.slice'
-
-import Loading from 'components/LoadingState'
-import {RenderRoutes} from 'components/AppRouter'
-import {isEqual} from 'lodash'
 
 const NotFound = lazy(() => import('screens/NotFound'))
 
@@ -31,8 +33,17 @@ const transformServices = (services) =>
     vendors: services[serviceId],
   }))
 
+const initialFormState = {
+  name: 'John Newton',
+  services: {},
+}
+
 const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
   const [dashboard, setDashboardState] = useDashboard()
+  const [
+    doCreateApplication,
+    applicationCreationState,
+  ] = useCreateApplicationMutation()
 
   React.useEffect(() => {
     if (!isEqual(breadcrumbs, dashboard.breadcrumbs)) {
@@ -40,19 +51,9 @@ const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
     }
   }, [dashboard.breadcrumbs, setDashboardState, breadcrumbs])
 
-  const formValues = {
-    name: 'John Newton',
-    services: {},
-  }
-
-  const applicationCreationRequest = async (payload) =>
-    api.post('applications', payload)
-
-  const mutation = useMutation(applicationCreationRequest, {
-    onSuccess: async () => {
-      history.push(`${path}/success`)
-    },
-  })
+  React.useEffect(() => {
+    if (applicationCreationState.isSuccess) history.push(r.APP_CREATION_SUCCESS)
+  }, [history, applicationCreationState.isSuccess])
 
   const handleFormSubmit = (values) => {
     const {name: label, services} = values
@@ -61,12 +62,12 @@ const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
       services: transformServices(services),
     }
 
-    mutation.mutate(payload)
+    doCreateApplication(payload)
   }
 
   return (
     <>
-      <Formik initialValues={formValues} onSubmit={handleFormSubmit}>
+      <Formik initialValues={initialFormState} onSubmit={handleFormSubmit}>
         {({handleSubmit}) => (
           <Suspense fallback={<Loading />}>
             <Switch>
