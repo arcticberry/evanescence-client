@@ -13,7 +13,7 @@ const AddApplicationName = ({crumbs}) => {
   const {setFieldValue} = useFormikContext()
 
   return (
-    <div className="container app-creation-shell mx-auto mt-8">
+    <div className="container mx-auto mt-8">
       <section className="mb-16">
         <SectionTitle
           title="It starts with a name."

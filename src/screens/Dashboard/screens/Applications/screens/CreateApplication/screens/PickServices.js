@@ -1,13 +1,9 @@
 import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
 import {toast} from 'react-toastify'
-import {FieldArray, useFormikContext} from 'formik'
-import classNames from 'classnames'
-
-import {ChevronRight, ChevronLeft, Star} from '@material-ui/icons'
-import {Field, Label, Checkbox} from '@zendeskgarden/react-forms'
-import {Accordion} from '@zendeskgarden/react-accordions'
+import {useFormikContext} from 'formik'
+import {ChevronRight, ChevronLeft} from '@material-ui/icons'
+import {Spinner} from '@zendeskgarden/react-loaders'
 
 import Button from 'components/Button'
 import Steps from 'components/Steps'
@@ -15,105 +11,24 @@ import SectionTitle from 'components/SectionTitle'
 import LoadingState from 'components/LoadingState'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
+
+import {useDashboard} from 'hooks/useDashboard'
 import useServicesQuery from 'hooks/queries/useServicesQuery'
+import useVendorsQuery from 'hooks/queries/useVendorsQuery'
 
 import 'screens/Dashboard/screens/Applications/applications.css'
 
-const getServicesWithVendors = (services = {}) =>
-  Object.keys(services).filter(
-    (serviceKey) => services[serviceKey].vendors.length,
-  )
-
-const VendorsList = ({service, selectedVendors, vendors}) => {
-  return (
-    <FieldArray
-      name={`services.${service.id}`}
-      render={(arrayHelpers) => (
-        <section className="grid lg:grid-cols-3 grid-cols-2 gap-6 py-4 px-8">
-          {vendors.map((vendor, key) => {
-            const vendorSelected = selectedVendors.includes(vendor.id)
-            const onVendorChange = (e) => {
-              e.preventDefault()
-
-              if (vendorSelected) {
-                arrayHelpers.remove(selectedVendors.indexOf(vendor.id))
-              } else {
-                arrayHelpers.push(vendor.id)
-              }
-            }
-
-            return (
-              <div
-                key={key}
-                onClick={onVendorChange}
-                className={classNames(['rounded-sm p-4 cursor-pointer'], {
-                  'border-brand-primary border-2': vendorSelected,
-                })}
-              >
-                <Field key={key}>
-                  <Checkbox checked={vendorSelected} onChange={onVendorChange}>
-                    <Label>
-                      <img src={vendor.brand_url} alt="" />
-                      {vendor.label}
-                    </Label>
-                  </Checkbox>
-                </Field>
-              </div>
-            )
-          })}
-        </section>
-      )}
-    />
-  )
-}
-
-const ServicesList = ({
-  selectedServices,
-  servicesWithVendors,
-  services,
-  vendors,
-}) => {
-  return (
-    <Accordion level={4} isExpandable>
-      {servicesWithVendors.map((serviceKey, idx) => {
-        const {id, label, vendors: serviceVendors} = services[serviceKey]
-        const vendorsList = serviceVendors.map((vendorId) => vendors[vendorId])
-        const selectedVendors = selectedServices.hasOwnProperty(id)
-          ? selectedServices[id]
-          : []
-
-        return (
-          <Accordion.Section key={idx}>
-            <Accordion.Header>
-              <Accordion.Label>
-                <Star /> <span>{label}</span>
-              </Accordion.Label>
-            </Accordion.Header>
-            <Accordion.Panel>
-              <p className="mb-3 text-gray-500 text-sm">
-                Allows you collect payments through any of the vendors you add
-                below
-              </p>
-              <VendorsList
-                service={services[serviceKey]}
-                selectedVendors={selectedVendors}
-                vendors={vendorsList}
-                onVendorChange={1}
-              />
-            </Accordion.Panel>
-          </Accordion.Section>
-        )
-      })}
-    </Accordion>
-  )
-}
+import ServicesList from './components/ServicesList'
 
 const PickServices = ({history, crumbs}) => {
   const {values, setFieldValue} = useFormikContext()
-  const {isLoading, data} = useServicesQuery()
-
-  const services = data?.entities?.services
-  const vendors = data?.entities?.vendors
+  const {isLoading: isLoadingVendors, data: vendorData} = useVendorsQuery()
+  const {
+    isLoading: isLoadingServices,
+    isSuccess: servicesLoaded,
+    data,
+  } = useServicesQuery()
+  const [dashboardState] = useDashboard()
 
   useEffect(() => {
     if (!values.name.length) {
@@ -123,31 +38,35 @@ const PickServices = ({history, crumbs}) => {
   }, [values.name, history])
 
   useEffect(() => {
-    const servicesWithVendors = getServicesWithVendors(services)
-    const servicesKeys = Object.keys(services || {})
-    // Preselect all vendors by reducing the services list
-    if (servicesKeys.length) {
-      let servicesUpdate = servicesWithVendors.reduce((acc, id) => {
-        return {
+    if (servicesLoaded) {
+      const {services} = data.entities
+
+      // Preselect all vendors by reducing the services list
+      let updatedServices = Object.keys(services).reduce(
+        (acc, id) => ({
           ...acc,
           [id]: services[id].vendors,
-        }
-      }, {})
+        }),
+        {},
+      )
 
-      setFieldValue('services', servicesUpdate)
+      setFieldValue('services', updatedServices)
     }
-  }, [services, setFieldValue])
+  }, [data, servicesLoaded, isLoadingVendors, setFieldValue])
 
-  if (isLoading)
+  if (isLoadingServices || isLoadingVendors)
     return (
       <div className="w-full h-full flex items-center justify-center">
         <LoadingState />
       </div>
     )
 
+  const {services} = data.entities
+  const {vendors} = vendorData.entities
+
   return (
-    <div className="container app-creation-shell">
-      <section className="mb-16">
+    <div className="container py-16 md:py-16">
+      <section className="mb-12">
         <SectionTitle
           title="Access the wealth of services."
           message="Pick as many services as you wish."
@@ -155,7 +74,7 @@ const PickServices = ({history, crumbs}) => {
       </section>
 
       <div className="flex w-full justify-around mb-16">
-        <div className="mx-auto md:w-9/12 lg:w-1/2">
+        <div className="mx-auto w-full md:w-9/12 lg:w-1/2">
           <Steps steps={crumbs} />
         </div>
       </div>
@@ -163,7 +82,6 @@ const PickServices = ({history, crumbs}) => {
       <div className="flex w-full justify-around mb-16">
         <section>
           <ServicesList
-            servicesWithVendors={getServicesWithVendors(services)}
             selectedServices={values.services}
             services={services}
             vendors={vendors}
@@ -176,9 +94,22 @@ const PickServices = ({history, crumbs}) => {
                 Back
               </Button>
             </Link>
-            <Button type="submit" variant={'primary'}>
-              <span className="font-bold">Create application</span>
-              <ChevronRight />
+            <Button
+              type="submit"
+              variant={'primary'}
+              disabled={dashboardState.isCreatingApplication}
+            >
+              {dashboardState.isCreatingApplication ? (
+                <>
+                  <span className="font-bold">Creating application</span>
+                  <Spinner delayMS={0} size={24} />
+                </>
+              ) : (
+                <>
+                  <span className="font-bold">Create application</span>
+                  <ChevronRight />
+                </>
+              )}
             </Button>
           </div>
         </section>
@@ -187,12 +118,4 @@ const PickServices = ({history, crumbs}) => {
   )
 }
 
-const mapStateToProps = ({service}) => ({
-  services: service.services?.entities?.services || {},
-  vendors: service.services?.entities?.vendors || {},
-})
-
-const mapDispatchToProps = {}
-export default AuthenticatedHoc(
-  connect(mapStateToProps, mapDispatchToProps)(PickServices),
-)
+export default AuthenticatedHoc(PickServices)

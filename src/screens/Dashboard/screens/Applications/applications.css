@@ -1,7 +1,7 @@
 .container {
-	@apply px-8 lg:py-20 lg:px-16;
+  @apply px-8 lg:py-20 lg:px-16;
 }
 
 .app-creation-shell {
-	@apply border-4 border-brand-primary border-opacity-25 bg-white;
+  /* @apply border-4 border-brand-primary border-opacity-25 bg-white; */
 }

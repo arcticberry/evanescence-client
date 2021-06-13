@@ -1,35 +1,18 @@
-@import "styles/_variables";
-
 .CheckboxRound {
-  position: relative;
-  width: 24px;
-  height: 24px;
+  @apply relative w-6 h-6;
 }
 
 .CheckboxRound label {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  height: 28px;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 28px;
+  @apply bg-white border h-6 w-6 rounded-full cursor-pointer absolute left-0 top-0;
 }
 
 .CheckboxRound label:after {
-  border: 2px solid $primary;
-  border-top: none;
-  border-right: none;
   content: "";
-  height: 6px;
-  left: 7px;
+  @apply border-2 w-3 h-2 border-white border-t-0 border-r-0 absolute;
+  left: 4px;
+  top: 4px;
   opacity: 0;
-  position: absolute;
-  top: 8px;
   transform: rotate(-45deg);
-  width: 12px;
 }
 
 .CheckboxRound input[type="checkbox"] {
@@ -37,8 +20,7 @@
 }
 
 .CheckboxRound input[type="checkbox"]:checked + label {
-  background-color: $secondary;
-  border-color: $secondary;
+  @apply bg-brand-primary border-brand-primary;
 }
 
 .CheckboxRound input[type="checkbox"]:checked + label:after {

@@ -1,7 +1,6 @@
 import React, {lazy, Suspense} from 'react'
 import {connect} from 'react-redux'
 import {Redirect, Route, Switch} from 'react-router-dom'
-import {useMutation} from 'react-query'
 import {Formik} from 'formik'
 import {isEqual} from 'lodash'
 
@@ -16,7 +15,6 @@ import useCreateApplicationMutation from 'hooks/queries/useCreateApplicationMuta
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
 
-import api from 'services/api'
 import {fetchServices} from 'services/application/service.slice'
 
 const NotFound = lazy(() => import('screens/NotFound'))
@@ -29,21 +27,21 @@ const routes = [
 
 const transformServices = (services) =>
   Object.keys(services).map((serviceId) => ({
-    service_id: serviceId,
+    serviceId: serviceId,
     vendors: services[serviceId],
   }))
 
 const initialFormState = {
-  name: 'John Newton',
+  name: 'Chrysamenthum',
   services: {},
 }
 
 const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
-  const [dashboard, setDashboardState] = useDashboard()
   const [
     doCreateApplication,
     applicationCreationState,
   ] = useCreateApplicationMutation()
+  const [dashboard, setDashboardState] = useDashboard()
 
   React.useEffect(() => {
     if (!isEqual(breadcrumbs, dashboard.breadcrumbs)) {
@@ -52,8 +50,15 @@ const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
   }, [dashboard.breadcrumbs, setDashboardState, breadcrumbs])
 
   React.useEffect(() => {
-    if (applicationCreationState.isSuccess) history.push(r.APP_CREATION_SUCCESS)
+    if (applicationCreationState.isSuccess)
+      history.push(r.APP_CREATION_SUCCESS.path)
   }, [history, applicationCreationState.isSuccess])
+
+  React.useEffect(() => {
+    setDashboardState({
+      isCreatingApplication: applicationCreationState.isLoading,
+    })
+  }, [applicationCreationState.isLoading, setDashboardState])
 
   const handleFormSubmit = (values) => {
     const {name: label, services} = values

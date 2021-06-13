@@ -4,6 +4,7 @@ const DashboardContext = React.createContext()
 const initialState = {
   isSidebarOpen: false,
   breadcrumbs: [],
+  isCreatingApplication: false,
 }
 
 function dashboardReducer(state, action) {
