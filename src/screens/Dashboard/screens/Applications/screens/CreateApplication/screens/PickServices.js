@@ -78,7 +78,7 @@ const PickServices = ({history, crumbs}) => {
   }
 
   return (
-    <div className="container py-16 md:py-16">
+    <div className="px-8 py-10 md:py-10">
       <section className="mb-12">
         <SectionTitle
           title="Access the wealth of services."
@@ -87,7 +87,7 @@ const PickServices = ({history, crumbs}) => {
       </section>
 
       <div className="flex w-full justify-around mb-16">
-        <div className="mx-auto w-full md:w-9/12 lg:w-1/2">
+        <div className="mx-auto w-11/12 md:w-9/12 lg:w-1/2">
           <Steps steps={crumbs} />
         </div>
       </div>

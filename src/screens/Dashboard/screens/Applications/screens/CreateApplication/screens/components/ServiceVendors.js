@@ -1,6 +1,7 @@
 import React from 'react'
 import {FieldArray} from 'formik'
 import classNames from 'classnames'
+import Icon from 'components/Icon'
 
 import {Field, Label, Checkbox} from '@zendeskgarden/react-forms'
 
@@ -27,7 +28,9 @@ export default function ServiceVendors({service, selectedVendors, vendors}) {
                 key={key}
                 onClick={onVendorChange}
                 className={classNames(
-                  ['rounded-md p-3 border-2 cursor-pointer'],
+                  [
+                    'rounded-md p-3 border-2 hover:border-brand-primary cursor-pointer',
+                  ],
                   {
                     'border-brand-primary': vendorSelected,
                   },
@@ -36,8 +39,14 @@ export default function ServiceVendors({service, selectedVendors, vendors}) {
                 <Field key={key}>
                   <Checkbox checked={vendorSelected} onChange={onVendorChange}>
                     <Label>
-                      <img src={vendor.brand_url} alt="" />
-                      {vendor.label}
+                      <span className="flex items-center font-bold text-sm text-brand-tertiary">
+                        <Icon
+                          name={`vendors/${vendor.name}`}
+                          className="mr-1 sm:mr-2"
+                        />
+
+                        {vendor.label}
+                      </span>
                     </Label>
                   </Checkbox>
                 </Field>

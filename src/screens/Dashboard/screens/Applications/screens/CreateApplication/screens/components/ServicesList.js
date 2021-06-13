@@ -58,7 +58,7 @@ export default function ServicesList({
                       />
                     </span>
                     <div className="pl-3">
-                      <span>{label}</span>
+                      <span className="font-bold text-sm">{label}</span>
                       <p className="text-gray-400 mt-1 text-xs">
                         Allows you collect payments through any of the vendors
                         you add below
