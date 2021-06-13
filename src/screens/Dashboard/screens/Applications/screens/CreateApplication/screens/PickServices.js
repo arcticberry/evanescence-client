@@ -64,6 +64,19 @@ const PickServices = ({history, crumbs}) => {
   const {services} = data.entities
   const {vendors} = vendorData.entities
 
+  const onToggleService = (id) => {
+    const updatedVendors = values.services[id].length
+      ? []
+      : services[id].vendors
+
+    const updatedServices = {
+      ...values.services,
+      [id]: updatedVendors,
+    }
+
+    setFieldValue('services', updatedServices)
+  }
+
   return (
     <div className="container py-16 md:py-16">
       <section className="mb-12">
@@ -83,13 +96,14 @@ const PickServices = ({history, crumbs}) => {
         <section>
           <ServicesList
             selectedServices={values.services}
+            onToggleService={onToggleService}
             services={services}
             vendors={vendors}
           />
 
           <div className="py-6 flex justify-between">
             <Link to="/dashboard/applications/create">
-              <Button>
+              <Button size="small">
                 <ChevronLeft />
                 Back
               </Button>

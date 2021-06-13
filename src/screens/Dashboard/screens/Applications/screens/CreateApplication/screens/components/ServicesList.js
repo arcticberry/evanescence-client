@@ -1,4 +1,5 @@
 import React from 'react'
+
 import CheckboxRound from 'components/CheckboxRound'
 
 import {Accordion} from '@zendeskgarden/react-accordions'
@@ -6,7 +7,12 @@ import 'screens/Dashboard/screens/Applications/applications.css'
 
 import ServiceVendors from './ServiceVendors'
 
-export default function ServicesList({selectedServices, services, vendors}) {
+export default function ServicesList({
+  selectedServices,
+  onToggleService,
+  services,
+  vendors,
+}) {
   const [expandedSections, setExpandedSections] = React.useState([0, 1])
 
   React.useEffect(() => {
@@ -44,10 +50,14 @@ export default function ServicesList({selectedServices, services, vendors}) {
               <Accordion.Header>
                 <Accordion.Label>
                   <section className="flex items-center">
-                    <span onBlick={(e) => e.preventDefault()}>
-                      <CheckboxRound checked={selectedVendors.length} />
+                    <span>
+                      <CheckboxRound
+                        id={serviceKey}
+                        checked={selectedVendors.length}
+                        onChange={() => onToggleService(serviceKey)}
+                      />
                     </span>
-                    <div className="pl-2">
+                    <div className="pl-3">
                       <span>{label}</span>
                       <p className="text-gray-400 mt-1 text-xs">
                         Allows you collect payments through any of the vendors
@@ -62,7 +72,6 @@ export default function ServicesList({selectedServices, services, vendors}) {
                   service={services[serviceKey]}
                   selectedVendors={selectedVendors}
                   vendors={vendorsList}
-                  onVendorChange={1}
                 />
               </Accordion.Panel>
             </Accordion.Section>
