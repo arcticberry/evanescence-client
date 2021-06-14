@@ -13,7 +13,7 @@ const colors = {
 }
 
 module.exports = {
-  purge: ['./src/**/*.jsx', './src/**/*.tsx'],
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     fontFamily: {
       ...defaultTheme.fontFamily,
