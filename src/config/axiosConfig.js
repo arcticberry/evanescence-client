@@ -5,7 +5,9 @@ import 'nprogress/nprogress.css'
 import {getStoredAuthToken} from 'utils/authToken'
 
 // create a new axios instance
-export const instance = axios.create()
+export const instance = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+})
 
 instance.interceptors.request.use((config) => {
   const token = getStoredAuthToken()

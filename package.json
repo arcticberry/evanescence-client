@@ -102,6 +102,5 @@
     "prop-types": "^15.7.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.0",
     "test-data-bot": "^0.8.0"
-  },
-  "proxy": "http://64.227.72.239:8000"
+  }
 }
