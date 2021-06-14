@@ -79,10 +79,10 @@ const Applications = () => {
   return applications.length ? (
     <>
       <CalloutCard variant="mu">
-        <div className="px-24 pb-8 flex items-center justify-between text-gray-100">
-          <span>You have {applications.length} active applications</span>
+        <div className="px-8 md:px-24 pb-8 flex items-center justify-between text-gray-100">
+          <span>{applications.length} applications</span>
           <Link to="/dashboard/applications/create">
-            <Button>Create new application</Button>
+            <Button>Create application</Button>
           </Link>
         </div>
       </CalloutCard>
@@ -100,7 +100,7 @@ const Applications = () => {
                   title={application.label}
                 />
                 <div className="w-full bg-white py-4 text-center">
-                  <Link to={`/dashboard/applications/${application.id}`} exact>
+                  <Link to={`/dashboard/applications/${application.id}`}>
                     <Button>
                       <b>Select application</b>
                     </Button>

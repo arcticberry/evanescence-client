@@ -11,7 +11,7 @@
   #root,
   #root > div:first-child,
   #page-content-wrapper > div:first-child {
-    @apply h-auto;
+    @apply min-h-screen;
   }
 
   a {

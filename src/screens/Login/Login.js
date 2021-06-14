@@ -23,7 +23,6 @@ const Login = ({history}) => {
     if (loginState.isError) {
       toast.error(loginState.error.response.data.message)
     } else if (loginState.isSuccess) {
-      console.log(loginState.data)
       storeAuthToken(loginState.data.data.token)
       history.push('/dashboard')
     }

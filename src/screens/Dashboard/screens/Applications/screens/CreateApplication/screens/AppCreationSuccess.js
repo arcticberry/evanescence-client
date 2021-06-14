@@ -8,16 +8,18 @@ import '../../../applications.css'
 const AppCreationSuccess = () => {
   return (
     <div className="container h-screen mx-auto">
-      <section className="mb-16 h-3/4 relative">
+      <section className="mb-16 pt-16 h-3/4 relative">
         <Card.Callout
-          variant="beta"
+          variant="gamma"
           icon={<StarHalf size="md" fontSize="large" htmlColor="#fff" />}
           title="Application Successfully Created"
           message="Your application has been created"
           renderCenter={() => (
-            <Link to="/dashboard/applications">
-              <Button>View applications</Button>
-            </Link>
+            <div className="py-4">
+              <Link to="/dashboard/applications">
+                <Button>View applications</Button>
+              </Link>
+            </div>
           )}
         ></Card.Callout>
       </section>

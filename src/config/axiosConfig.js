@@ -5,15 +5,21 @@ import 'nprogress/nprogress.css'
 import {getStoredAuthToken} from 'utils/authToken'
 
 // create a new axios instance
-export const instance = axios.create({
-  // baseURL: process.env.REACT_APP_API_BASE_URL,
-  headers: {
-    Authorization: getStoredAuthToken() ? `Bearer ${getStoredAuthToken()}` : '',
-  },
+export const instance = axios.create()
+
+instance.interceptors.request.use((config) => {
+  const token = getStoredAuthToken()
+
+  if (token && !config.headers.hasOwnProperty('Authorization')) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+
+  return config
 })
 
 instance.interceptors.request.use((config) => {
   Nprogress.start()
+
   return config
 })
 

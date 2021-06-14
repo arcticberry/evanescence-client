@@ -32,7 +32,7 @@ const transformServices = (services) =>
   }))
 
 const initialFormState = {
-  name: 'Chrysamenthum',
+  name: '',
   services: {},
 }
 

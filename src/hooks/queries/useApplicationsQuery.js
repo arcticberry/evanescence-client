@@ -1,8 +1,8 @@
 import {useQuery} from 'react-query'
 import api from 'services/api'
 
-const getApplications = async (queryParams) => {
-  const data = await api.getAll(`/applications/${queryParams}`)
+const getApplications = async (queryParams = '') => {
+  const {data} = await api.getAll(`/applications/${queryParams}`)
   return data
 }
 
