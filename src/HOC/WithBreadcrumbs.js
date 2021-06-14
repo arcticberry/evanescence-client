@@ -1,58 +1,58 @@
-import React from 'react';
-import { matchPath, withRouter } from 'react-router';
+import React from 'react'
+import {matchPath, withRouter} from 'react-router'
 
-const renderer = ({ breadcrumb, match }) => {
-	if (typeof breadcrumb === 'function') {
-		return breadcrumb({ match });
-	}
-	return breadcrumb;
-};
+const renderer = ({breadcrumb, match}) => {
+  if (typeof breadcrumb === 'function') {
+    return breadcrumb({match})
+  }
+  return breadcrumb
+}
 
-export const getBreadcrumbs = ({ routes, pathname }) => {
-	const matches = [];
+export const getBreadcrumbs = ({routes, pathname}) => {
+  const matches = []
 
-	pathname
-		.replace(/\/$/, '')
-		.split('/')
-		.reduce((previous, current) => {
-			const pathSection = `${previous}/${current}`;
+  pathname
+    .replace(/\/$/, '')
+    .split('/')
+    .reduce((previous, current) => {
+      const pathSection = `${previous}/${current}`
 
-			let breadcrumbMatch;
+      let breadcrumbMatch
 
-			routes.some(({ label: breadcrumb, path }) => {
-				const match = matchPath(pathSection, { exact: true, path });
+      routes.some(({label: breadcrumb, path}) => {
+        const match = matchPath(pathSection, {exact: true, path})
 
-				if (match) {
-					breadcrumbMatch = {
-						label: renderer({ breadcrumb, match }),
-						path,
-						match,
-					};
-					return true;
-				}
+        if (match) {
+          breadcrumbMatch = {
+            label: renderer({breadcrumb, match}),
+            path,
+            match,
+          }
+          return true
+        }
 
-				return false;
-			});
+        return false
+      })
 
-			if (breadcrumbMatch) {
-				matches.push(breadcrumbMatch);
-			}
+      if (breadcrumbMatch) {
+        matches.push(breadcrumbMatch)
+      }
 
-			return pathSection;
-		});
+      return pathSection
+    })
 
-	return matches;
-};
+  return matches
+}
 
 const withBreadcrumbs = (routes) => (Component) =>
-	withRouter((props) => (
-		<Component
-			{...props}
-			breadcrumbs={getBreadcrumbs({
-				pathname: props.location.pathname,
-				routes,
-			})}
-		/>
-	));
+  withRouter((props) => (
+    <Component
+      {...props}
+      breadcrumbs={getBreadcrumbs({
+        pathname: props.location.pathname,
+        routes,
+      })}
+    />
+  ))
 
-export default withBreadcrumbs;
+export default withBreadcrumbs

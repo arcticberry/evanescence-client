@@ -1,44 +1,75 @@
-import React, { Suspense, lazy } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import Breadcrumb from 'components/Breadcrumb';
-import Loading from 'components/LoadingState';
-import AuthenticatedHoc from 'HOC/WithAuthenticated';
-import WithBreadcrumbs from 'HOC/WithBreadcrumbs';
-import Sidebar from 'screens/Dashboard/components/Sidebar';
-import Header from 'screens/Dashboard/components/Header';
-import './dashboard.scss';
-import r from 'constants/routes';
-import { RenderRoutes } from 'components/AppRouter';
+import React, {Suspense, lazy} from 'react'
+import {Route, Redirect, Switch} from 'react-router-dom'
+import Breadcrumb from 'components/Breadcrumb'
+import Loading from 'components/LoadingState'
+import {RenderRoutes} from 'components/AppRouter'
 
-const routes = [r.DASHBOARD, r.CREATE_APPLICATION, r.APPLICATIONS_LIST, r.VIEW_APPLICATION];
+import AuthenticatedHoc from 'HOC/WithAuthenticated'
+import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
+import WithDashboardHOC from 'HOC/WithDashboard'
 
-const Dashboard = ({ breadcrumbs, history }) => {
-	const [isSidebarOpen, setSidebarOpen] = React.useState(false);
+import {useDashboard} from 'hooks/useDashboard'
 
-	const NotFound = lazy(() => import('screens/NotFound'));
-	const handleLogout = () => {
-		localStorage.removeItem('token');
-		history.push('/login');
-	};
-	const handleMenuToggle = () => setSidebarOpen(!isSidebarOpen);
+import Sidebar from 'screens/Dashboard/components/Sidebar'
+import Header from 'screens/Dashboard/components/Header'
+import './dashboard.scss'
+import r from 'constants/routes'
 
-	return (
-		<div className={`dashboard ${isSidebarOpen ? 'has-sidebar-open' : ''}`} id="wrapper">
-			<section className="h-full" id="page-content-wrapper">
-				<Header onToggleMenu={handleMenuToggle}>
-					<Breadcrumb items={breadcrumbs} />
-				</Header>
-				<Sidebar isVisible={isSidebarOpen} isExpanded onToggleMenu={handleMenuToggle} onLogout={handleLogout} />
+import {removeStoredAuthToken} from 'utils/authToken'
 
-				<Suspense fallback={<Loading />}>
-					<Switch>
-						<RenderRoutes routes={routes} />
-						<Route component={NotFound} />
-					</Switch>
-				</Suspense>
-			</section>
-		</div>
-	);
-};
+const routes = [r.CREATE_APPLICATION, r.APPLICATIONS_LIST, r.VIEW_APPLICATION]
 
-export default WithBreadcrumbs(routes)(AuthenticatedHoc(Dashboard));
+const Dashboard = ({breadcrumbs, history}) => {
+  const [dashboard, setDashboardState] = useDashboard()
+
+  React.useEffect(() => {
+    setDashboardState({breadcrumbs})
+  }, [setDashboardState, breadcrumbs])
+
+  const NotFound = lazy(() => import('screens/NotFound'))
+  const handleLogout = () => {
+    removeStoredAuthToken()
+    history.push(r.LOGIN.path)
+  }
+  const handleMenuToggle = () =>
+    setDashboardState({isSidebarOpen: !dashboard.isSidebarOpen})
+
+  return (
+    <div
+      className={`dashboard ${
+        dashboard.isSidebarOpen ? 'has-sidebar-open' : ''
+      }`}
+      id="wrapper"
+    >
+      <section className="h-full w-full" id="page-content-wrapper">
+        <Header onToggleMenu={handleMenuToggle}>
+          <Breadcrumb items={dashboard.breadcrumbs} />
+        </Header>
+        <Sidebar
+          isVisible={dashboard.isSidebarOpen}
+          isExpanded
+          onToggleMenu={handleMenuToggle}
+          onLogout={handleLogout}
+        />
+
+        <Suspense fallback={<Loading />}>
+          <Switch>
+            <Redirect
+              exact
+              from={r.DASHBOARD.path}
+              to={r.APPLICATIONS_LIST.path}
+            />
+
+            <RenderRoutes routes={routes} />
+
+            <Route component={NotFound} />
+          </Switch>
+        </Suspense>
+      </section>
+    </div>
+  )
+}
+
+export default WithDashboardHOC(
+  WithBreadcrumbs(routes)(AuthenticatedHoc(Dashboard)),
+)

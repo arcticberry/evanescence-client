@@ -1,9 +1,13 @@
-import { schema } from "normalizr";
+import {schema} from 'normalizr'
 
-const vendor = new schema.Entity("vendors");
+export const vendorSchema = new schema.Entity(
+  'vendors',
+  {},
+  {idAttribute: '_id'},
+)
 
-const service = new schema.Entity("services", {
-  vendors: [vendor],
-});
+const service = new schema.Entity('services', {
+  vendors: [vendorSchema],
+})
 
-export default [service];
+export default [service]

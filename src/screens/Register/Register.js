@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { Form, Formik } from 'formik';
 import { Spinner } from '@zendeskgarden/react-loaders';
 import { toast } from 'react-toastify';
@@ -13,7 +12,6 @@ import { PasswordInput, Input, TelephoneInput } from 'components/Form';
 import useMetaQuery from 'hooks/queries/useMetaQuery';
 import useCreateUserMutation from 'hooks/queries/useCreateUserMutation';
 
-import { createUser } from 'services/register/register.slice';
 import RegistrationSchema from './register.schema';
 
 import r from 'constants/routes';
@@ -137,15 +135,4 @@ const Register = ({ history }) => {
 	);
 };
 
-const mapStateToProps = ({ core: { metaData }, register: { isCreatingUser } }) => {
-	const { countries } = metaData;
-
-	return {
-		countries,
-		isCreatingUser,
-	};
-};
-
-const mapDispatchToProps = { createUser };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default Register;

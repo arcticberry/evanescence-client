@@ -1,15 +1,40 @@
-import React from 'react';
-import styles from './LoadingState.module.scss';
+import React from 'react'
+import styles from './LoadingState.module.scss'
 
-const LoadingState = () => {
-	return (
-		<section className={styles.container}>
-			<section className={styles.ripple}>
-				<div />
-				<div />
-			</section>
-		</section>
-	);
-};
+const BouncingLoader = () => (
+  <div id="preloader">
+    <div id="status">
+      <div className="bouncing-loader">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+)
 
-export default LoadingState;
+const RippleLoader = () => (
+  <section className={styles.ripple}>
+    <div />
+    <div />
+  </section>
+)
+
+const LoadingState = ({variant}) => {
+  const variants = {
+    bounce: BouncingLoader,
+    ripple: RippleLoader,
+  }
+
+  const LoaderAnimation = variants[variant]
+
+  return <section className={styles.container}>{<LoaderAnimation />}</section>
+}
+
+LoadingState.propTypes = {}
+
+LoadingState.defaultProps = {
+  variant: 'ripple',
+}
+
+export default LoadingState

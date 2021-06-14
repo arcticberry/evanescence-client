@@ -1,74 +1,74 @@
 .Steps__Wrapper {
-	width: 100%;
+  width: 100%;
 }
 
 .Steps {
-	position: relative;
-	display: flex;
-	padding: 0;
-	list-style: none;
-	width: inherit;
+  position: relative;
+  display: flex;
+  padding: 0;
+  list-style: none;
+  width: inherit;
 }
 
 .Step {
-	@apply text-sm;
-	position: relative;
-	flex: 1;
+  @apply text-sm;
+  position: relative;
+  flex: 1;
 }
 
 .Step {
-	&::before {
-		content: '';
+  &::before {
+    content: '';
 
-		@apply w-full;
-		@apply bg-gray-200;
-		position: absolute;
-		height: 4px;
-	}
+    @apply w-full;
+    @apply bg-gray-300;
+    position: absolute;
+    height: 7px;
+  }
 
-	&__Milestone {
-		@apply border-2;
-		@apply border-brand-primary;
-		@apply text-brand-primary;
-		@apply bg-white;
-		@apply items-center;
-		@apply justify-center;
-		@apply flex;
-		@apply w-8;
-		@apply h-8;
+  &__Milestone {
+    @apply border-2;
+    @apply border-brand-primary;
+    @apply text-brand-primary;
+    @apply bg-white;
+    @apply items-center;
+    @apply justify-center;
+    @apply flex;
+    @apply w-8;
+    @apply h-8;
 
-		border-radius: 100%;
-		bottom: 10px;
-		position: relative;
-	}
+    border-radius: 100%;
+    bottom: 10px;
+    position: relative;
+  }
 
-	&__Completed {
-		&::before {
-			@apply bg-brand-primary;
-			@apply bg-opacity-50;
-		}
-	}
+  &__Completed {
+    &::before {
+      @apply bg-brand-primary;
+      @apply bg-opacity-50;
+    }
+  }
 
-	&__Label {
-		@apply text-brand-primary;
-		@apply absolute;
-		@apply w-24;
-	}
+  &__Label {
+    @apply text-brand-primary;
+    @apply absolute;
+    @apply w-24;
+  }
 }
 
 .Step__Current {
-	.Step__Milestone {
-		@apply bg-brand-primary;
-		@apply text-blue-100;
-	}
+  .Step__Milestone {
+    @apply bg-brand-primary;
+    @apply text-blue-100;
+  }
 }
 
 .Step__Last {
-	@apply w-64;
-	flex: 0;
+  @apply w-64;
+  flex: 0;
 
-	&::before {
-		content: '';
-		display: none;
-	}
+  &::before {
+    content: '';
+    display: none;
+  }
 }

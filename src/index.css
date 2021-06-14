@@ -2,21 +2,21 @@
 
 /* Perform resets here */
 @layer base {
-	html {
-		font-size: 14px;
-	}
+  html {
+    font-size: 14px;
+  }
 
-	html,
-	body,
-	#root,
-	#root > div:first-child,
-	#page-content-wrapper > div:first-child {
-		@apply h-full max-w-full;
-	}
+  html,
+  body,
+  #root,
+  #root > div:first-child,
+  #page-content-wrapper > div:first-child {
+    @apply min-h-screen;
+  }
 
-	a {
-		@apply hover:no-underline;
-	}
+  a {
+    @apply hover:no-underline;
+  }
 }
 
 @tailwind components;
