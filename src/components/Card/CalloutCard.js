@@ -33,16 +33,12 @@ const CalloutCard = ({
     <section className={cx(containerClasses)} {...props}>
       <section className={cx(styles.Card__inner)}>
         {icon ? (
-          <div className="w-24 h-24 flex items-center justify-center rounded-full border-white border-opacity-50 border-4">
-            {icon}
-          </div>
+          <div className={styles['Card--Callout__icon']}>{icon}</div>
         ) : null}
         {title || message ? (
           <article className="items-center justify-center">
             {title ? (
-              <h3 className="text-2xl text-gray-100 text-center my-4">
-                {title}
-              </h3>
+              <h3 className={styles['Card--Callout__title']}>{title}</h3>
             ) : null}
             {message ? (
               <p className="text-gray-200 text-center">{message}</p>

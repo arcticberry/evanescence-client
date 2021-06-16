@@ -9,7 +9,7 @@ import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import Button from 'components/Button'
 import EmptyState from 'components/EmptyState'
 import LoadingState from 'components/LoadingState'
-import CalloutCard, {variants} from 'components/Card/CalloutCard'
+import CalloutCard from 'components/Card/CalloutCard'
 import {setSelectedApplication} from 'services/application/application.slice'
 
 import {ReactComponent as CreateApplicationIllustration} from 'assets/create-application.svg'
@@ -63,7 +63,7 @@ const Applications = () => {
 
   if (loadingApplications)
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-screen flex items-center justify-center">
         <LoadingState />
       </div>
     )
@@ -89,23 +89,24 @@ const Applications = () => {
       <div className="container mt-5">
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {applications.map((application, idx) => {
-            let variant = variants[idx % variants.length]
             return (
-              <section className="mb-8 shadow-lg h-3/4" key={idx}>
+              <section className="mb-8 shadow-xl h-3/4" key={idx}>
                 <CalloutCard
+                  variant="blanco"
                   icon={
-                    <StarHalf size="md" fontSize="large" htmlColor="#fff" />
+                    <StarHalf size="md" fontSize="large" htmlColor="#496179" />
                   }
-                  variant={variant}
                   title={application.label}
+                  renderBelow={() => (
+                    <div className="w-full bg-white py-4 text-center">
+                      <Link to={`/dashboard/applications/${application._id}`}>
+                        <Button>
+                          <b>Manage application</b>
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 />
-                <div className="w-full bg-white py-4 text-center">
-                  <Link to={`/dashboard/applications/${application.id}`}>
-                    <Button>
-                      <b>Select application</b>
-                    </Button>
-                  </Link>
-                </div>
               </section>
             )
           })}

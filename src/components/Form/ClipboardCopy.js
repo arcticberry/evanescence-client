@@ -22,7 +22,7 @@ const ClipboardCopy = ({copyStatusTexts = {}, text, ...props}) => {
         <Input value={text} onChange={() => {}} {...props} />
         {text.length ? (
           <button
-            className="h-12 bg-white text-brand-primary font-bold px-8"
+            className="h-12 bg-white text-brand-primary font-bold px-8 uppercase tracking-wider"
             type="button"
             onClick={doCopy}
           >

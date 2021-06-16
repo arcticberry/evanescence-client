@@ -26,10 +26,12 @@ const routes = [
 ]
 
 const transformServices = (services) =>
-  Object.keys(services).map((serviceId) => ({
-    serviceId: serviceId,
-    vendors: services[serviceId],
-  }))
+  Object.keys(services)
+    .filter((serviceId) => services[serviceId].length)
+    .map((serviceId) => ({
+      serviceId: serviceId,
+      vendors: services[serviceId],
+    }))
 
 const initialFormState = {
   name: '',
@@ -50,9 +52,26 @@ const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
   }, [dashboard.breadcrumbs, setDashboardState, breadcrumbs])
 
   React.useEffect(() => {
-    if (applicationCreationState.isSuccess)
-      history.push(r.APP_CREATION_SUCCESS.path)
-  }, [history, applicationCreationState.isSuccess])
+    if (applicationCreationState.isSuccess) {
+      const {data} = applicationCreationState.data
+
+      const secretKey = !data.isLive ? data.testSecretKey : data.secretKey
+      const publicKey = !data.isLive ? data.testPublicKey : data.publicKey
+
+      history.push({
+        pathname: r.APP_CREATION_SUCCESS.path,
+        state: {
+          applicationSecretKey: secretKey,
+          applicationPublicKey: publicKey,
+          applicationId: data._id,
+        },
+      })
+    }
+  }, [
+    history,
+    applicationCreationState.isSuccess,
+    applicationCreationState.data,
+  ])
 
   React.useEffect(() => {
     setDashboardState({

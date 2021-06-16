@@ -1,14 +1,29 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
+import {toast} from 'react-toastify'
+
 import Card from 'components/Card'
 import Button from 'components/Button'
 import '../../../applications.css'
 import ClipboardCopy from 'components/Form/ClipboardCopy'
 
-const AppCreationSuccess = () => {
+const AppCreationSuccess = ({location, history}) => {
+  let {applicationPublicKey, applicationSecretKey, applicationId} =
+    location.state || {}
+
+  let [publicKey] = useState(applicationPublicKey || '')
+  let [secretKey] = useState(applicationSecretKey || '')
+
+  useEffect(() => {
+    if (!applicationId) {
+      history.push('/dashboard/applications/create/pick-services')
+      toast.info('Please pick services')
+    }
+  }, [applicationId, history])
+
   return (
     <div className="container h-screen mx-auto">
-      <section className="mb-16 sm:pt-24 relative">
+      <section className="mb-16 sm:pt-8 relative">
         <Card.Callout
           variant="gamma"
           renderCenter={() => (
@@ -25,19 +40,32 @@ const AppCreationSuccess = () => {
               <div className="px-8 md:px-16 py-12 w-full bg-brand-tertiary bg-opacity-20 shadow-lg mb-8">
                 <section className="mb-4">
                   <label
-                    htmlFor="secret-key"
+                    htmlFor="applicationPublicKey"
+                    className="text-gray-200 block font-bold mb-3"
+                  >
+                    Public Key
+                  </label>
+                  <ClipboardCopy
+                    name="applicationPublicKey"
+                    text={publicKey}
+                    id="applicationPublicKey"
+                  />
+                </section>
+                <section className="mb-4">
+                  <label
+                    htmlFor="applicationSecretKey"
                     className="text-gray-200 block font-bold mb-3"
                   >
                     Secret Key
                   </label>
                   <ClipboardCopy
-                    name="secret-key"
-                    text="ffjhskskfjks"
-                    id="secret-key"
+                    name="applicationSecretKey"
+                    text={secretKey}
+                    id="applicationSecretKey"
                   />
                 </section>
               </div>
-              <Link to="/dashboard/applications">
+              <Link to={`/dashboard/applications/${applicationId}`}>
                 <Button>
                   <span className="font-bold text-sm">Visit application</span>
                 </Button>
