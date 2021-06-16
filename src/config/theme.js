@@ -23,6 +23,9 @@ const themeCreator = (parentTheme) => ({
         outline: none;
       }
     `,
+    'forms.input': css`
+      font-weight: ${(p) => p.theme.fontWeights.medium};
+    `,
     'forms.checkbox_label': css`
       font-weight: 400;
 
