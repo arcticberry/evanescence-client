@@ -1,7 +1,7 @@
 import React from 'react'
 import {useQuery} from 'react-query'
 import {normalize} from 'normalizr'
-import {vendorSchema} from 'services/application/services'
+import {vendorSchema} from 'schema/vendors.schema'
 
 import api from 'services/api'
 

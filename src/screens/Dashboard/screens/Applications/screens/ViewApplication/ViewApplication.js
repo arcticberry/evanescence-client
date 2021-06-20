@@ -1,19 +1,21 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import {Formik} from 'formik'
 
 import {ReactComponent as ErrorOccurredIllustration} from 'assets/error-occurred.svg'
 
 import Button from 'components/Button'
 import EmptyState from 'components/EmptyState'
-// import LoadingState from 'components/LoadingState';
+import LoadingState from 'components/LoadingState'
 import CalloutCard from 'components/Card/CalloutCard'
-import Table from 'components/Table'
+import ManageServices from './components/ManageServices'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
-// import useApplications from 'hooks/useApplications';
 import useParamSearch from 'hooks/useParamSearch'
+import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 
+import RecentTransactions from './components/RecentTransactions'
 import makeData from 'utils/makeData'
 import tableSchema from './tableSchema'
 import {setSelectedApplication} from 'services/application/application.slice'
@@ -40,21 +42,41 @@ export const ErrorLoading = ({
   )
 }
 
-const ViewApplication = () => {
-  // const { isLoading: loadingApplications, error } = useApplications();
+const initialFormState = {
+  services: {},
+}
+
+const ViewApplication = ({match}) => {
+  const {
+    isLoading: isLoadingApplication,
+    isError,
+    data: applicationData,
+  } = useApplicationsQuery(match.params.id)
+
+  console.log({applicationData, isLoadingApplication})
   const [getPageParamValue, setPageParamValue] = useParamSearch('page')
   const [getPageSizeParamValue, setPageSizeParamValue] = useParamSearch(
     'pageSize',
   )
 
-  // if (loadingApplications)
-  // 	return (
-  // 		<div className="w-full h-full flex items-center justify-center">
-  // 			<LoadingState />
-  // 		</div>
-  // 	);
+  const data = React.useMemo(() => makeData(100), [])
 
-  // if (error) return <ErrorLoading title="Oops..." message="Something unexpected happened. Please retry." />;
+  if (isLoadingApplication)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <LoadingState />
+      </div>
+    )
+
+  const {services, vendors} = applicationData.entities
+
+  if (isError)
+    return (
+      <ErrorLoading
+        title="Oops..."
+        message="Something unexpected happened. Please retry."
+      />
+    )
   const pageParamValue = getPageParamValue()
   const pageSizeParamValue = getPageSizeParamValue()
 
@@ -62,8 +84,6 @@ const ViewApplication = () => {
     ...(pageParamValue && {defaultPageIndex: Number(pageParamValue - 1)}),
     ...(pageSizeParamValue && {defaultPageSize: Number(pageSizeParamValue)}),
   }
-
-  const data = React.useMemo(() => makeData(100), [])
 
   return (
     <>
@@ -79,23 +99,21 @@ const ViewApplication = () => {
           </div>
         </CalloutCard>
       </section>
-      <div className="py-12 px-4 lg:px-16">
-        <section className="">
-          <h1 className="text-xl mb-3">Recent transactions</h1>
-          <p className="text-md text-gray-400">
-            A short breakdown of all records for this app
-          </p>
-        </section>
-      </div>
-      <div className="mx-auto lg:px-16 overflow-auto">
-        <Table
-          columns={tableSchema()}
-          data={data}
-          onPageNavigation={setPageParamValue}
-          onPageSizeUpdate={setPageSizeParamValue}
-          {...defaultTableOptions}
-        />
-      </div>
+      <Formik initialValues={initialFormState}>
+        {({handleSubmit}) => (
+          <form onSubmit={handleSubmit}>
+            <ManageServices services={services || {}} vendors={vendors || {}} />
+          </form>
+        )}
+      </Formik>
+
+      <RecentTransactions
+        data={data}
+        schema={tableSchema()}
+        onPageNavigation={setPageParamValue}
+        onPageSizeUpdate={setPageSizeParamValue}
+        {...defaultTableOptions}
+      />
     </>
   )
 }

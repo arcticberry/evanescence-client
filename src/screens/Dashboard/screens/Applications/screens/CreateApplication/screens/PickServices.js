@@ -4,6 +4,7 @@ import {toast} from 'react-toastify'
 import {useFormikContext} from 'formik'
 import {ChevronRight, ChevronLeft} from '@material-ui/icons'
 import {Spinner} from '@zendeskgarden/react-loaders'
+import classNames from 'classnames'
 
 import Button from 'components/Button'
 import Steps from 'components/Steps'
@@ -18,7 +19,10 @@ import useVendorsQuery from 'hooks/queries/useVendorsQuery'
 
 import 'screens/Dashboard/screens/Applications/applications.css'
 
-import ServicesList from './components/ServicesList'
+import ServicesList from 'screens/Dashboard/screens/Applications/components/ServicesList'
+import ServiceVendors from 'screens/Dashboard/screens/Applications/components/ServiceVendors'
+import ServiceVendorCheckbox from 'screens/Dashboard/screens/Applications/components/ServiceVendorCheckbox'
+import useServicesList from '../../../hooks/useServicesList'
 
 const PickServices = ({history, crumbs}) => {
   const {values, setFieldValue} = useFormikContext()
@@ -29,6 +33,7 @@ const PickServices = ({history, crumbs}) => {
     data,
   } = useServicesQuery()
   const [dashboardState] = useDashboard()
+  const dataLoading = isLoadingServices || isLoadingVendors
 
   useEffect(() => {
     if (!values.name.length) {
@@ -54,12 +59,20 @@ const PickServices = ({history, crumbs}) => {
     }
   }, [data, servicesLoaded, isLoadingVendors, setFieldValue])
 
-  if (isLoadingServices || isLoadingVendors)
+  console.log({data})
+  const {expandedServices} = useServicesList({
+    services: !dataLoading ? data.entities.services : {},
+    selectedServices: {},
+  })
+
+  if (dataLoading)
     return (
       <div className="w-full h-full flex items-center justify-center">
         <LoadingState />
       </div>
     )
+
+  console.log({expandedServices})
 
   const {services} = data.entities
   const {vendors} = vendorData.entities
@@ -75,6 +88,20 @@ const PickServices = ({history, crumbs}) => {
     }
 
     setFieldValue('services', updatedServices)
+  }
+
+  const onVendorChange = ({
+    arrayHelpers,
+    selectedVendors,
+    vendorSelected,
+    vendor,
+  }) => {
+    console.log({arrayHelpers, selectedVendors})
+    if (vendorSelected) {
+      arrayHelpers.remove(selectedVendors.indexOf(vendor._id))
+    } else {
+      arrayHelpers.push(vendor._id)
+    }
   }
 
   return (
@@ -99,7 +126,37 @@ const PickServices = ({history, crumbs}) => {
             onToggleService={onToggleService}
             services={services}
             vendors={vendors}
-          />
+          >
+            {({vendors, service, selectedVendors}) => (
+              <ServiceVendors
+                service={service}
+                selectedVendors={selectedVendors}
+                vendors={vendors}
+                onVendorChange={onVendorChange}
+              >
+                {({vendor, checked, onChange}) => (
+                  <div
+                    onClick={onChange}
+                    className={classNames(
+                      [
+                        'rounded-md p-3 border-2 hover:border-brand-primary cursor-pointer',
+                      ],
+                      {
+                        'border-brand-primary': checked,
+                      },
+                    )}
+                  >
+                    <ServiceVendorCheckbox
+                      name={vendor.name}
+                      label={vendor.label}
+                      checked={checked}
+                      onChange={onChange}
+                    />
+                  </div>
+                )}
+              </ServiceVendors>
+            )}
+          </ServicesList>
 
           <div className="py-6 flex justify-between">
             <Link to="/dashboard/applications/create">

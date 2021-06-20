@@ -5,9 +5,3 @@ export const vendorSchema = new schema.Entity(
   {},
   {idAttribute: '_id'},
 )
-
-const service = new schema.Entity('services', {
-  vendors: [vendorSchema],
-})
-
-export default [service]
