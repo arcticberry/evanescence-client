@@ -1,16 +1,23 @@
 import React from 'react'
 import classNames from 'classnames'
 import {useFormikContext} from 'formik'
+import {Spinner} from '@zendeskgarden/react-loaders'
 
+import {useDashboard} from 'hooks/useDashboard'
 import useServicesList from '../../../hooks/useServicesList'
+
+import useShowToast from 'hooks/useShowToast'
 
 import ServicesList from 'screens/Dashboard/screens/Applications/components/ServicesList'
 import ServiceVendors from 'screens/Dashboard/screens/Applications/components/ServiceVendors'
 import ServiceVendorRadio from 'screens/Dashboard/screens/Applications/components/ServiceVendorRadio'
 import ServiceListing from '../../../components/ServiceListing'
+import Button from 'components/Button'
 
-const ManageServices = ({services, vendors, onToggleService}) => {
+const ManageServices = ({services, vendors}) => {
   const {values, setFieldValue} = useFormikContext()
+  const [dashboardState] = useDashboard()
+  const showToast = useShowToast()
 
   React.useEffect(() => {
     // Preselect all vendors by reducing the services list
@@ -22,8 +29,20 @@ const ManageServices = ({services, vendors, onToggleService}) => {
       {},
     )
 
+    console.log({updatedServices, services, vendors})
     setFieldValue('services', updatedServices)
   }, [services, vendors, setFieldValue])
+
+  React.useEffect(() => {
+    if (dashboardState.successFullyUpdatedApplication) {
+      showToast({
+        type: 'success',
+        title: 'Successfully updated services',
+        message: 'Your service updates have been saved',
+      })
+      setTimeout(() => setFieldValue('dirty', false), 1000)
+    }
+  }, [showToast, setFieldValue, dashboardState.successFullyUpdatedApplication])
 
   const {expandedServices, servicesGroup} = useServicesList({
     services,
@@ -33,7 +52,7 @@ const ManageServices = ({services, vendors, onToggleService}) => {
 
   return (
     <>
-      <div className="py-12 px-4 lg:px-16">
+      <div className="py-12 px-4 lg:px-24 flex justify-between">
         <section className="">
           <h1 className="text-xl font-bold text-brand-tertiary mb-1">
             Manage services
@@ -42,8 +61,22 @@ const ManageServices = ({services, vendors, onToggleService}) => {
             Switch service providers effortlessly
           </p>
         </section>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={!values.dirty || dashboardState.isUpdatingApplication}
+        >
+          {dashboardState.isUpdatingApplication ? (
+            <>
+              <Spinner delayMS={0} size={16} />
+              <span className="font-bold ml-1">Saving...</span>
+            </>
+          ) : (
+            <b>Save changes</b>
+          )}
+        </Button>
       </div>
-      <div className="mx-auto lg:px-16 overflow-auto">
+      <div className="mx-auto lg:px-24 overflow-auto">
         <ServicesList expandedServices={expandedServices}>
           {servicesGroup.services.map((service) => {
             const onServiceChange = () => {
@@ -70,6 +103,7 @@ const ManageServices = ({services, vendors, onToggleService}) => {
                 : addService()
 
               setFieldValue('services', updatedServices)
+              setFieldValue('dirty', true)
             }
 
             return (
@@ -92,11 +126,12 @@ const ManageServices = ({services, vendors, onToggleService}) => {
                         service.id,
                       )
 
-                      console.log({service})
+                      console.log({services, vendors})
 
                       const onVendorChange = () => {
                         arrayHelpers.pop()
                         arrayHelpers.push(vendor)
+                        setFieldValue('dirty', true)
                       }
 
                       return (

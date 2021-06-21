@@ -16,7 +16,7 @@ const useServicesList = ({services = {}, selectedServices, vendors}) => {
         ? selectedServices[serviceId]
         : []
 
-      const checked = selectedVendors.includes(vendor._id)
+      const checked = selectedVendors.includes(vendor.vendorId)
 
       return {
         ...vendors[vendor],

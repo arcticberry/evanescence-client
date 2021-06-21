@@ -12,8 +12,10 @@ import CalloutCard from 'components/Card/CalloutCard'
 import ManageServices from './components/ManageServices'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
+import {useDashboard} from 'hooks/useDashboard'
 import useParamSearch from 'hooks/useParamSearch'
 import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
+import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMutation'
 
 import RecentTransactions from './components/RecentTransactions'
 import makeData from 'utils/makeData'
@@ -44,6 +46,7 @@ export const ErrorLoading = ({
 
 const initialFormState = {
   services: {},
+  dirty: false,
 }
 
 const ViewApplication = ({match}) => {
@@ -52,14 +55,31 @@ const ViewApplication = ({match}) => {
     isError,
     data: applicationData,
   } = useApplicationsQuery(match.params.id)
+  const [
+    doUpdateApplication,
+    applicationUpdateState,
+  ] = useUpdateApplicationMutation(match.params.id)
 
-  console.log({applicationData, isLoadingApplication})
+  const [, setDashboardState] = useDashboard()
+
   const [getPageParamValue, setPageParamValue] = useParamSearch('page')
   const [getPageSizeParamValue, setPageSizeParamValue] = useParamSearch(
     'pageSize',
   )
 
   const data = React.useMemo(() => makeData(100), [])
+
+  React.useEffect(() => {
+    setDashboardState({
+      isUpdatingApplication: applicationUpdateState.isLoading,
+    })
+  }, [applicationUpdateState.isLoading, setDashboardState])
+
+  React.useEffect(() => {
+    setDashboardState({
+      successFullyUpdatedApplication: applicationUpdateState.isSuccess,
+    })
+  }, [applicationUpdateState.isSuccess, setDashboardState])
 
   if (isLoadingApplication)
     return (
@@ -85,6 +105,41 @@ const ViewApplication = ({match}) => {
     ...(pageSizeParamValue && {defaultPageSize: Number(pageSizeParamValue)}),
   }
 
+  const handleFormSubmit = (values) => {
+    const transformServices = (selectedServices, services) =>
+      Object.keys(selectedServices)
+        .filter((serviceId) => selectedServices[serviceId].length)
+        .map((serviceId) => {
+          const vendorId = selectedServices[serviceId][0]
+
+          const isSameService = (vendorId) =>
+            services[serviceId].vendors.includes(vendorId)
+          const isNotActiveVendor = (vId) => vendorId !== vId
+
+          const inactiveVendors = services[serviceId].vendors
+            .filter(isSameService)
+            .filter(isNotActiveVendor)
+
+          return {
+            serviceId,
+            vendors: [
+              {
+                isActive: true,
+                vendorId,
+              },
+              ...inactiveVendors.map((vendorId) => ({
+                isActive: false,
+                vendorId,
+              })),
+            ],
+          }
+        })
+
+    doUpdateApplication({
+      services: transformServices(values.services, services),
+    })
+  }
+
   return (
     <>
       <section className="h-32">
@@ -99,7 +154,7 @@ const ViewApplication = ({match}) => {
           </div>
         </CalloutCard>
       </section>
-      <Formik initialValues={initialFormState}>
+      <Formik initialValues={initialFormState} onSubmit={handleFormSubmit}>
         {({handleSubmit}) => (
           <form onSubmit={handleSubmit}>
             <ManageServices services={services || {}} vendors={vendors || {}} />

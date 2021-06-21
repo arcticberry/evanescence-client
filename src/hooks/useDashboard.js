@@ -5,6 +5,8 @@ const initialState = {
   isSidebarOpen: false,
   breadcrumbs: [],
   isCreatingApplication: false,
+  isUpdatingApplication: false,
+  successFullyUpdatedApplication: false,
 }
 
 function dashboardReducer(state, action) {

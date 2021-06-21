@@ -22,7 +22,6 @@ import 'screens/Dashboard/screens/Applications/applications.css'
 import ServicesList from 'screens/Dashboard/screens/Applications/components/ServicesList'
 import ServiceVendors from 'screens/Dashboard/screens/Applications/components/ServiceVendors'
 import ServiceVendorCheckbox from 'screens/Dashboard/screens/Applications/components/ServiceVendorCheckbox'
-import useServicesList from '../../../hooks/useServicesList'
 
 const PickServices = ({history, crumbs}) => {
   const {values, setFieldValue} = useFormikContext()
@@ -59,20 +58,12 @@ const PickServices = ({history, crumbs}) => {
     }
   }, [data, servicesLoaded, isLoadingVendors, setFieldValue])
 
-  console.log({data})
-  const {expandedServices} = useServicesList({
-    services: !dataLoading ? data.entities.services : {},
-    selectedServices: {},
-  })
-
   if (dataLoading)
     return (
       <div className="w-full h-full flex items-center justify-center">
         <LoadingState />
       </div>
     )
-
-  console.log({expandedServices})
 
   const {services} = data.entities
   const {vendors} = vendorData.entities
@@ -96,11 +87,10 @@ const PickServices = ({history, crumbs}) => {
     vendorSelected,
     vendor,
   }) => {
-    console.log({arrayHelpers, selectedVendors})
     if (vendorSelected) {
-      arrayHelpers.remove(selectedVendors.indexOf(vendor._id))
+      arrayHelpers.remove(selectedVendors.indexOf(vendor.vendorId))
     } else {
-      arrayHelpers.push(vendor._id)
+      arrayHelpers.push(vendor.vendorId)
     }
   }
 

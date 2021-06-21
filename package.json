@@ -17,6 +17,8 @@
     "@zendeskgarden/react-dropdowns": "^8.36.2",
     "@zendeskgarden/react-forms": "^8.36.2",
     "@zendeskgarden/react-loaders": "^8.36.2",
+    "@zendeskgarden/react-modals": "^8.37.1",
+    "@zendeskgarden/react-notifications": "^8.37.1",
     "@zendeskgarden/react-theming": "^8.36.2",
     "@zendeskgarden/scripts": "^0.1.11",
     "@zendeskgarden/svg-icons": "^6.30.1",

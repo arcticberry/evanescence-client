@@ -9,7 +9,6 @@ const transformApplications = (payload) => {
   if (Array.isArray(payload)) return payload
   const application = normalize(payload, applicationSchema)
 
-  console.log({application})
   return application
 }
 
