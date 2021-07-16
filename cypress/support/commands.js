@@ -13,14 +13,13 @@ const user = userBuilder({
 })
 
 Cypress.Commands.add('createUser', (overrides) => {
-  return Promise.resolve(user)
-  //   return cy
-  //     .request({
-  //       url: [API_BASE_URL, e.CREATE_USER].join(''),
-  //       method: 'POST',
-  //       body: user,
-  //     })
-  //     .then(({body}) => body.user)
+  return cy
+    .request({
+      url: [API_BASE_URL, e.CREATE_USER].join(''),
+      method: 'POST',
+      body: user,
+    })
+    .then(({body}) => body.user)
 })
 
 Cypress.Commands.add('login', (user) => {
@@ -39,6 +38,22 @@ Cypress.Commands.add('login', (user) => {
 Cypress.Commands.add('loginAsNewUser', () => {
   cy.createUser().then((user) => {
     cy.login(user)
+  })
+})
+
+Cypress.Commands.add('requestPasswordReset', () => {
+  return cy.request({
+    url: [API_BASE_URL, e.REQUEST_PASSWORD_RESET].join(''),
+    method: 'POST',
+    body: {email: user.email},
+  })
+})
+
+Cypress.Commands.add('createUserIfNotExists', () => {
+  cy.requestPasswordReset().then((user) => {
+    if (!user) {
+      cy.createUser(user)
+    }
   })
 })
 

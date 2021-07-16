@@ -28,6 +28,7 @@ export const ErrorLoading = ({
   message,
 }) => {
   return (
+    <div className="h-screen">
     <EmptyState
       artwork={<ErrorOccurredIllustration />}
       title={title}
@@ -41,6 +42,7 @@ export const ErrorLoading = ({
         <i className="ml-1 mdi mdi-reload" />
       </Link>
     </EmptyState>
+    </div>
   )
 }
 
@@ -83,12 +85,10 @@ const ViewApplication = ({match}) => {
 
   if (isLoadingApplication)
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-screen flex items-center justify-center">
         <LoadingState />
       </div>
     )
-
-  const {services, vendors} = applicationData.entities
 
   if (isError)
     return (
@@ -97,6 +97,8 @@ const ViewApplication = ({match}) => {
         message="Something unexpected happened. Please retry."
       />
     )
+
+  const {services, vendors} = applicationData.entities
   const pageParamValue = getPageParamValue()
   const pageSizeParamValue = getPageSizeParamValue()
 

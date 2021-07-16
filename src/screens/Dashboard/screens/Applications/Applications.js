@@ -19,6 +19,7 @@ import './applications.css'
 
 const ErrorLoading = ({title = 'Something unexpected happened', message}) => {
   return (
+    <div className="h-screen">
     <EmptyState
       artwork={<ErrorOccurredIllustration />}
       title={title}
@@ -32,6 +33,7 @@ const ErrorLoading = ({title = 'Something unexpected happened', message}) => {
         <i className="ml-1 mdi mdi-reload" />
       </Link>
     </EmptyState>
+    </div>
   )
 }
 
