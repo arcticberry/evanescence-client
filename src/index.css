@@ -10,7 +10,7 @@
   body,
   #root,
   #root > div:first-child,
-  #page-content-wrapper > .dashboard {
+  #root > .dashboard {
     @apply min-h-screen;
   }
 
