@@ -16,12 +16,14 @@ import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import {useDashboard} from 'hooks/useDashboard'
 import useServicesQuery from 'hooks/queries/useServicesQuery'
 import useVendorsQuery from 'hooks/queries/useVendorsQuery'
+import useServicesList from '../../../hooks/useServicesList'
 
 import 'screens/Dashboard/screens/Applications/applications.css'
 
 import ServicesList from 'screens/Dashboard/screens/Applications/components/ServicesList'
 import ServiceVendors from 'screens/Dashboard/screens/Applications/components/ServiceVendors'
 import ServiceVendorCheckbox from 'screens/Dashboard/screens/Applications/components/ServiceVendorCheckbox'
+import ServiceListing from '../../../components/ServiceListing'
 
 const PickServices = ({history, crumbs}) => {
   const {values, setFieldValue} = useFormikContext()
@@ -58,6 +60,12 @@ const PickServices = ({history, crumbs}) => {
     }
   }, [data, servicesLoaded, isLoadingVendors, setFieldValue])
 
+  const {expandedServices, servicesGroup} = useServicesList({
+    services: data?.entities?.services,
+    selectedServices: values.services,
+    vendors: vendorData?.entities?.vendors,
+  })
+
   if (dataLoading)
     return (
       <div className="w-full h-screen flex items-center justify-center">
@@ -81,19 +89,6 @@ const PickServices = ({history, crumbs}) => {
     setFieldValue('services', updatedServices)
   }
 
-  const onVendorChange = ({
-    arrayHelpers,
-    selectedVendors,
-    vendorSelected,
-    vendor,
-  }) => {
-    if (vendorSelected) {
-      arrayHelpers.remove(selectedVendors.indexOf(vendor.vendorId))
-    } else {
-      arrayHelpers.push(vendor.vendorId)
-    }
-  }
-
   return (
     <div className="px-8 py-10 md:py-10">
       <section className="mb-12">
@@ -111,41 +106,94 @@ const PickServices = ({history, crumbs}) => {
 
       <div className="flex w-full justify-around mb-16">
         <section>
-          <ServicesList
-            selectedServices={values.services}
-            onToggleService={onToggleService}
-            services={services}
-            vendors={vendors}
-          >
-            {({vendors, service, selectedVendors}) => (
-              <ServiceVendors
-                service={service}
-                selectedVendors={selectedVendors}
-                vendors={vendors}
-                onVendorChange={onVendorChange}
-              >
-                {({vendor, checked, onChange}) => (
-                  <div
-                    onClick={onChange}
-                    className={classNames(
-                      [
-                        'rounded-md p-3 border-2 hover:border-brand-primary cursor-pointer',
-                      ],
-                      {
-                        'border-brand-primary': checked,
-                      },
-                    )}
-                  >
-                    <ServiceVendorCheckbox
-                      name={vendor.name}
-                      label={vendor.label}
-                      checked={checked}
-                      onChange={onChange}
-                    />
-                  </div>
-                )}
-              </ServiceVendors>
-            )}
+          <ServicesList expandedSections={expandedServices}>
+            {servicesGroup.services.map((service) => {
+              const onServiceChange = () => {
+                const removeService = () =>
+                  Object.keys(values.services)
+                    .filter((serviceKey) => serviceKey !== service.id)
+                    .reduce(
+                      (acc, cur) => ({
+                        ...acc,
+                        [cur]: values.services[cur],
+                      }),
+                      {},
+                    )
+
+                const addService = () => ({
+                  ...values.services,
+                  [service.id]: [],
+                })
+
+                const updatedServices = values.services.hasOwnProperty(
+                  service.id,
+                )
+                  ? removeService()
+                  : addService()
+
+                setFieldValue('services', updatedServices)
+                setFieldValue('dirty', true)
+              }
+
+              return (
+                <ServiceListing
+                  label={service.label}
+                  checked={service.checked}
+                  onChange={onServiceChange}
+                  key={service.id}
+                >
+                  <ServiceVendors service={service}>
+                    {(arrayHelpers) =>
+                      service.vendors.map((vendor) => {
+                        const checked = values.services.hasOwnProperty(
+                          service.id,
+                        )
+                          ? values.services[service.id].includes(vendor)
+                          : false
+                        const vendorProps = servicesGroup.getVendorProps(
+                          vendor,
+                          service.id,
+                        )
+
+                        const onVendorChange = () => {
+                          const selectedVendors = values.services[service.id]
+                          const vendorSelected = selectedVendors.includes(
+                            vendor,
+                          )
+
+                          if (vendorSelected) {
+                            arrayHelpers.remove(selectedVendors.indexOf(vendor))
+                          } else {
+                            arrayHelpers.push(vendor)
+                          }
+                        }
+
+                        return (
+                          <div
+                            key={vendor}
+                            onClick={onVendorChange}
+                            className={classNames(
+                              [
+                                'rounded-md p-3 border-2 hover:border-brand-primary cursor-pointer',
+                              ],
+                              {
+                                'border-brand-primary': checked,
+                              },
+                            )}
+                          >
+                            <ServiceVendorCheckbox
+                              onChange={onVendorChange}
+                              {...vendorProps}
+                              checked={checked}
+                            />
+                          </div>
+                        )
+                      })
+                    }
+                  </ServiceVendors>
+                </ServiceListing>
+              )
+            })}
           </ServicesList>
 
           <div className="py-6 flex justify-between">
