@@ -122,7 +122,7 @@ const PickServices = ({history, crumbs}) => {
 
                 const addService = () => ({
                   ...values.services,
-                  [service.id]: services[service.id].vendors,
+                  [service.id]: [],
                 })
 
                 const updatedServices = values.services.hasOwnProperty(
@@ -156,8 +156,7 @@ const PickServices = ({history, crumbs}) => {
                         )
 
                         const onVendorChange = () => {
-                          const selectedVendors =
-                            values.services[service.id] || []
+                          const selectedVendors = values.services[service.id]
                           const vendorSelected = selectedVendors.includes(
                             vendor,
                           )

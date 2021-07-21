@@ -31,7 +31,9 @@ const useServicesList = ({services = {}, selectedServices, vendors}) => {
       return Object.keys(services).map((serviceId) => {
         return {
           ...services[serviceId],
-          checked: selectedServices.hasOwnProperty(serviceId),
+          checked:
+            selectedServices.hasOwnProperty(serviceId) &&
+            selectedServices[serviceId].length,
         }
       })
     },

@@ -6,10 +6,10 @@ import {fetchProfile} from 'services/profile/profile.slice'
 import r from 'constants/routes'
 import {getStoredAuthToken} from 'utils/authToken'
 
+const token = getStoredAuthToken()
+
 const AuthenticatedHoc = (Component) => {
   function Authenticated(props) {
-    const token = getStoredAuthToken()
-
     return token ? <Component {...props} /> : <Redirect to={r.LOGIN.path} />
   }
 
