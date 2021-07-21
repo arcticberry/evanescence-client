@@ -6,6 +6,11 @@ import serviceSchema from 'schema/services.schema'
 import api from 'services/api'
 
 const transformServices = ({data}) => {
+  data = {
+    ...data,
+    id: data._id,
+  }
+
   const services = normalize(data, [serviceSchema])
 
   return services

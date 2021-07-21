@@ -74,20 +74,6 @@ const PickServices = ({history, crumbs}) => {
     )
 
   const {services} = data.entities
-  const {vendors} = vendorData.entities
-
-  const onToggleService = (id) => {
-    const updatedVendors = values.services[id].length
-      ? []
-      : services[id].vendors
-
-    const updatedServices = {
-      ...values.services,
-      [id]: updatedVendors,
-    }
-
-    setFieldValue('services', updatedServices)
-  }
 
   return (
     <div className="px-8 py-10 md:py-10">
@@ -142,7 +128,7 @@ const PickServices = ({history, crumbs}) => {
                   onChange={onServiceChange}
                   key={service.id}
                 >
-                  <ServiceVendors service={service}>
+                  <ServiceVendors serviceId={service.id}>
                     {(arrayHelpers) =>
                       service.vendors.map((vendor) => {
                         const checked = values.services.hasOwnProperty(

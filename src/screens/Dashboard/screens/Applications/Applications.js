@@ -8,34 +8,14 @@ import useApplications from 'hooks/queries/useApplicationsQuery'
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import Button from 'components/Button'
 import EmptyState from 'components/EmptyState'
+import ErrorLoading from 'components/ErrorLoading'
 import LoadingState from 'components/LoadingState'
 import CalloutCard from 'components/Card/CalloutCard'
 import {setSelectedApplication} from 'services/application/application.slice'
 
 import {ReactComponent as CreateApplicationIllustration} from 'assets/create-application.svg'
-import {ReactComponent as ErrorOccurredIllustration} from 'assets/error-occurred.svg'
 
 import './applications.css'
-
-const ErrorLoading = ({title = 'Something unexpected happened', message}) => {
-  return (
-    <div className="h-screen">
-    <EmptyState
-      artwork={<ErrorOccurredIllustration />}
-      title={title}
-      message={message}
-    >
-      <Link
-        to="/dashboard/applications"
-        className="btn btn-primary btn-md font-weight-bold px-4"
-      >
-        Retry
-        <i className="ml-1 mdi mdi-reload" />
-      </Link>
-    </EmptyState>
-    </div>
-  )
-}
 
 const NoApplicationsFound = () => (
   <section className="w-full h-full">

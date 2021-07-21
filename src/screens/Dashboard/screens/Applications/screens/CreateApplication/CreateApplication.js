@@ -52,14 +52,11 @@ const CreateApplication = ({breadcrumbs, history}) => {
     if (applicationCreationState.isSuccess) {
       const {data} = applicationCreationState.data
 
-      const secretKey = !data.isLive ? data.testSecretKey : data.secretKey
-      const publicKey = !data.isLive ? data.testPublicKey : data.publicKey
-
       history.push({
         pathname: r.APP_CREATION_SUCCESS.path,
         state: {
-          applicationSecretKey: secretKey,
-          applicationPublicKey: publicKey,
+          applicationSecretKey: data.secretKey,
+          applicationPublicKey: data.publicKey,
           applicationId: data._id,
         },
       })

@@ -29,7 +29,6 @@ const ManageServices = ({services, vendors}) => {
       {},
     )
 
-    console.log({updatedServices, services, vendors})
     setFieldValue('services', updatedServices)
   }, [services, vendors, setFieldValue])
 
@@ -113,7 +112,7 @@ const ManageServices = ({services, vendors}) => {
                 onChange={onServiceChange}
                 key={service._id}
               >
-                <ServiceVendors service={service}>
+                <ServiceVendors serviceId={service._id}>
                   {(arrayHelpers) =>
                     service.vendors.map((vendor) => {
                       const checked = values.services.hasOwnProperty(
@@ -123,12 +122,11 @@ const ManageServices = ({services, vendors}) => {
                         : false
                       const vendorProps = servicesGroup.getVendorProps(
                         vendor,
-                        service.id,
+                        service._id,
                       )
 
-                      console.log({services, vendors})
-
                       const onVendorChange = () => {
+                        // clear the selected vendors then add the newly selected
                         arrayHelpers.pop()
                         arrayHelpers.push(vendor)
                         setFieldValue('dirty', true)

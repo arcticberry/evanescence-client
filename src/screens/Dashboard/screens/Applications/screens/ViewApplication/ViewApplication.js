@@ -3,13 +3,12 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Formik} from 'formik'
 
-import {ReactComponent as ErrorOccurredIllustration} from 'assets/error-occurred.svg'
-
 import Button from 'components/Button'
-import EmptyState from 'components/EmptyState'
 import LoadingState from 'components/LoadingState'
 import CalloutCard from 'components/Card/CalloutCard'
 import ManageServices from './components/ManageServices'
+import ManageCredentials from './components/ManageCredentials'
+import ErrorLoading from 'components/ErrorLoading'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import {useDashboard} from 'hooks/useDashboard'
@@ -22,29 +21,6 @@ import makeData from 'utils/makeData'
 import tableSchema from './tableSchema'
 import {setSelectedApplication} from 'services/application/application.slice'
 import '../../applications.css'
-
-export const ErrorLoading = ({
-  title = 'Something unexpected happened',
-  message,
-}) => {
-  return (
-    <div className="h-screen">
-    <EmptyState
-      artwork={<ErrorOccurredIllustration />}
-      title={title}
-      message={message}
-    >
-      <Link
-        to="/dashboard/applications"
-        className="btn btn-primary btn-md font-weight-bold px-4"
-      >
-        Retry
-        <i className="ml-1 mdi mdi-reload" />
-      </Link>
-    </EmptyState>
-    </div>
-  )
-}
 
 const initialFormState = {
   services: {},
@@ -156,10 +132,19 @@ const ViewApplication = ({match}) => {
           </div>
         </CalloutCard>
       </section>
+
       <Formik initialValues={initialFormState} onSubmit={handleFormSubmit}>
         {({handleSubmit}) => (
           <form onSubmit={handleSubmit}>
-            <ManageServices services={services || {}} vendors={vendors || {}} />
+            <ManageCredentials services={services} vendors={vendors} />
+          </form>
+        )}
+      </Formik>
+
+      <Formik initialValues={initialFormState} onSubmit={handleFormSubmit}>
+        {({handleSubmit}) => (
+          <form onSubmit={handleSubmit}>
+            <ManageServices services={services} vendors={vendors} />
           </form>
         )}
       </Formik>
