@@ -92,7 +92,7 @@ const ManageServices = ({services, vendors}) => {
 
               const addService = () => ({
                 ...values.services,
-                [service._id]: [],
+                [service._id]: [service.vendors[0]],
               })
 
               const updatedServices = values.services.hasOwnProperty(

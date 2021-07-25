@@ -14,7 +14,8 @@ import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 
 import useShowToast from 'hooks/useShowToast'
 
-import CredentialListing from '../../../components/CredentialListing'
+import CredentialListing from 'screens/Dashboard/screens/Applications/components/CredentialListing'
+import ManageCredentialsLoader from './ManageCredentialsLoader'
 
 import {applicationCredentialsSchema} from 'schema/application.schema'
 
@@ -77,6 +78,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
 
   return (
     <>
+      <ManageCredentialsLoader />
       <div className="py-12 px-4 lg:px-24 flex justify-between">
         <section className="">
           <h1 className="text-xl font-bold text-brand-tertiary mb-1">

@@ -6,11 +6,12 @@ import {StarHalf} from '@material-ui/icons'
 import useApplications from 'hooks/queries/useApplicationsQuery'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
+
 import Button from 'components/Button'
 import EmptyState from 'components/EmptyState'
 import ErrorLoading from 'components/ErrorLoading'
-import LoadingState from 'components/LoadingState'
 import CalloutCard from 'components/Card/CalloutCard'
+import ApplicationsLoader from './components/ApplicationsLoader'
 import {setSelectedApplication} from 'services/application/application.slice'
 
 import {ReactComponent as CreateApplicationIllustration} from 'assets/create-application.svg'
@@ -43,12 +44,7 @@ const Applications = () => {
     data: applications,
   } = useApplications()
 
-  if (loadingApplications)
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <LoadingState />
-      </div>
-    )
+  if (loadingApplications) return <ApplicationsLoader />
 
   if (error)
     return (

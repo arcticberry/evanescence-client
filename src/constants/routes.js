@@ -31,6 +31,11 @@ const ViewApplication = lazy(() =>
     'screens/Dashboard/screens/Applications/screens/ViewApplication/index'
   ),
 )
+const ApplicationCredentials = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/index'
+  ),
+)
 const CreateApplication = lazy(() =>
   import('screens/Dashboard/screens/Applications/screens/CreateApplication'),
 )
@@ -91,6 +96,12 @@ const routes = {
     path: '/dashboard/applications/:id',
     label: 'Overview',
     component: ViewApplication,
+    exact: true,
+  },
+  APPLICATION_CREDENTIALS: {
+    path: '/dashboard/applications/:id/settings/credentials',
+    label: 'Credentials',
+    component: ApplicationCredentials,
     exact: true,
   },
 

@@ -7,7 +7,7 @@ import Button from 'components/Button'
 import LoadingState from 'components/LoadingState'
 import CalloutCard from 'components/Card/CalloutCard'
 import ManageServices from './components/ManageServices'
-import ManageCredentials from './components/ManageCredentials'
+import ManageCredentials from './components/ManageCredentials/ManageCredentials'
 import ErrorLoading from 'components/ErrorLoading'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
