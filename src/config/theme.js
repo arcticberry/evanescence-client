@@ -1,3 +1,4 @@
+import {DEFAULT_THEME} from '@zendeskgarden/react-theming'
 import {css} from 'styled-components'
 
 const brand = {
@@ -49,5 +50,7 @@ const themeCreator = (parentTheme) => ({
     primaryHue: 'brand',
   },
 })
+
+export const theme = themeCreator(DEFAULT_THEME)
 
 export default themeCreator

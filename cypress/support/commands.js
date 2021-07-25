@@ -5,6 +5,7 @@ const API_BASE_URL = Cypress.env('API_BASE_URL')
 const userCredentials = {
   email: Cypress.env('USER_EMAIL'),
   password: Cypress.env('USER_PASSWORD'),
+  phone: Cypress.env('USER_PHONE'),
 }
 
 const user = userBuilder({
@@ -12,7 +13,15 @@ const user = userBuilder({
   password: userCredentials.password,
 })
 
-Cypress.Commands.add('createUser', (overrides) => {
+Cypress.Commands.add('getDefaultUser', () => {
+  return Promise.resolve(
+    userBuilder({
+      phone: userCredentials.phone,
+    }),
+  )
+})
+
+Cypress.Commands.add('createUser', () => {
   return cy
     .request({
       url: [API_BASE_URL, e.CREATE_USER].join(''),
@@ -50,10 +59,12 @@ Cypress.Commands.add('requestPasswordReset', () => {
 })
 
 Cypress.Commands.add('createUserIfNotExists', () => {
-  cy.requestPasswordReset().then((user) => {
-    if (!user) {
-      cy.createUser(user)
+  cy.requestPasswordReset().then((response) => {
+    if (response.status !== 200) {
+      return cy.createUser(user)
     }
+
+    return user
   })
 })
 

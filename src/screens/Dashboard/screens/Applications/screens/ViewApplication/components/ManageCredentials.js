@@ -1,53 +1,79 @@
-import React from 'react'
-import classNames from 'classnames'
+import React, {useCallback, useEffect} from 'react'
 import {useFormikContext} from 'formik'
 import {Spinner} from '@zendeskgarden/react-loaders'
+import {Accordion} from '@zendeskgarden/react-accordions'
+import {normalize} from 'normalizr'
+
+import LoadingState from 'components/LoadingState'
+import ErrorLoading from 'components/ErrorLoading'
+import Button from 'components/Button'
 
 import {useDashboard} from 'hooks/useDashboard'
-import useServicesList from '../../../hooks/useServicesList'
+import useMetaQuery from 'hooks/queries/useMetaQuery'
+import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 
 import useShowToast from 'hooks/useShowToast'
 
-import ServicesList from 'screens/Dashboard/screens/Applications/components/ServicesList'
-import ServiceVendors from 'screens/Dashboard/screens/Applications/components/ServiceVendors'
-import ServiceVendorRadio from 'screens/Dashboard/screens/Applications/components/ServiceVendorRadio'
-import ServiceListing from '../../../components/ServiceListing'
-import Button from 'components/Button'
+import CredentialListing from '../../../components/CredentialListing'
 
-const ManageCredentials = ({services, vendors}) => {
+import {applicationCredentialsSchema} from 'schema/application.schema'
+
+const ManageCredentials = ({applicationId, handleReset}) => {
   const {values, setFieldValue} = useFormikContext()
   const [dashboardState] = useDashboard()
   const showToast = useShowToast()
+  const {isLoading, isError, data: credentialsConfig} = useMetaQuery(
+    'vendors/form-rules',
+  )
+  const {
+    isLoading: isLoadingApplicationCredentials,
+    isError: errorLoadingApplicationCredentials,
+    isSuccess: successLoadingApplicationCredentials,
+    data: applicationCredentials,
+  } = useApplicationsQuery(`${applicationId}/credentials`)
 
-  React.useEffect(() => {
-    // Preselect all vendors by reducing the services list
-    let updatedServices = Object.keys(services).reduce(
-      (acc, id) => ({
-        ...acc,
-        [id]: services[id].vendors.filter((vendor) => vendors[vendor].isActive),
-      }),
-      {},
-    )
-
-    setFieldValue('services', updatedServices)
-  }, [services, vendors, setFieldValue])
-
-  React.useEffect(() => {
-    if (dashboardState.successFullyUpdatedApplication) {
+  useEffect(() => {
+    if (dashboardState.successFullyUpdatedApplicationCredentials) {
       showToast({
         type: 'success',
-        title: 'Successfully updated services',
-        message: 'Your service updates have been saved',
+        title: 'Successfully updated credentials',
+        message: 'Application credential updates have been saved',
       })
-      setTimeout(() => setFieldValue('dirty', false), 1000)
+      handleReset()
     }
-  }, [showToast, setFieldValue, dashboardState.successFullyUpdatedApplication])
+  }, [
+    showToast,
+    handleReset,
+    dashboardState.successFullyUpdatedApplicationCredentials,
+  ])
 
-  const {expandedServices, servicesGroup} = useServicesList({
-    services,
-    selectedServices: values.services,
-    vendors,
-  })
+  const getCredentials = useCallback(() => {
+    if (successLoadingApplicationCredentials) {
+      return normalize(applicationCredentials, [applicationCredentialsSchema])
+    }
+  }, [applicationCredentials, successLoadingApplicationCredentials])
+
+  if (isLoading || isLoadingApplicationCredentials)
+    return (
+      <div className="w-full flex items-center justify-center">
+        <LoadingState />
+      </div>
+    )
+
+  if (isError || errorLoadingApplicationCredentials)
+    return (
+      <ErrorLoading
+        title="Oops..."
+        message="Something unexpected happened. Please retry."
+      />
+    )
+
+  const credentials = getCredentials()
+
+  const handleCredentialChange = (field, value) => {
+    setFieldValue(field, value)
+    setFieldValue('dirty', true)
+  }
 
   return (
     <>
@@ -63,9 +89,11 @@ const ManageCredentials = ({services, vendors}) => {
         <Button
           variant="primary"
           type="submit"
-          disabled={!values.dirty || dashboardState.isUpdatingApplication}
+          disabled={
+            !values.dirty || dashboardState.isUpdatingApplicationCredentials
+          }
         >
-          {dashboardState.isUpdatingApplication ? (
+          {dashboardState.isUpdatingApplicationCredentials ? (
             <>
               <Spinner delayMS={0} size={16} />
               <span className="font-bold ml-1">Saving...</span>
@@ -75,8 +103,22 @@ const ManageCredentials = ({services, vendors}) => {
           )}
         </Button>
       </div>
+
       <div className="mx-auto lg:px-24 overflow-auto">
-        <ServicesList expandedServices={expandedServices}></ServicesList>
+        <Accordion level={4} isExpandable>
+          {Object.keys(credentialsConfig).map((credentialProvider, idx) => (
+            <CredentialListing
+              key={idx}
+              provider={credentialProvider}
+              config={credentialsConfig[credentialProvider]}
+              credentials={
+                credentials.entities.applicationCredentials[credentialProvider]
+              }
+              credentialValues={values}
+              handleCredentialChange={handleCredentialChange}
+            />
+          ))}
+        </Accordion>
       </div>
     </>
   )

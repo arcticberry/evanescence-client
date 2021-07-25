@@ -13,7 +13,7 @@ const Password = (props) => {
     <>
       <InputGroup>
         <Input {...props} type={isPasswordVisible ? 'text' : 'password'} />
-        {props.value.length ? (
+        {props?.value?.length ? (
           <Button type="button" onClick={togglePasswordVisibility}>
             {isPasswordVisible ? 'Hide' : 'Show'}
           </Button>

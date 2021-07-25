@@ -12,4 +12,12 @@ const applicationSchema = new schema.Entity(
 
 const applicationsSchema = new schema.Entity('applications')
 
-export {applicationSchema, applicationsSchema}
+const applicationCredentialsSchema = new schema.Entity(
+  'applicationCredentials',
+  {},
+  {
+    idAttribute: 'name',
+  },
+)
+
+export {applicationSchema, applicationsSchema, applicationCredentialsSchema}

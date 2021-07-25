@@ -7,4 +7,5 @@ export default Object.freeze({
 
   CREATE_APPLICATION: '/applications',
   UPDATE_APPLICATION: (id) => `/applications/${id}`,
+  APPLICATION_CREDENTIALS: (id) => `/applications/${id}/credentials`,
 })

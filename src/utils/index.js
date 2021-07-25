@@ -30,7 +30,7 @@ export function generateCrumbsForRoute({routes, route}) {
   return routes.map(createCrumbEntry)
 }
 
-function capFirst(string) {
+export function capFirst(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
 

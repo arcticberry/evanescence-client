@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('login', () => {
   it('should login an existing user', () => {
     cy.createUserIfNotExists().then((user) => {

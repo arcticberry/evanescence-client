@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {toast} from 'react-toastify'
+
+import classNames from 'classnames'
 import {useFormikContext} from 'formik'
 import {ChevronRight, ChevronLeft} from '@material-ui/icons'
 import {Spinner} from '@zendeskgarden/react-loaders'
-import classNames from 'classnames'
+import {Accordion} from '@zendeskgarden/react-accordions'
 
 import Button from 'components/Button'
 import Steps from 'components/Steps'
@@ -20,7 +22,6 @@ import useServicesList from '../../../hooks/useServicesList'
 
 import 'screens/Dashboard/screens/Applications/applications.css'
 
-import ServicesList from 'screens/Dashboard/screens/Applications/components/ServicesList'
 import ServiceVendors from 'screens/Dashboard/screens/Applications/components/ServiceVendors'
 import ServiceVendorCheckbox from 'screens/Dashboard/screens/Applications/components/ServiceVendorCheckbox'
 import ServiceListing from '../../../components/ServiceListing'
@@ -92,7 +93,7 @@ const PickServices = ({history, crumbs}) => {
 
       <div className="flex w-full justify-around mb-16">
         <section>
-          <ServicesList expandedSections={expandedServices}>
+          <Accordion expandedSections={expandedServices} level={4} isExpandable>
             {servicesGroup.services.map((service) => {
               const onServiceChange = () => {
                 const removeService = () =>
@@ -181,7 +182,7 @@ const PickServices = ({history, crumbs}) => {
                 </ServiceListing>
               )
             })}
-          </ServicesList>
+          </Accordion>
 
           <div className="py-6 flex justify-between">
             <Link to="/dashboard/applications/create">

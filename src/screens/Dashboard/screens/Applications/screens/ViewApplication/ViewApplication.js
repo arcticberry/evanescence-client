@@ -15,6 +15,7 @@ import {useDashboard} from 'hooks/useDashboard'
 import useParamSearch from 'hooks/useParamSearch'
 import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMutation'
+import useUpdateApplicationCredentialsMutation from 'hooks/queries/useUpdateApplicationCredentialsMutation'
 
 import RecentTransactions from './components/RecentTransactions'
 import makeData from 'utils/makeData'
@@ -24,6 +25,10 @@ import '../../applications.css'
 
 const initialFormState = {
   services: {},
+  dirty: false,
+}
+
+const initialCredentialsForm = {
   dirty: false,
 }
 
@@ -37,6 +42,10 @@ const ViewApplication = ({match}) => {
     doUpdateApplication,
     applicationUpdateState,
   ] = useUpdateApplicationMutation(match.params.id)
+  const [
+    doUpdateApplicationCredentials,
+    applicationCredentialsUpdateState,
+  ] = useUpdateApplicationCredentialsMutation(match.params.id)
 
   const [, setDashboardState] = useDashboard()
 
@@ -58,6 +67,20 @@ const ViewApplication = ({match}) => {
       successFullyUpdatedApplication: applicationUpdateState.isSuccess,
     })
   }, [applicationUpdateState.isSuccess, setDashboardState])
+
+  React.useEffect(() => {
+    setDashboardState({
+      isUpdatingApplicationCredentials:
+        applicationCredentialsUpdateState.isLoading,
+    })
+  }, [applicationCredentialsUpdateState.isLoading, setDashboardState])
+
+  React.useEffect(() => {
+    setDashboardState({
+      successFullyUpdatedApplicationCredentials:
+        applicationCredentialsUpdateState.isSuccess,
+    })
+  }, [applicationCredentialsUpdateState.isSuccess, setDashboardState])
 
   if (isLoadingApplication)
     return (
@@ -81,6 +104,30 @@ const ViewApplication = ({match}) => {
   const defaultTableOptions = {
     ...(pageParamValue && {defaultPageIndex: Number(pageParamValue - 1)}),
     ...(pageSizeParamValue && {defaultPageSize: Number(pageSizeParamValue)}),
+  }
+
+  const handleCredentialsFormSubmit = (values) => {
+    const excludedFields = ['dirty']
+    const isNotExcluded = (key) => !excludedFields.includes(key)
+
+    const payloadReducer = (acc, curr) => {
+      const currentValue = values[curr]
+      const [provider, field] = curr.split('-')
+
+      return {
+        ...acc,
+        [provider]: {
+          ...acc[provider],
+          ...(currentValue.length ? {[field]: currentValue} : {}),
+        },
+      }
+    }
+
+    const payload = Object.keys(values)
+      .filter(isNotExcluded)
+      .reduce(payloadReducer, {})
+
+    doUpdateApplicationCredentials(payload)
   }
 
   const handleFormSubmit = (values) => {
@@ -133,10 +180,16 @@ const ViewApplication = ({match}) => {
         </CalloutCard>
       </section>
 
-      <Formik initialValues={initialFormState} onSubmit={handleFormSubmit}>
-        {({handleSubmit}) => (
+      <Formik
+        initialValues={initialCredentialsForm}
+        onSubmit={handleCredentialsFormSubmit}
+      >
+        {({handleSubmit, handleReset}) => (
           <form onSubmit={handleSubmit}>
-            <ManageCredentials services={services} vendors={vendors} />
+            <ManageCredentials
+              applicationId={match.params.id}
+              handleReset={handleReset}
+            />
           </form>
         )}
       </Formik>
