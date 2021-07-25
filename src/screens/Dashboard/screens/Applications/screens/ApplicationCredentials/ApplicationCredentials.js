@@ -17,7 +17,7 @@ const initialCredentialsForm = {
   dirty: false,
 }
 
-const ViewApplication = ({match}) => {
+const ApplicationCredentials = ({match}) => {
   const [
     doUpdateApplicationCredentials,
     applicationCredentialsUpdateState,
@@ -98,5 +98,5 @@ const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {}
 export default AuthenticatedHoc(
-  connect(mapStateToProps, mapDispatchToProps)(ViewApplication),
+  connect(mapStateToProps, mapDispatchToProps)(ApplicationCredentials),
 )

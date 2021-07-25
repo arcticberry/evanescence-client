@@ -19,6 +19,7 @@
     "@zendeskgarden/react-loaders": "^8.39.0",
     "@zendeskgarden/react-modals": "^8.37.1",
     "@zendeskgarden/react-notifications": "^8.37.1",
+    "@zendeskgarden/react-tabs": "^8.39.0",
     "@zendeskgarden/react-theming": "^8.36.2",
     "@zendeskgarden/scripts": "^0.1.11",
     "@zendeskgarden/svg-icons": "^6.30.1",

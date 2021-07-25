@@ -33,7 +33,7 @@ const ViewApplication = lazy(() =>
 )
 const ApplicationCredentials = lazy(() =>
   import(
-    'screens/Dashboard/screens/Applications/screens/ViewApplication/index'
+    'screens/Dashboard/screens/Applications/screens/ApplicationCredentials/index'
   ),
 )
 const CreateApplication = lazy(() =>

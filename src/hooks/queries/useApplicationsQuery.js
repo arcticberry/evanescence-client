@@ -9,7 +9,7 @@ const transformApplications = (payload) => {
   if (Array.isArray(payload)) return payload
   const application = normalize(payload, applicationSchema)
 
-  return application
+  return {application, payload}
 }
 
 const getApplications = async (queryParams = '') => {

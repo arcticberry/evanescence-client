@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Formik} from 'formik'
+import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
 
 import Button from 'components/Button'
 import LoadingState from 'components/LoadingState'
@@ -32,12 +33,18 @@ const initialCredentialsForm = {
   dirty: false,
 }
 
+const tabsList = [
+  {item: 'transactions', label: 'Transactions'},
+  {item: 'manage-services', label: 'Manage services'},
+  {item: 'manage-credentials', label: 'Manage credentials'},
+]
+
 const ViewApplication = ({match}) => {
-  const {
-    isLoading: isLoadingApplication,
-    isError,
-    data: applicationData,
-  } = useApplicationsQuery(match.params.id)
+  const [selectedTab, setSelectedTab] = useState(tabsList[0].item)
+
+  const {isLoading: isLoadingApplication, isError, data} = useApplicationsQuery(
+    match.params.id,
+  )
   const [
     doUpdateApplication,
     applicationUpdateState,
@@ -54,28 +61,43 @@ const ViewApplication = ({match}) => {
     'pageSize',
   )
 
-  const data = React.useMemo(() => makeData(100), [])
+  const memoizedTableData = React.useMemo(() => makeData(100), [])
+  const groupVendorsByServiceId = React.useCallback((services) => {
+    return services.reduce((acc, service) => {
+      const vendors = service.vendors.reduce((acc, vendor) => {
+        return {
+          ...acc,
+          [vendor.id]: vendor,
+        }
+      }, {})
 
-  React.useEffect(() => {
+      return {
+        ...acc,
+        [service._id]: vendors,
+      }
+    }, {})
+  }, [])
+
+  useEffect(() => {
     setDashboardState({
       isUpdatingApplication: applicationUpdateState.isLoading,
     })
   }, [applicationUpdateState.isLoading, setDashboardState])
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDashboardState({
       successFullyUpdatedApplication: applicationUpdateState.isSuccess,
     })
   }, [applicationUpdateState.isSuccess, setDashboardState])
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDashboardState({
       isUpdatingApplicationCredentials:
         applicationCredentialsUpdateState.isLoading,
     })
   }, [applicationCredentialsUpdateState.isLoading, setDashboardState])
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDashboardState({
       successFullyUpdatedApplicationCredentials:
         applicationCredentialsUpdateState.isSuccess,
@@ -97,7 +119,8 @@ const ViewApplication = ({match}) => {
       />
     )
 
-  const {services, vendors} = applicationData.entities
+  const {services, vendors} = data.application.entities
+  const allVendors = groupVendorsByServiceId(data.payload.services)
   const pageParamValue = getPageParamValue()
   const pageSizeParamValue = getPageSizeParamValue()
 
@@ -150,11 +173,11 @@ const ViewApplication = ({match}) => {
             vendors: [
               {
                 isActive: true,
-                vendorId,
+                id: vendorId,
               },
               ...inactiveVendors.map((vendorId) => ({
                 isActive: false,
-                vendorId,
+                id: vendorId,
               })),
             ],
           }
@@ -179,36 +202,62 @@ const ViewApplication = ({match}) => {
           </div>
         </CalloutCard>
       </section>
-
-      <Formik
-        initialValues={initialCredentialsForm}
-        onSubmit={handleCredentialsFormSubmit}
-      >
-        {({handleSubmit, handleReset}) => (
-          <form onSubmit={handleSubmit}>
-            <ManageCredentials
-              applicationId={match.params.id}
-              handleReset={handleReset}
+      <section className="py-12 px-4 lg:px-24">
+        <Tabs selectedItem={selectedTab} onChange={setSelectedTab}>
+          <TabList>
+            {tabsList.map((tab) => (
+              <Tab item={tab.item} key={tab.item}>
+                <span
+                  style={{fontWeight: selectedTab === tab.item ? 600 : 400}}
+                >
+                  {tab.label}
+                </span>
+              </Tab>
+            ))}
+          </TabList>
+          <TabPanel item="transactions">
+            <RecentTransactions
+              data={memoizedTableData}
+              schema={tableSchema()}
+              onPageNavigation={setPageParamValue}
+              onPageSizeUpdate={setPageSizeParamValue}
+              {...defaultTableOptions}
             />
-          </form>
-        )}
-      </Formik>
+          </TabPanel>
 
-      <Formik initialValues={initialFormState} onSubmit={handleFormSubmit}>
-        {({handleSubmit}) => (
-          <form onSubmit={handleSubmit}>
-            <ManageServices services={services} vendors={vendors} />
-          </form>
-        )}
-      </Formik>
-
-      <RecentTransactions
-        data={data}
-        schema={tableSchema()}
-        onPageNavigation={setPageParamValue}
-        onPageSizeUpdate={setPageSizeParamValue}
-        {...defaultTableOptions}
-      />
+          <TabPanel item="manage-services">
+            <Formik
+              initialValues={initialFormState}
+              onSubmit={handleFormSubmit}
+            >
+              {({handleSubmit}) => (
+                <form onSubmit={handleSubmit}>
+                  <ManageServices
+                    services={services}
+                    vendors={vendors}
+                    allVendors={allVendors}
+                  />
+                </form>
+              )}
+            </Formik>
+          </TabPanel>
+          <TabPanel item="manage-credentials">
+            <Formik
+              initialValues={initialCredentialsForm}
+              onSubmit={handleCredentialsFormSubmit}
+            >
+              {({handleSubmit, handleReset}) => (
+                <form onSubmit={handleSubmit}>
+                  <ManageCredentials
+                    applicationId={match.params.id}
+                    handleReset={handleReset}
+                  />
+                </form>
+              )}
+            </Formik>
+          </TabPanel>
+        </Tabs>
+      </section>
     </>
   )
 }

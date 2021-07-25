@@ -14,7 +14,7 @@ import ServiceVendorRadio from 'screens/Dashboard/screens/Applications/component
 import ServiceListing from '../../../components/ServiceListing'
 import Button from 'components/Button'
 
-const ManageServices = ({services, vendors}) => {
+const ManageServices = ({services, vendors, allVendors}) => {
   const {values, setFieldValue} = useFormikContext()
   const [dashboardState] = useDashboard()
   const showToast = useShowToast()
@@ -24,13 +24,15 @@ const ManageServices = ({services, vendors}) => {
     let updatedServices = Object.keys(services).reduce(
       (acc, id) => ({
         ...acc,
-        [id]: services[id].vendors.filter((vendor) => vendors[vendor].isActive),
+        [id]: services[id].vendors.filter(
+          (vendor) => allVendors[services[id]._id][vendor].isActive,
+        ),
       }),
       {},
     )
 
     setFieldValue('services', updatedServices)
-  }, [services, vendors, setFieldValue])
+  }, [services, vendors, setFieldValue, allVendors])
 
   React.useEffect(() => {
     if (dashboardState.successFullyUpdatedApplication) {
@@ -51,7 +53,7 @@ const ManageServices = ({services, vendors}) => {
 
   return (
     <>
-      <div className="py-12 px-4 lg:px-24 flex justify-between">
+      <div className="py-12 flex justify-between">
         <section className="">
           <h1 className="text-xl font-bold text-brand-tertiary mb-1">
             Manage services
@@ -75,7 +77,7 @@ const ManageServices = ({services, vendors}) => {
           )}
         </Button>
       </div>
-      <div className="mx-auto lg:px-24 overflow-auto">
+      <div className="mx-auto overflow-auto">
         <Accordion expandedSections={expandedServices} level={4} isExpandable>
           {servicesGroup.services.map((service) => {
             const onServiceChange = () => {

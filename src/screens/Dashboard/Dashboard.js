@@ -17,7 +17,12 @@ import r from 'constants/routes'
 
 import {removeStoredAuthToken} from 'utils/authToken'
 
-const routes = [r.CREATE_APPLICATION, r.APPLICATIONS_LIST, r.VIEW_APPLICATION]
+const routes = [
+  r.CREATE_APPLICATION,
+  r.APPLICATIONS_LIST,
+  r.VIEW_APPLICATION,
+  r.APPLICATION_CREDENTIALS,
+]
 
 const Dashboard = ({breadcrumbs, history}) => {
   const [dashboard, setDashboardState] = useDashboard()

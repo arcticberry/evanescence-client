@@ -10,7 +10,7 @@ const RecentTransactions = ({
 }) => {
   return (
     <>
-      <div className="py-12 px-4 lg:px-24">
+      <div className="">
         <section className="">
           <h1 className="text-xl font-semibold text-brand-tertiary mb-1">
             Recent transactions
@@ -20,7 +20,7 @@ const RecentTransactions = ({
           </p>
         </section>
       </div>
-      <div className="mx-auto lg:px-24 overflow-auto">
+      <div className="overflow-auto">
         <Table
           columns={schema}
           data={data}
