@@ -30,6 +30,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
     isError: errorLoadingApplicationCredentials,
     isSuccess: successLoadingApplicationCredentials,
     data: applicationCredentials,
+    refetch,
   } = useApplicationsQuery(`${applicationId}/credentials`)
 
   useEffect(() => {
@@ -40,9 +41,11 @@ const ManageCredentials = ({applicationId, handleReset}) => {
         message:
           dashboardState.successFullyUpdatedApplicationCredentials.message,
       })
+      refetch()
       handleReset()
     }
   }, [
+    refetch,
     showToast,
     handleReset,
     dashboardState.successFullyUpdatedApplicationCredentials,
@@ -53,7 +56,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
       showToast({
         type: 'error',
         title: 'Error updating application credentials',
-        message: dashboardState.errorUpdatingApplicationCredentials.message,
+        message: dashboardState.errorUpdatingApplicationCredentials,
       })
     }
   }, [
