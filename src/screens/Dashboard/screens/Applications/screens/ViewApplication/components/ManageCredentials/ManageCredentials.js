@@ -4,7 +4,6 @@ import {Spinner} from '@zendeskgarden/react-loaders'
 import {Accordion} from '@zendeskgarden/react-accordions'
 import {normalize} from 'normalizr'
 
-import LoadingState from 'components/LoadingState'
 import ErrorLoading from 'components/ErrorLoading'
 import Button from 'components/Button'
 
@@ -34,11 +33,12 @@ const ManageCredentials = ({applicationId, handleReset}) => {
   } = useApplicationsQuery(`${applicationId}/credentials`)
 
   useEffect(() => {
-    if (dashboardState.successFullyUpdatedApplicationCredentials) {
+    if (dashboardState.successFullyUpdatedApplicationCredentials.status) {
       showToast({
         type: 'success',
         title: 'Successfully updated credentials',
-        message: 'Application credential updates have been saved',
+        message:
+          dashboardState.successFullyUpdatedApplicationCredentials.message,
       })
       handleReset()
     }
@@ -46,6 +46,20 @@ const ManageCredentials = ({applicationId, handleReset}) => {
     showToast,
     handleReset,
     dashboardState.successFullyUpdatedApplicationCredentials,
+  ])
+
+  useEffect(() => {
+    if (dashboardState.errorUpdatingApplicationCredentials.status) {
+      showToast({
+        type: 'error',
+        title: 'Error updating application credentials',
+        message: dashboardState.errorUpdatingApplicationCredentials.message,
+      })
+    }
+  }, [
+    showToast,
+    handleReset,
+    dashboardState.errorUpdatingApplicationCredentials,
   ])
 
   const getCredentials = useCallback(() => {
@@ -57,7 +71,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
   if (isLoading || isLoadingApplicationCredentials)
     return (
       <div className="w-full flex items-center justify-center">
-        <LoadingState />
+        <ManageCredentialsLoader />
       </div>
     )
 
@@ -78,8 +92,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
 
   return (
     <>
-      <ManageCredentialsLoader />
-      <div className="py-12 px-4 lg:px-24 flex justify-between">
+      <div className="py-12 px-4 flex justify-between">
         <section className="">
           <h1 className="text-xl font-bold text-brand-tertiary mb-1">
             Manage vendor credentials
@@ -106,7 +119,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
         </Button>
       </div>
 
-      <div className="mx-auto lg:px-24 overflow-auto">
+      <div className="mx-auto overflow-auto">
         <Accordion level={4} isExpandable>
           {Object.keys(credentialsConfig).map((credentialProvider, idx) => (
             <CredentialListing

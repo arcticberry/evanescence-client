@@ -6,9 +6,10 @@ const initialState = {
   breadcrumbs: [],
   isCreatingApplication: false,
   isUpdatingApplication: false,
-  isUpdatingApplicationCredentials: false,
   successFullyUpdatedApplication: false,
-  successFullyUpdatedApplicationCredentials: false,
+  isUpdatingApplicationCredentials: false,
+  successFullyUpdatedApplicationCredentials: {status: false, message: ''},
+  errorUpdatingApplicationCredentials: {status: false, message: ''},
 }
 
 function dashboardReducer(state, action) {

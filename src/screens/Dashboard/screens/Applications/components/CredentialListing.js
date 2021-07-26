@@ -29,10 +29,10 @@ const CredentialListing = ({
                 } ${capFirst(provider)} keys`}</span>
               </div>
               {credentials.isSubmitted ? (
-                <div className="absolute right-6 rounded-full flex items-center justify-center w-7 h-7 bg-gray-100">
+                <div className="absolute right-6 rounded-full flex items-center justify-center w-7 h-7 bg-blue-50">
                   <Done
                     fontSize={'small'}
-                    htmlColor={theme.palette.grey['400']}
+                    htmlColor={theme.palette.blue['400']}
                   />
                 </div>
               ) : null}

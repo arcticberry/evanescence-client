@@ -36,6 +36,9 @@ const themeCreator = (parentTheme) => ({
       }
     `,
     'accordions.panel': css``,
+    'tab.tabslist': css`
+      overflow-x: scroll;
+    `,
   },
   palette: {
     ...parentTheme.palette,

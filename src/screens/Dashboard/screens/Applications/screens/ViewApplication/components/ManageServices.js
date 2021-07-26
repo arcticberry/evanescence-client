@@ -20,6 +20,7 @@ const ManageServices = ({services, vendors, allVendors}) => {
   const showToast = useShowToast()
 
   React.useEffect(() => {
+    if (!Object.keys(values.services).length) {
     // Preselect all vendors by reducing the services list
     let updatedServices = Object.keys(services).reduce(
       (acc, id) => ({
@@ -32,6 +33,7 @@ const ManageServices = ({services, vendors, allVendors}) => {
     )
 
     setFieldValue('services', updatedServices)
+    }
   }, [services, vendors, setFieldValue, allVendors])
 
   React.useEffect(() => {

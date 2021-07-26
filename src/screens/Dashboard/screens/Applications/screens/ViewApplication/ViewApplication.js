@@ -98,11 +98,34 @@ const ViewApplication = ({match}) => {
   }, [applicationCredentialsUpdateState.isLoading, setDashboardState])
 
   useEffect(() => {
-    setDashboardState({
-      successFullyUpdatedApplicationCredentials:
-        applicationCredentialsUpdateState.isSuccess,
-    })
-  }, [applicationCredentialsUpdateState.isSuccess, setDashboardState])
+    if (applicationCredentialsUpdateState.isError) {
+      setDashboardState({
+        errorUpdatingApplicationCredentials: {
+          status: applicationCredentialsUpdateState.isError,
+          message: applicationCredentialsUpdateState.error.response.data.message
+        }
+      })
+    }
+  }, [
+    applicationCredentialsUpdateState.isError,
+    applicationCredentialsUpdateState.error,
+    setDashboardState,
+  ])
+
+  useEffect(() => {
+    if (applicationCredentialsUpdateState.isSuccess) {
+      setDashboardState({
+        successFullyUpdatedApplicationCredentials: {
+          status: applicationCredentialsUpdateState.isSuccess,
+          message: applicationCredentialsUpdateState.data.message
+        }
+      })
+    }
+  }, [
+    applicationCredentialsUpdateState.isSuccess,
+    applicationCredentialsUpdateState.data,
+    setDashboardState,
+  ])
 
   if (isLoadingApplication)
     return (
@@ -204,7 +227,7 @@ const ViewApplication = ({match}) => {
       </section>
       <section className="py-12 px-4 lg:px-24">
         <Tabs selectedItem={selectedTab} onChange={setSelectedTab}>
-          <TabList>
+          <TabList className="overflow-scroll">
             {tabsList.map((tab) => (
               <Tab item={tab.item} key={tab.item}>
                 <span
