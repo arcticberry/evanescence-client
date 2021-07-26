@@ -34,7 +34,7 @@ const ManageServices = ({services, vendors, allVendors}) => {
 
     setFieldValue('services', updatedServices)
     }
-  }, [services, vendors, setFieldValue, allVendors])
+  }, [services, vendors, values.services, setFieldValue, allVendors])
 
   React.useEffect(() => {
     if (dashboardState.successFullyUpdatedApplication) {

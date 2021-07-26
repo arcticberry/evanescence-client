@@ -102,8 +102,9 @@ const ViewApplication = ({match}) => {
       setDashboardState({
         errorUpdatingApplicationCredentials: {
           status: applicationCredentialsUpdateState.isError,
-          message: applicationCredentialsUpdateState.error.response.data.message
-        }
+          message:
+            applicationCredentialsUpdateState.error.response.data.message,
+        },
       })
     }
   }, [
@@ -117,8 +118,8 @@ const ViewApplication = ({match}) => {
       setDashboardState({
         successFullyUpdatedApplicationCredentials: {
           status: applicationCredentialsUpdateState.isSuccess,
-          message: applicationCredentialsUpdateState.data.message
-        }
+          message: applicationCredentialsUpdateState.data.message,
+        },
       })
     }
   }, [
@@ -173,7 +174,18 @@ const ViewApplication = ({match}) => {
       .filter(isNotExcluded)
       .reduce(payloadReducer, {})
 
-    doUpdateApplicationCredentials(payload)
+    const validKeys = Object.keys(payload).filter(
+      (key) => Object.keys(payload[key]).length,
+    )
+    const validPayload = validKeys.reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr]: payload[curr],
+      }),
+      {},
+    )
+
+    doUpdateApplicationCredentials(validPayload)
   }
 
   const handleFormSubmit = (values) => {
