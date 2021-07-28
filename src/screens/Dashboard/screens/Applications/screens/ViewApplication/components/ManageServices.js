@@ -13,26 +13,28 @@ import ServiceVendors from 'screens/Dashboard/screens/Applications/components/Se
 import ServiceVendorRadio from 'screens/Dashboard/screens/Applications/components/ServiceVendorRadio'
 import ServiceListing from '../../../components/ServiceListing'
 import Button from 'components/Button'
+import useTranslator from 'hooks/useTranslator'
 
 const ManageServices = ({services, vendors, allVendors}) => {
   const {values, setFieldValue} = useFormikContext()
   const [dashboardState] = useDashboard()
   const showToast = useShowToast()
+  const {t} = useTranslator()
 
   React.useEffect(() => {
     if (!Object.keys(values.services).length) {
-    // Preselect all vendors by reducing the services list
-    let updatedServices = Object.keys(services).reduce(
-      (acc, id) => ({
-        ...acc,
-        [id]: services[id].vendors.filter(
-          (vendor) => allVendors[services[id]._id][vendor].isActive,
-        ),
-      }),
-      {},
-    )
+      // Preselect all vendors by reducing the services list
+      let updatedServices = Object.keys(services).reduce(
+        (acc, id) => ({
+          ...acc,
+          [id]: services[id].vendors.filter(
+            (vendor) => allVendors[services[id]._id][vendor].isActive,
+          ),
+        }),
+        {},
+      )
 
-    setFieldValue('services', updatedServices)
+      setFieldValue('services', updatedServices)
     }
   }, [services, vendors, values.services, setFieldValue, allVendors])
 
@@ -40,12 +42,17 @@ const ManageServices = ({services, vendors, allVendors}) => {
     if (dashboardState.successFullyUpdatedApplication) {
       showToast({
         type: 'success',
-        title: 'Successfully updated services',
-        message: 'Your service updates have been saved',
+        title: t('services.manage.update.success.title'),
+        message: t('services.manage.update.success.message'),
       })
       setTimeout(() => setFieldValue('dirty', false), 1000)
     }
-  }, [showToast, setFieldValue, dashboardState.successFullyUpdatedApplication])
+  }, [
+    t,
+    showToast,
+    setFieldValue,
+    dashboardState.successFullyUpdatedApplication,
+  ])
 
   const {expandedServices, servicesGroup} = useServicesList({
     services,
@@ -58,10 +65,10 @@ const ManageServices = ({services, vendors, allVendors}) => {
       <div className="py-12 flex justify-between">
         <section className="">
           <h1 className="text-xl font-bold text-brand-tertiary mb-1">
-            Manage services
+            {t('services.manage.title')}
           </h1>
           <p className="text-sm text-gray-400">
-            Switch service providers effortlessly
+            {t('services.manage.subtext')}
           </p>
         </section>
         <Button

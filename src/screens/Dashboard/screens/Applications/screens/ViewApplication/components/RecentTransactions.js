@@ -1,5 +1,6 @@
 import React from 'react'
 import Table from 'components/Table'
+import useTranslator from 'hooks/useTranslator'
 
 const RecentTransactions = ({
   schema,
@@ -8,15 +9,17 @@ const RecentTransactions = ({
   onPageSizeUpdate,
   defaultTableOptions,
 }) => {
+  const {t} = useTranslator()
+
   return (
     <>
       <div className="">
         <section className="">
           <h1 className="text-xl font-semibold text-brand-tertiary mb-1">
-            Recent transactions
+            {t('transactions.recent.title')}
           </h1>
           <p className="text-sm text-gray-400">
-            A short breakdown of all records for this app
+            {t('transactions.recent.subtext')}
           </p>
         </section>
       </div>
