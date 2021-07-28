@@ -124,18 +124,22 @@ const ManageCredentials = ({applicationId, handleReset}) => {
 
       <div className="mx-auto overflow-auto">
         <Accordion level={4} isExpandable>
-          {Object.keys(credentialsConfig).map((credentialProvider, idx) => (
-            <CredentialListing
-              key={idx}
-              provider={credentialProvider}
-              config={credentialsConfig[credentialProvider]}
-              credentials={
-                credentials.entities.applicationCredentials[credentialProvider]
-              }
-              credentialValues={values}
-              handleCredentialChange={handleCredentialChange}
-            />
-          ))}
+          {Object.keys(credentialsConfig).map((credentialProvider, idx) => {
+            return (
+              <CredentialListing
+                key={idx}
+                provider={credentialProvider}
+                config={credentialsConfig[credentialProvider]}
+                credentials={
+                  credentials.entities.applicationCredentials[
+                    credentialProvider
+                  ]
+                }
+                credentialValues={values}
+                handleCredentialChange={handleCredentialChange}
+              />
+            )
+          })}
         </Accordion>
       </div>
     </>

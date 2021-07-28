@@ -2,7 +2,10 @@ import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Formik} from 'formik'
+import {Edit, Close} from '@material-ui/icons'
 import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
+import {IconButton} from '@zendeskgarden/react-buttons'
+import {Tooltip} from '@zendeskgarden/react-tooltips'
 
 import Button from 'components/Button'
 import LoadingState from 'components/LoadingState'
@@ -228,9 +231,29 @@ const ViewApplication = ({match}) => {
       <section className="h-32">
         <CalloutCard variant="mu">
           <div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
-            <span className="mb-2">
-              You can switch between your apps easily
-            </span>
+            <div className="mb-2 text-xl font-bold flex items-center">
+              <section className="mr-6">
+                {1 ? (
+                  <input
+                    className="bg-gray-500 bg-opacity-20 border border-brand-primary rounded-2 min-w-full w-full outline-none px-4 py-2"
+                    defaultValue={data.payload.label}
+                  />
+                ) : (
+                  data.payload.label
+                )}
+              </section>
+
+              <Tooltip content="Edit application name">
+                <IconButton size="small" aria-label="edit" isBasic={false}>
+                  <Edit fontSize={'8px'} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip content="Cancel">
+                <IconButton size="small" aria-label="cancel" isBasic={false}>
+                  <Close fontSize={'8px'} />
+                </IconButton>
+              </Tooltip>
+            </div>
             <Link to="/dashboard/applications">
               <Button>Switch application</Button>
             </Link>
