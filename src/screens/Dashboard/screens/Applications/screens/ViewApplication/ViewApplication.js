@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import cx from 'classnames'
 import {Formik} from 'formik'
 import {Done, Edit, Close} from '@material-ui/icons'
 import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
-import {IconButton} from '@zendeskgarden/react-buttons'
 import {Tooltip} from '@zendeskgarden/react-tooltips'
 
 import Button from 'components/Button'
@@ -48,6 +47,7 @@ const ViewApplication = ({match}) => {
   const [applicationNameStatus, setApplicationNameStatus] = useState(
     'NOT_EDITING',
   )
+  const applicationNameInputEl = useRef(null)
 
   const {isLoading: isLoadingApplication, isError, data} = useApplicationsQuery(
     match.params.id,
@@ -84,6 +84,13 @@ const ViewApplication = ({match}) => {
       }
     }, {})
   }, [])
+
+  useEffect(() => {
+    if (applicationNameInputEl.current && applicationNameStatus === 'EDITING') {
+      applicationNameInputEl.current.focus()
+      applicationNameInputEl.current.select()
+    }
+  }, [applicationNameInputEl, applicationNameStatus])
 
   useEffect(() => {
     setDashboardState({
@@ -230,20 +237,23 @@ const ViewApplication = ({match}) => {
     })
   }
 
+  const isEditingAppName = applicationNameStatus === 'EDITING'
+
   return (
     <>
       <section className="h-32">
         <CalloutCard variant="mu">
           <div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
-            <div className="mb-2 text-xl font-bold flex items-center w-full md:w-1/2 lg:w-9/12">
-              <section className="mr-6 w-full">
-                {applicationNameStatus === 'EDITING' ? (
+            <div className="mb-2 text-xl font-bold flex items-center w-full md:w-1/3">
+              <section className={`mr-6 ${isEditingAppName ? 'w-full' : ''}`}>
+                {isEditingAppName ? (
                   <input
+                    ref={applicationNameInputEl}
                     className="bg-gray-500 bg-opacity-20 border border-brand-primary rounded-2 min-w-full w-full outline-none px-4 py-2"
                     defaultValue={data.payload.label}
                   />
                 ) : (
-                  <span className="w-full d-block">{data.payload.label}</span>
+                  <span className="d-block">{data.payload.label}</span>
                 )}
               </section>
 
@@ -265,7 +275,7 @@ const ViewApplication = ({match}) => {
                   </button>
                 </Tooltip>
               </div>
-              {applicationNameStatus === 'EDITING' ? (
+              {isEditingAppName ? (
                 <>
                   <span className="mr-2">
                     <Tooltip content="Save">
