@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import cx from 'classnames'
 import {Formik} from 'formik'
-import {Edit, Close} from '@material-ui/icons'
+import {Done, Edit, Close} from '@material-ui/icons'
 import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
 import {IconButton} from '@zendeskgarden/react-buttons'
 import {Tooltip} from '@zendeskgarden/react-tooltips'
@@ -44,6 +45,9 @@ const tabsList = [
 
 const ViewApplication = ({match}) => {
   const [selectedTab, setSelectedTab] = useState(tabsList[0].item)
+  const [applicationNameStatus, setApplicationNameStatus] = useState(
+    'NOT_EDITING',
+  )
 
   const {isLoading: isLoadingApplication, isError, data} = useApplicationsQuery(
     match.params.id,
@@ -231,32 +235,69 @@ const ViewApplication = ({match}) => {
       <section className="h-32">
         <CalloutCard variant="mu">
           <div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
-            <div className="mb-2 text-xl font-bold flex items-center">
-              <section className="mr-6">
-                {1 ? (
+            <div className="mb-2 text-xl font-bold flex items-center w-full md:w-1/2 lg:w-9/12">
+              <section className="mr-6 w-full">
+                {applicationNameStatus === 'EDITING' ? (
                   <input
                     className="bg-gray-500 bg-opacity-20 border border-brand-primary rounded-2 min-w-full w-full outline-none px-4 py-2"
                     defaultValue={data.payload.label}
                   />
                 ) : (
-                  data.payload.label
+                  <span className="w-full d-block">{data.payload.label}</span>
                 )}
               </section>
 
-              <Tooltip content="Edit application name">
-                <IconButton size="small" aria-label="edit" isBasic={false}>
-                  <Edit fontSize={'8px'} />
-                </IconButton>
-              </Tooltip>
-              <Tooltip content="Cancel">
-                <IconButton size="small" aria-label="cancel" isBasic={false}>
-                  <Close fontSize={'8px'} />
-                </IconButton>
-              </Tooltip>
+              <div
+                className={cx(['opacity-0'], {
+                  'opacity-100': applicationNameStatus === 'NOT_EDITING',
+                })}
+              >
+                <Tooltip content="Edit application name">
+                  <button
+                    size="small"
+                    aria-label="edit"
+                    className="bg-brand-tertiary bg-opacity-50 w-12 h-12 flex items-center justify-center rounded-full"
+                    onClick={() => {
+                      setApplicationNameStatus('EDITING')
+                    }}
+                  >
+                    <Edit fontSize={'8px'} />
+                  </button>
+                </Tooltip>
+              </div>
+              {applicationNameStatus === 'EDITING' ? (
+                <>
+                  <span className="mr-2">
+                    <Tooltip content="Save">
+                      <button
+                        size="small"
+                        aria-label="edit"
+                        className="bg-green-400 bg-opacity-50 w-12 h-12 flex items-center justify-center rounded-full"
+                      >
+                        <Done fontSize={'8px'} />
+                      </button>
+                    </Tooltip>
+                  </span>
+                  <Tooltip content="Cancel">
+                    <button
+                      size="small"
+                      aria-label="cancel"
+                      className="w-12 h-12 flex items-center justify-center rounded-full"
+                      onClick={() => {
+                        setApplicationNameStatus('NOT_EDITING')
+                      }}
+                    >
+                      <Close fontSize={'8px'} />
+                    </button>
+                  </Tooltip>
+                </>
+              ) : null}
             </div>
-            <Link to="/dashboard/applications">
-              <Button>Switch application</Button>
-            </Link>
+            <section className="hidden md:inline-block">
+              <Link to="/dashboard/applications">
+                <Button>Switch application</Button>
+              </Link>
+            </section>
           </div>
         </CalloutCard>
       </section>
