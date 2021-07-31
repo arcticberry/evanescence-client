@@ -13,7 +13,7 @@ const RecentTransactions = ({
 
   return (
     <>
-      <div className="">
+      <div className="mb-6">
         <section className="">
           <h1 className="text-xl font-semibold text-brand-tertiary mb-1">
             {t('transactions.recent.title')}

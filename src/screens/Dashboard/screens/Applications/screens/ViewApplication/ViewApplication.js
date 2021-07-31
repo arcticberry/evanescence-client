@@ -239,6 +239,10 @@ const ViewApplication = ({match}) => {
 
   const isEditingAppName = applicationNameStatus === 'EDITING'
 
+  const onSaveApplicationName = () => {
+    alert('Hey')
+  }
+
   return (
     <>
       <section className="h-32">
@@ -271,7 +275,7 @@ const ViewApplication = ({match}) => {
                       setApplicationNameStatus('EDITING')
                     }}
                   >
-                    <Edit fontSize={'8px'} />
+                    <Edit fontSize={'small'} />
                   </button>
                 </Tooltip>
               </div>
@@ -280,11 +284,12 @@ const ViewApplication = ({match}) => {
                   <span className="mr-2">
                     <Tooltip content="Save">
                       <button
+                        onClick={onSaveApplicationName}
                         size="small"
                         aria-label="edit"
-                        className="bg-green-400 bg-opacity-50 w-12 h-12 flex items-center justify-center rounded-full"
+                        className="bg-red-400 bg-opacity-100 w-12 h-12 flex items-center justify-center rounded-full"
                       >
-                        <Done fontSize={'8px'} />
+                        <Done fontSize={'small'} />
                       </button>
                     </Tooltip>
                   </span>
@@ -297,7 +302,7 @@ const ViewApplication = ({match}) => {
                         setApplicationNameStatus('NOT_EDITING')
                       }}
                     >
-                      <Close fontSize={'8px'} />
+                      <Close fontSize={'small'} />
                     </button>
                   </Tooltip>
                 </>

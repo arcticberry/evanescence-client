@@ -1,19 +1,19 @@
 .Badge {
-	@apply inline-flex items-center px-3 py-1 rounded text-sm leading-6;
+  @apply inline-flex items-center px-3 py-1 rounded text-sm leading-6 font-semibold;
 }
 
 .Badge--success {
-	@apply bg-green-50 text-green-700;
+  @apply bg-green-50 text-green-500;
 }
 
 .Badge--warning {
-	@apply bg-yellow-50 text-yellow-700;
+  @apply bg-yellow-50 text-yellow-500;
 }
 
 .Badge--error {
-	@apply bg-red-50 text-red-600;
+  @apply bg-red-50 text-red-500;
 }
 
 .Badge--info {
-	@apply bg-blue-50 text-blue-600;
+  @apply bg-blue-50 text-blue-500;
 }
