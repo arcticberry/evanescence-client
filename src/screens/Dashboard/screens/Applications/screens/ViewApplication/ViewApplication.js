@@ -261,7 +261,7 @@ const ViewApplication = ({match}) => {
           <div>
             <GoLive htmlColor={brand['brand-primary']} />
             <span className="ml-3">
-              {applicationLive ? 'Application is live' : 'Running in test mode'}
+              {applicationLive ? 'Live mode' : 'Test mode'}
             </span>
           </div>
 
@@ -271,9 +271,7 @@ const ViewApplication = ({match}) => {
                 onChange={toggleApplicationLive}
                 checked={applicationLive}
               >
-                <Label>
-                  {applicationLive ? 'Switch to test mode' : 'Go live'}
-                </Label>
+                <Label>{applicationLive ? 'Switch to test' : 'Go live'}</Label>
               </Toggle>
             </Field>
           </div>
