@@ -4,7 +4,7 @@ import cx from 'classnames'
 
 import {getRandomInt} from 'utils/index'
 
-export const variants = ['alpha', 'beta', 'gamma']
+export const variants = ['alpha', 'beta', 'gamma', 'mu', 'phi']
 
 const defaultProps = {
   renderCenter: () => {},

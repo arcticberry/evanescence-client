@@ -1,5 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-const {brand} = require('./src/config/palette.js')
+const {brand, colors} = require('./src/config/palette.js')
 
 module.exports = {
   purge: [
@@ -19,6 +19,7 @@ module.exports = {
     extend: {
       colors: {
         ...brand,
+        ...colors,
       },
       borderRadius: (theme) => ({
         2: theme('spacing.2'),

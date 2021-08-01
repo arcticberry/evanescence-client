@@ -32,6 +32,14 @@
   background: linear-gradient(263.7deg, #06d6a0 1%, #0077b6 98.72%), #f7fbff;
 }
 
+.Card--Callout--phi {
+  @apply bg-oxford-blue;
+}
+
+.Card--Callout--blanco {
+  @apply bg-white;
+}
+
 .Card--Callout--blanco {
   @apply bg-white;
 }

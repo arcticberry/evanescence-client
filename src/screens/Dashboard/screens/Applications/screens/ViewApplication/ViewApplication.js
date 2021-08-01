@@ -276,7 +276,7 @@ const ViewApplication = ({match}) => {
   return (
     <>
       <section className="h-32">
-        <CalloutCard variant="mu">
+        <CalloutCard variant="phi">
           <div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
             <div className="mb-2 text-xl font-bold flex items-center relative w-full md:w-1/2">
               <section className={`mr-6 ${isEditingAppName ? 'w-full' : ''}`}>
