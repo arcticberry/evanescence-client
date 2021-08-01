@@ -40,11 +40,6 @@ const ManageServices = ({services, vendors, allVendors}) => {
 
   React.useEffect(() => {
     if (dashboardState.successFullyUpdatedApplication) {
-      showToast({
-        type: 'success',
-        title: t('services.manage.update.success.title'),
-        message: t('services.manage.update.success.message'),
-      })
       setTimeout(() => setFieldValue('dirty', false), 1000)
     }
   }, [

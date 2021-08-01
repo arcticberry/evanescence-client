@@ -17,8 +17,7 @@
 }
 
 .sidebar--tertiary {
-  /* @apply bg-brand-tertiary; */
-  background: #496179;
+  @apply bg-brand-tertiary;
 }
 
 .sidebar--primary .sidebar__item,

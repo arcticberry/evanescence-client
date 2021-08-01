@@ -1,15 +1,12 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
-import cx from 'classnames'
 import {Formik} from 'formik'
-import {Done, Edit, Close} from '@material-ui/icons'
+import {GraphicEq as GoLive} from '@material-ui/icons'
 import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
-import {Spinner} from '@zendeskgarden/react-loaders'
+import {Field, Label, Toggle} from '@zendeskgarden/react-forms'
 
-import Button from 'components/Button'
 import LoadingState from 'components/LoadingState'
-import CalloutCard from 'components/Card/CalloutCard'
+import ApplicationCallout from './components/ApplicationCallout'
 import ManageServices from './components/ManageServices'
 import ManageCredentials from './components/ManageCredentials/ManageCredentials'
 import ErrorLoading from 'components/ErrorLoading'
@@ -27,6 +24,7 @@ import makeData from 'utils/makeData'
 import tableSchema from './tableSchema'
 import {setSelectedApplication} from 'services/application/application.slice'
 import '../../applications.css'
+import {brand} from 'config/palette'
 
 const initialFormState = {
   services: {},
@@ -45,18 +43,10 @@ const tabsList = [
 
 const ViewApplication = ({match}) => {
   const [selectedTab, setSelectedTab] = useState(tabsList[0].item)
-  const [applicationNameStatus, setApplicationNameStatus] = useState(
-    'NOT_EDITING',
+  const [applicationLive, setApplicationLive] = useState(false)
+  const {isLoading: isLoadingApplication, isError, data} = useApplicationsQuery(
+    match.params.id,
   )
-  const [applicationName, setApplicationName] = useState(null)
-  const applicationNameInputEl = useRef(null)
-
-  const {
-    isLoading: isLoadingApplication,
-    isError,
-    isSuccess: successLoadingApplication,
-    data,
-  } = useApplicationsQuery(match.params.id)
 
   // Declare application mutation update and handle state changes
   const [
@@ -103,21 +93,6 @@ const ViewApplication = ({match}) => {
   }, [])
 
   useEffect(() => {
-    if (applicationNameInputEl.current) {
-      if (applicationNameStatus === 'EDITING') {
-        applicationNameInputEl.current.focus()
-        applicationNameInputEl.current.select()
-      }
-    }
-  }, [applicationNameInputEl, applicationNameStatus])
-
-  useEffect(() => {
-    if (successLoadingApplication && data) {
-      setApplicationName(data.payload.label)
-    }
-  }, [successLoadingApplication, data])
-
-  useEffect(() => {
     setDashboardState({
       isUpdatingApplication: applicationUpdateState.isLoading,
     })
@@ -135,6 +110,12 @@ const ViewApplication = ({match}) => {
         applicationCredentialsUpdateState.isLoading,
     })
   }, [applicationCredentialsUpdateState.isLoading, setDashboardState])
+
+  useEffect(() => {
+    if (data) {
+      setApplicationLive(data.payload.isLive)
+    }
+  }, [data])
 
   useEffect(() => {
     if (applicationCredentialsUpdateState.isError) {
@@ -262,108 +243,42 @@ const ViewApplication = ({match}) => {
     })
   }
 
-  const isEditingAppName = applicationNameStatus === 'EDITING'
-
-  const onSaveApplicationName = () => {
-    const {value} = applicationNameInputEl.current
+  const toggleApplicationLive = () => {
+    setApplicationLive(!applicationLive)
     doUpdateApplication({
-      label: value,
+      isLive: !applicationLive,
     })
-    setApplicationName(value)
-    setApplicationNameStatus('NOT-EDITING')
   }
 
   return (
     <>
       <section className="h-32">
-        <CalloutCard variant="phi">
-          <div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
-            <div className="mb-2 text-xl font-bold flex items-center relative w-full md:w-1/2">
-              <section className={`mr-6 ${isEditingAppName ? 'w-full' : ''}`}>
-                {isEditingAppName ? (
-                  <input
-                    ref={applicationNameInputEl}
-                    className={`bg-gray-500 bg-opacity-20 border border-brand-primary rounded-2 min-w-full w-full outline-none px-4 py-2`}
-                    defaultValue={applicationName}
-                  />
-                ) : !applicationName ? (
-                  <Spinner delayMS={0} size={32} />
-                ) : (
-                  <span className={'d-block'}>{applicationName}</span>
-                )}
-              </section>
-
-              <div
-                className={cx(
-                  ['h-12', 'w-16', 'relative', 'overflow-hidden'],
-                  {},
-                )}
-              >
-                <div
-                  className={cx(['absolute', 'transform'], {
-                    'translate-y-full': isEditingAppName,
-                    'opacity-0': isEditingAppName,
-                  })}
-                >
-                  <button
-                    size="small"
-                    aria-label="edit"
-                    className="bg-brand-tertiary bg-opacity-50 w-12 h-12 flex items-center justify-center rounded-full"
-                    onClick={() => {
-                      setApplicationNameStatus('EDITING')
-                    }}
-                  >
-                    <Edit fontSize={'small'} />
-                  </button>
-                </div>
-                <div
-                  className={cx(
-                    ['absolute', 'transform', 'transition-transform'],
-                    {
-                      'translate-y-full': !isEditingAppName,
-                      'opacity-0': !isEditingAppName,
-                    },
-                  )}
-                >
-                  <button
-                    size="small"
-                    aria-label="cancel"
-                    className="w-11 h-12 flex items-center justify-center rounded-full"
-                    onClick={() => {
-                      setApplicationNameStatus('NOT_EDITING')
-                    }}
-                  >
-                    <Close fontSize={'small'} />
-                  </button>
-                </div>
-              </div>
-              <div
-                className={cx(['transform', 'transition-transform'], {
-                  'translate-y-full': !isEditingAppName,
-                  'opacity-0': !isEditingAppName,
-                })}
-              >
-                <button
-                  onClick={onSaveApplicationName}
-                  size="small"
-                  aria-label="edit"
-                  className="bg-red-400 bg-opacity-100 w-12 h-12 flex items-center justify-center rounded-full"
-                >
-                  <Done fontSize={'small'} />
-                </button>
-              </div>
-            </div>
-            {!isEditingAppName ? (
-              <section className="hidden md:inline-block">
-                <Link to="/dashboard/applications">
-                  <Button>Switch application</Button>
-                </Link>
-              </section>
-            ) : null}
-          </div>
-        </CalloutCard>
+        <ApplicationCallout application={data.payload} />
       </section>
+
       <section className="py-12 px-4 lg:px-24">
+        <section className="mb-6 flex justify-between">
+          <div>
+            <GoLive htmlColor={brand['brand-primary']} />
+            <span className="ml-3">
+              {applicationLive ? 'Application is live' : 'Running in test mode'}
+            </span>
+          </div>
+
+          <div>
+            <Field>
+              <Toggle
+                onChange={toggleApplicationLive}
+                checked={applicationLive}
+              >
+                <Label>
+                  {applicationLive ? 'Switch to test mode' : 'Go live'}
+                </Label>
+              </Toggle>
+            </Field>
+          </div>
+        </section>
+
         <Tabs selectedItem={selectedTab} onChange={setSelectedTab}>
           <TabList className="overflow-scroll">
             {tabsList.map((tab) => (
