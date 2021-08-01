@@ -57,17 +57,25 @@ const ViewApplication = ({match}) => {
     isSuccess: successLoadingApplication,
     data,
   } = useApplicationsQuery(match.params.id)
+
+  // Declare application mutation update and handle state changes
   const [
     doUpdateApplication,
     applicationUpdateState,
   ] = useUpdateApplicationMutation(match.params.id)
+  useMutationNotifications({
+    ...applicationUpdateState,
+    entity: 'application',
+    actionType: 'update',
+  })
+
   const [
     doUpdateApplicationCredentials,
     applicationCredentialsUpdateState,
   ] = useUpdateApplicationCredentialsMutation(match.params.id)
   useMutationNotifications({
-    ...applicationUpdateState,
-    entity: 'application',
+    ...applicationCredentialsUpdateState,
+    entity: 'application credentials',
     actionType: 'update',
   })
 

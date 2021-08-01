@@ -11,8 +11,6 @@ import {useDashboard} from 'hooks/useDashboard'
 import useMetaQuery from 'hooks/queries/useMetaQuery'
 import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 
-import useShowToast from 'hooks/useShowToast'
-
 import CredentialListing from 'screens/Dashboard/screens/Applications/components/CredentialListing'
 import ManageCredentialsLoader from './ManageCredentialsLoader'
 
@@ -21,7 +19,6 @@ import {applicationCredentialsSchema} from 'schema/application.schema'
 const ManageCredentials = ({applicationId, handleReset}) => {
   const {values, setFieldValue} = useFormikContext()
   const [dashboardState] = useDashboard()
-  const showToast = useShowToast()
   const {isLoading, isError, data: credentialsConfig} = useMetaQuery(
     'vendors/form-rules',
   )
@@ -35,34 +32,13 @@ const ManageCredentials = ({applicationId, handleReset}) => {
 
   useEffect(() => {
     if (dashboardState.successFullyUpdatedApplicationCredentials.status) {
-      showToast({
-        type: 'success',
-        title: 'Successfully updated credentials',
-        message:
-          dashboardState.successFullyUpdatedApplicationCredentials.message,
-      })
       refetch()
       handleReset()
     }
   }, [
     refetch,
-    showToast,
     handleReset,
     dashboardState.successFullyUpdatedApplicationCredentials,
-  ])
-
-  useEffect(() => {
-    if (dashboardState.errorUpdatingApplicationCredentials.status) {
-      showToast({
-        type: 'error',
-        title: 'Error updating application credentials',
-        message: dashboardState.errorUpdatingApplicationCredentials,
-      })
-    }
-  }, [
-    showToast,
-    handleReset,
-    dashboardState.errorUpdatingApplicationCredentials,
   ])
 
   const getCredentials = useCallback(() => {
