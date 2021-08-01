@@ -5,6 +5,7 @@ import cx from 'classnames'
 import {Formik} from 'formik'
 import {Done, Edit, Close} from '@material-ui/icons'
 import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
+import {Spinner} from '@zendeskgarden/react-loaders'
 
 import Button from 'components/Button'
 import LoadingState from 'components/LoadingState'
@@ -46,11 +47,15 @@ const ViewApplication = ({match}) => {
   const [applicationNameStatus, setApplicationNameStatus] = useState(
     'NOT_EDITING',
   )
+  const [applicationName, setApplicationName] = useState(null)
   const applicationNameInputEl = useRef(null)
 
-  const {isLoading: isLoadingApplication, isError, data} = useApplicationsQuery(
-    match.params.id,
-  )
+  const {
+    isLoading: isLoadingApplication,
+    isError,
+    isSuccess: successLoadingApplication,
+    data,
+  } = useApplicationsQuery(match.params.id)
   const [
     doUpdateApplication,
     applicationUpdateState,
@@ -85,11 +90,19 @@ const ViewApplication = ({match}) => {
   }, [])
 
   useEffect(() => {
-    if (applicationNameInputEl.current && applicationNameStatus === 'EDITING') {
-      applicationNameInputEl.current.focus()
-      applicationNameInputEl.current.select()
+    if (applicationNameInputEl.current) {
+      if (applicationNameStatus === 'EDITING') {
+        applicationNameInputEl.current.focus()
+        applicationNameInputEl.current.select()
+      }
     }
   }, [applicationNameInputEl, applicationNameStatus])
+
+  useEffect(() => {
+    if (successLoadingApplication && data) {
+      setApplicationName(data.payload.label)
+    }
+  }, [successLoadingApplication, data])
 
   useEffect(() => {
     setDashboardState({
@@ -238,8 +251,13 @@ const ViewApplication = ({match}) => {
 
   const isEditingAppName = applicationNameStatus === 'EDITING'
 
-  const onSaveApplicationName = (e) => {
-    alert(applicationNameInputEl.current.value)
+  const onSaveApplicationName = () => {
+    const {value} = applicationNameInputEl.current
+    doUpdateApplication({
+      label: value,
+    })
+    setApplicationName(value)
+    setApplicationNameStatus('NOT-EDITING')
   }
 
   return (
@@ -252,11 +270,13 @@ const ViewApplication = ({match}) => {
                 {isEditingAppName ? (
                   <input
                     ref={applicationNameInputEl}
-                    className="bg-gray-500 bg-opacity-20 border border-brand-primary rounded-2 min-w-full w-full outline-none px-4 py-2"
-                    defaultValue={data.payload.label}
+                    className={`bg-gray-500 bg-opacity-20 border border-brand-primary rounded-2 min-w-full w-full outline-none px-4 py-2`}
+                    defaultValue={applicationName}
                   />
+                ) : !applicationName ? (
+                  <Spinner delayMS={0} size={32} />
                 ) : (
-                  <span className="d-block">{data.payload.label}</span>
+                  <span className={'d-block'}>{applicationName}</span>
                 )}
               </section>
 
@@ -320,11 +340,13 @@ const ViewApplication = ({match}) => {
                 </button>
               </div>
             </div>
-            <section className="hidden md:inline-block">
-              <Link to="/dashboard/applications">
-                <Button>Switch application</Button>
-              </Link>
-            </section>
+            {!isEditingAppName ? (
+              <section className="hidden md:inline-block">
+                <Link to="/dashboard/applications">
+                  <Button>Switch application</Button>
+                </Link>
+              </section>
+            ) : null}
           </div>
         </CalloutCard>
       </section>
