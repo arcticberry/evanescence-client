@@ -16,6 +16,7 @@ import ErrorLoading from 'components/ErrorLoading'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import {useDashboard} from 'hooks/useDashboard'
+import useMutationNotifications from 'hooks/useMutationNotifications'
 import useParamSearch from 'hooks/useParamSearch'
 import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMutation'
@@ -64,9 +65,13 @@ const ViewApplication = ({match}) => {
     doUpdateApplicationCredentials,
     applicationCredentialsUpdateState,
   ] = useUpdateApplicationCredentialsMutation(match.params.id)
+  useMutationNotifications({
+    ...applicationUpdateState,
+    entity: 'application',
+    actionType: 'update',
+  })
 
   const [, setDashboardState] = useDashboard()
-
   const [getPageParamValue, setPageParamValue] = useParamSearch('page')
   const [getPageSizeParamValue, setPageSizeParamValue] = useParamSearch(
     'pageSize',

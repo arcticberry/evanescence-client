@@ -17,7 +17,11 @@
 }
 
 .Td {
-  @apply py-4 px-6 text-sm bg-white;
+  @apply py-4 px-6 text-sm text-gray-600 bg-white;
+}
+
+.Td[data-label='S/N'] {
+  @apply text-gray-500;
 }
 
 @media screen and (max-width: 600px) {
