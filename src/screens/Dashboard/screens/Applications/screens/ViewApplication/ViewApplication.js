@@ -5,7 +5,6 @@ import cx from 'classnames'
 import {Formik} from 'formik'
 import {Done, Edit, Close} from '@material-ui/icons'
 import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
-import {Tooltip} from '@zendeskgarden/react-tooltips'
 
 import Button from 'components/Button'
 import LoadingState from 'components/LoadingState'
@@ -239,8 +238,8 @@ const ViewApplication = ({match}) => {
 
   const isEditingAppName = applicationNameStatus === 'EDITING'
 
-  const onSaveApplicationName = () => {
-    alert('Hey')
+  const onSaveApplicationName = (e) => {
+    alert(applicationNameInputEl.current.value)
   }
 
   return (
@@ -248,7 +247,7 @@ const ViewApplication = ({match}) => {
       <section className="h-32">
         <CalloutCard variant="mu">
           <div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
-            <div className="mb-2 text-xl font-bold flex items-center w-full md:w-1/3">
+            <div className="mb-2 text-xl font-bold flex items-center relative w-full md:w-1/2">
               <section className={`mr-6 ${isEditingAppName ? 'w-full' : ''}`}>
                 {isEditingAppName ? (
                   <input
@@ -262,11 +261,17 @@ const ViewApplication = ({match}) => {
               </section>
 
               <div
-                className={cx(['opacity-0'], {
-                  'opacity-100': applicationNameStatus === 'NOT_EDITING',
-                })}
+                className={cx(
+                  ['h-12', 'w-16', 'relative', 'overflow-hidden'],
+                  {},
+                )}
               >
-                <Tooltip content="Edit application name">
+                <div
+                  className={cx(['absolute', 'transform'], {
+                    'translate-y-full': isEditingAppName,
+                    'opacity-0': isEditingAppName,
+                  })}
+                >
                   <button
                     size="small"
                     aria-label="edit"
@@ -277,36 +282,43 @@ const ViewApplication = ({match}) => {
                   >
                     <Edit fontSize={'small'} />
                   </button>
-                </Tooltip>
+                </div>
+                <div
+                  className={cx(
+                    ['absolute', 'transform', 'transition-transform'],
+                    {
+                      'translate-y-full': !isEditingAppName,
+                      'opacity-0': !isEditingAppName,
+                    },
+                  )}
+                >
+                  <button
+                    size="small"
+                    aria-label="cancel"
+                    className="w-11 h-12 flex items-center justify-center rounded-full"
+                    onClick={() => {
+                      setApplicationNameStatus('NOT_EDITING')
+                    }}
+                  >
+                    <Close fontSize={'small'} />
+                  </button>
+                </div>
               </div>
-              {isEditingAppName ? (
-                <>
-                  <span className="mr-2">
-                    <Tooltip content="Save">
-                      <button
-                        onClick={onSaveApplicationName}
-                        size="small"
-                        aria-label="edit"
-                        className="bg-red-400 bg-opacity-100 w-12 h-12 flex items-center justify-center rounded-full"
-                      >
-                        <Done fontSize={'small'} />
-                      </button>
-                    </Tooltip>
-                  </span>
-                  <Tooltip content="Cancel">
-                    <button
-                      size="small"
-                      aria-label="cancel"
-                      className="w-12 h-12 flex items-center justify-center rounded-full"
-                      onClick={() => {
-                        setApplicationNameStatus('NOT_EDITING')
-                      }}
-                    >
-                      <Close fontSize={'small'} />
-                    </button>
-                  </Tooltip>
-                </>
-              ) : null}
+              <div
+                className={cx(['transform', 'transition-transform'], {
+                  'translate-y-full': !isEditingAppName,
+                  'opacity-0': !isEditingAppName,
+                })}
+              >
+                <button
+                  onClick={onSaveApplicationName}
+                  size="small"
+                  aria-label="edit"
+                  className="bg-red-400 bg-opacity-100 w-12 h-12 flex items-center justify-center rounded-full"
+                >
+                  <Done fontSize={'small'} />
+                </button>
+              </div>
             </div>
             <section className="hidden md:inline-block">
               <Link to="/dashboard/applications">
