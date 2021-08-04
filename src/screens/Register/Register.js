@@ -16,8 +16,6 @@ import useCreateUserMutation from 'hooks/queries/useCreateUserMutation'
 
 import RegistrationSchema from './register.schema'
 
-import r from 'constants/routes'
-
 const initialFormState = {
   firstName: 'John',
   lastName: 'Flanagan',

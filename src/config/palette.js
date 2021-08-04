@@ -13,7 +13,7 @@ const colors = {
 const brand = {
   'brand-primary': colors['cerulean-crayola'],
   'brand-secondary': colors['star-command-blue'],
-  'brand-tertiary': colors['slate'],
+  'brand-tertiary': colors['oxford-blue'],
   'brand-success': colors['carribean-green'],
 }
 

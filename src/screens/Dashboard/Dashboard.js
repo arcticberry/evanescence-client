@@ -9,6 +9,7 @@ import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
 import WithDashboardHOC from 'HOC/WithDashboard'
 
 import {useDashboard} from 'hooks/useDashboard'
+import useApplications from 'hooks/queries/useApplicationsQuery'
 
 import Sidebar from 'screens/Dashboard/components/Sidebar'
 import Header from 'screens/Dashboard/components/Header'
@@ -26,6 +27,13 @@ const routes = [
 
 const Dashboard = ({breadcrumbs, history}) => {
   const [dashboard, setDashboardState] = useDashboard()
+  const {
+    isLoading: loadingDefaultApp,
+    error: errorLoadingDefaultApp,
+    data: defaultApp,
+  } = useApplications('default')
+
+  console.log({loadingDefaultApp, errorLoadingDefaultApp, defaultApp})
 
   React.useEffect(() => {
     setDashboardState({breadcrumbs})

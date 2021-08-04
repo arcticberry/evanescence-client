@@ -1,5 +1,5 @@
 .Card {
-  @apply w-full h-full flex flex-col rounded;
+  @apply w-full h-full flex flex-col rounded relative;
 }
 
 .Card--Callout__title {

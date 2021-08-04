@@ -4,6 +4,7 @@ const DashboardContext = React.createContext()
 const initialState = {
   isSidebarOpen: false,
   breadcrumbs: [],
+  defaultApplication: null,
   isCreatingApplication: false,
   isUpdatingApplication: false,
   successFullyUpdatedApplication: false,
