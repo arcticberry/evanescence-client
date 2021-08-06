@@ -129,7 +129,7 @@ const ApplicationCallout = ({application}) => {
         {!isEditingAppName ? (
           <section className="hidden md:inline-block">
             <Link to="/dashboard/applications">
-              <Button>Switch application</Button>
+              <Button size="small">Switch application</Button>
             </Link>
           </section>
         ) : null}

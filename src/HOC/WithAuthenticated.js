@@ -6,12 +6,18 @@ import {getStoredAuthToken} from 'utils/authToken'
 
 const token = getStoredAuthToken()
 
-const Authenticated = (Component) => (props) => {
-  return token ? <Component {...props} /> : <Redirect to={r.LOGIN.path} />
+const Authenticated = (Component, opts) => (props) => {
+  return token || opts.fake ? (
+    <Component {...props} />
+  ) : (
+    <Redirect to={r.LOGIN.path} />
+  )
 }
 
 const AuthenticatedHoc = (Component) => {
-  return Authenticated(Component)
+  const opts = {fake: true}
+
+  return Authenticated(Component, opts)
 }
 
 export default AuthenticatedHoc

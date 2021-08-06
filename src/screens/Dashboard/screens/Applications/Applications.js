@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {StarHalf} from '@material-ui/icons'
 
-import useApplications from 'hooks/queries/useApplicationsQuery'
+import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMutation'
 import {useDashboard} from 'hooks/useDashboard'
 import useMutationNotifications from 'hooks/useMutationNotifications'
@@ -47,7 +47,8 @@ const Applications = () => {
     isLoading: loadingApplications,
     error,
     data: applications,
-  } = useApplications()
+  } = useApplicationsQuery()
+  const fetchDefaultApp = useApplicationsQuery('default')
   const [dashboard, setDashboardState] = useDashboard()
   const [
     doUpdateApplication,
@@ -58,6 +59,12 @@ const Applications = () => {
     entity: 'application',
     actionType: 'update',
   })
+
+  useEffect(() => {
+    if (fetchDefaultApp.isSuccess) {
+      setDashboardState({defaultApp: fetchDefaultApp.data.payload.appid})
+    }
+  }, [fetchDefaultApp.data, fetchDefaultApp.isSuccess, setDashboardState])
 
   useEffect(() => {
     if (appId && applicationUpdateState.isSuccess) {
@@ -92,6 +99,7 @@ const Applications = () => {
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {applications.map((application, idx) => {
             const isDefaultApp = dashboard.defaultApp === application.id
+
             const onMakeDefaultApp = () => {
               setAppId(application.id)
               doUpdateApplication({

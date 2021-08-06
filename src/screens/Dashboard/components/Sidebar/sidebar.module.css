@@ -38,10 +38,21 @@
   @apply hover:bg-opacity-50;
 }
 
+.sidebar__heading {
+  @apply text-opacity-25 font-bold text-white text-sm py-4 px-6 uppercase;
+
+  display: flex;
+  flex-shrink: 0;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  font-size: inherit;
+  order: 0;
+  border: none;
+}
+
 .sidebar__item {
-  @apply text-opacity-60;
-  @apply py-4;
-  @apply px-3;
+  @apply text-opacity-50 py-4 px-3 text-sm;
 
   min-height: 52px;
   display: flex;
@@ -78,7 +89,10 @@
   text-overflow: ellipsis;
 }
 
-.sidebar--expanded .sidebar__item--hasLogo,
+.sidebar--expanded .sidebar__item--hasLogo {
+  @apply p-6;
+}
+
 .sidebar__item {
   justify-content: center;
 }

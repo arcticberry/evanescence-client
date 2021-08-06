@@ -3,6 +3,7 @@ import React from 'react'
 const DashboardContext = React.createContext()
 const initialState = {
   isSidebarOpen: false,
+  navItems: {},
   breadcrumbs: [],
   defaultApplication: null,
   isCreatingApplication: false,

@@ -9,12 +9,12 @@ import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
 import WithDashboardHOC from 'HOC/WithDashboard'
 
 import {useDashboard} from 'hooks/useDashboard'
-import useApplications from 'hooks/queries/useApplicationsQuery'
 
 import Sidebar from 'screens/Dashboard/components/Sidebar'
 import Header from 'screens/Dashboard/components/Header'
 import './dashboard.scss'
 import r from 'constants/routes'
+import navItems, {settings} from 'constants/nav'
 
 import {removeStoredAuthToken} from 'utils/authToken'
 
@@ -27,16 +27,12 @@ const routes = [
 
 const Dashboard = ({breadcrumbs, history}) => {
   const [dashboard, setDashboardState] = useDashboard()
-  const {
-    isLoading: loadingDefaultApp,
-    error: errorLoadingDefaultApp,
-    data: defaultApp,
-  } = useApplications('default')
-
-  console.log({loadingDefaultApp, errorLoadingDefaultApp, defaultApp})
 
   React.useEffect(() => {
-    setDashboardState({breadcrumbs})
+    setDashboardState({
+      breadcrumbs,
+      navItems,
+    })
   }, [setDashboardState, breadcrumbs])
 
   const NotFound = lazy(() => import('screens/NotFound'))
@@ -46,6 +42,15 @@ const Dashboard = ({breadcrumbs, history}) => {
   }
   const handleMenuToggle = () =>
     setDashboardState({isSidebarOpen: !dashboard.isSidebarOpen})
+
+  const appSettings = settings.map((setting) => ({
+    ...setting,
+    appId: dashboard.defaultApp,
+  }))
+  let updatedNavItems = {
+    ...dashboard.navItems,
+    ...(dashboard.defaultApp ? {'app settings': appSettings} : {}),
+  }
 
   return (
     <div
@@ -63,6 +68,7 @@ const Dashboard = ({breadcrumbs, history}) => {
           isExpanded
           onToggleMenu={handleMenuToggle}
           onLogout={handleLogout}
+          items={updatedNavItems}
         />
 
         <Suspense fallback={<Loading />}>

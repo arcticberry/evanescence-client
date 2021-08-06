@@ -34,7 +34,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
   } = useApplicationsQuery(`${applicationId}/credentials`)
 
   useEffect(() => {
-    if (dashboardState.successFullyUpdatedApplicationCredentials) {
+    if (dashboardState.successFullyUpdatedApplicationCredentials.status) {
       showToast({
         type: 'success',
         title: 'Successfully updated credentials',
@@ -45,7 +45,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
   }, [
     showToast,
     handleReset,
-    dashboardState.successFullyUpdatedApplicationCredentials,
+    dashboardState.successFullyUpdatedApplicationCredentials.status,
   ])
 
   const getCredentials = useCallback(() => {
