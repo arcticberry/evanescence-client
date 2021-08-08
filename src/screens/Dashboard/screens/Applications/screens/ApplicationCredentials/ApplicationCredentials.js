@@ -1,10 +1,7 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Formik} from 'formik'
 
-import Button from 'components/Button'
-import CalloutCard from 'components/Card/CalloutCard'
 import ManageCredentials from './components/ManageCredentials/ManageCredentials'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
@@ -65,19 +62,6 @@ const ApplicationCredentials = ({match}) => {
 
   return (
     <>
-      <section className="h-32">
-        <CalloutCard variant="mu">
-          <div className="px-4 md:px-16 lg:px-24 pb-8 flex flex-col md:flex-row items-center justify-between text-gray-100">
-            <span className="mb-2">
-              You can switch between your apps easily
-            </span>
-            <Link to="/dashboard/applications">
-              <Button>Switch application</Button>
-            </Link>
-          </div>
-        </CalloutCard>
-      </section>
-
       <Formik
         initialValues={initialCredentialsForm}
         onSubmit={handleCredentialsFormSubmit}

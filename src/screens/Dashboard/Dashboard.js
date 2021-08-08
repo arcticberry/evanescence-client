@@ -1,4 +1,4 @@
-import React, {Suspense, lazy} from 'react'
+import React, {useEffect, Suspense, lazy} from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
 import Breadcrumb from 'components/Breadcrumb'
 import Loading from 'components/LoadingState'
@@ -9,6 +9,7 @@ import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
 import WithDashboardHOC from 'HOC/WithDashboard'
 
 import {useDashboard} from 'hooks/useDashboard'
+import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 
 import Sidebar from 'screens/Dashboard/components/Sidebar'
 import Header from 'screens/Dashboard/components/Header'
@@ -27,12 +28,20 @@ const routes = [
 
 const Dashboard = ({breadcrumbs, history, location}) => {
   const [dashboard, setDashboardState] = useDashboard()
+  const fetchDefaultApp = useApplicationsQuery('default')
+
   React.useEffect(() => {
     setDashboardState({
       breadcrumbs,
       navItems,
     })
   }, [setDashboardState, breadcrumbs])
+
+  useEffect(() => {
+    if (fetchDefaultApp.isSuccess) {
+      setDashboardState({defaultApp: fetchDefaultApp.data.payload.appid})
+    }
+  }, [fetchDefaultApp.data, fetchDefaultApp.isSuccess, setDashboardState])
 
   const NotFound = lazy(() => import('screens/NotFound'))
   const handleLogout = () => {
@@ -48,7 +57,7 @@ const Dashboard = ({breadcrumbs, history, location}) => {
   }))
   let updatedNavItems = {
     ...dashboard.navItems,
-    ...(dashboard.defaultApp ? {'app settings': appSettings} : {}),
+    ...(dashboard.defaultApp ? {settings: appSettings} : {}),
   }
 
   return (

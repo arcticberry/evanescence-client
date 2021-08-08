@@ -56,7 +56,9 @@ const Sidebar = ({
                         currentItemPath === path,
                     })}
                   >
-                    <Icon className={classNames(styles.sidebar__item__icon)} />
+                    <div className={classNames(styles.sidebar__item__icon)}>
+                      <Icon />
+                    </div>
                     <span className={styles.sidebar__item__text}>{label}</span>
                   </Link>
                 )

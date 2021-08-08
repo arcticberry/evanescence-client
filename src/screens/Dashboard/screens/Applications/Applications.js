@@ -48,7 +48,6 @@ const Applications = () => {
     error,
     data: applications,
   } = useApplicationsQuery()
-  const fetchDefaultApp = useApplicationsQuery('default')
   const [dashboard, setDashboardState] = useDashboard()
   const [
     doUpdateApplication,
@@ -59,12 +58,6 @@ const Applications = () => {
     entity: 'application',
     actionType: 'update',
   })
-
-  useEffect(() => {
-    if (fetchDefaultApp.isSuccess) {
-      setDashboardState({defaultApp: fetchDefaultApp.data.payload.appid})
-    }
-  }, [fetchDefaultApp.data, fetchDefaultApp.isSuccess, setDashboardState])
 
   useEffect(() => {
     if (appId && applicationUpdateState.isSuccess) {

@@ -21,19 +21,16 @@
 }
 
 .sidebar__item {
-  @apply flex bg-transparent font-semibold w-full hover:bg-opacity-5;
-
-  min-height: 52px;
+  @apply flex bg-transparent text-xs font-semibold w-full hover:bg-opacity-5 py-2;
 }
 
 .sidebar__heading,
 .sidebar__item {
-  @apply text-opacity-50 text-white px-6;
+  @apply text-opacity-50 text-sm text-white px-6;
   flex-shrink: 0;
   -webkit-box-align: center;
   align-items: center;
   -webkit-box-pack: center;
-  font-size: inherit;
   order: 0;
   border: none;
 }
@@ -48,11 +45,11 @@
 }
 
 .sidebar__heading {
-  @apply pt-4 px-6 uppercase;
+  @apply pt-4 px-6 uppercase mb-3;
 }
 
 .sidebar__item__icon {
-  @apply mr-2;
+  @apply mr-2 w-8 inline-block text-opacity-60 text-sm text-white;
 }
 
 .sidebar__item__text {

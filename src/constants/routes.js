@@ -115,6 +115,12 @@ const routes = {
     component: ApplicationCredentials,
     exact: true,
   },
+  APPLICATION_SERVICES: {
+    path: '/dashboard/applications/:id/settings/services',
+    label: 'Services',
+    component: ApplicationCredentials,
+    exact: true,
+  },
 
   ADD_APPLICATION_NAME: {
     label: 'Create App',
