@@ -5,7 +5,14 @@ import {LogoHaloed} from 'components/Logo/Logo'
 import styles from './sidebar.module.css'
 import {PowerSettingsNew as LogoutIcon} from '@material-ui/icons'
 
-const Sidebar = ({items, isExpanded, isVisible, onLogout, onToggleMenu}) => {
+const Sidebar = ({
+  items,
+  currentItemPath,
+  isExpanded,
+  isVisible,
+  onLogout,
+  onToggleMenu,
+}) => {
   return (
     <>
       <div
@@ -32,25 +39,29 @@ const Sidebar = ({items, isExpanded, isVisible, onLogout, onToggleMenu}) => {
           </span>
         </a>
         {Object.entries(items).map(([groupTitle, subItems]) => (
-          <div className="mb-4" key={groupTitle}>
+          <div className="mb-6" key={groupTitle}>
             <h5 className={classNames(styles.sidebar__heading)}>
               {groupTitle}
             </h5>
-            {subItems.map(({path, label, isCurrent, icon: Icon, ...otherOptions}) => {
-              let transformedPath = typeof path === 'string' ? path : path(otherOptions)
-              return (
-                <Link
-                  key={transformedPath}
-                  to={transformedPath}
-                  className={classNames(styles.sidebar__item, {
-                    [styles['sidebar__item--isCurrent']]: isCurrent,
-                  })}
-                >
-                  <Icon className="mx-2 text-brand-primary" />
-                  <span className={styles.sidebar__item__text}>{label}</span>
-                </Link>
-              )
-            })}
+            {subItems.map(
+              ({path, label, isCurrent, icon: Icon, ...otherOptions}) => {
+                let transformedPath =
+                  typeof path === 'string' ? path : path(otherOptions)
+                return (
+                  <Link
+                    key={transformedPath}
+                    to={transformedPath}
+                    className={classNames(styles.sidebar__item, {
+                      [styles['sidebar__item--isCurrent']]:
+                        currentItemPath === path,
+                    })}
+                  >
+                    <Icon className={classNames(styles.sidebar__item__icon)} />
+                    <span className={styles.sidebar__item__text}>{label}</span>
+                  </Link>
+                )
+              },
+            )}
           </div>
         ))}
 
@@ -58,7 +69,7 @@ const Sidebar = ({items, isExpanded, isVisible, onLogout, onToggleMenu}) => {
           className={classNames([styles.sidebar__item, 'mt-auto'])}
           onClick={onLogout}
         >
-          <LogoutIcon className="mx-2 text-brand-primary" />
+          <LogoutIcon className={classNames(styles.sidebar__item__icon)} />
           <span className={styles.sidebar__item__text}>Logout</span>
         </button>
       </nav>

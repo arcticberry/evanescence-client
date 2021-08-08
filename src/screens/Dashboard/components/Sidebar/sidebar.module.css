@@ -20,49 +20,39 @@
   @apply bg-brand-tertiary;
 }
 
-.sidebar--primary .sidebar__item,
-.sidebar--tertiary .sidebar__item {
-  @apply text-white;
-  @apply hover:text-white;
+.sidebar__item {
+  @apply flex bg-transparent font-semibold w-full hover:bg-opacity-5;
+
+  min-height: 52px;
 }
 
+.sidebar__heading,
 .sidebar__item {
-  @apply bg-transparent w-full;
-  @apply hover:bg-opacity-5;
+  @apply text-opacity-50 text-white px-6;
+  flex-shrink: 0;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  font-size: inherit;
+  order: 0;
+  border: none;
 }
 
 .sidebar__item--isCurrent {
-  @apply bg-gray-500;
-  @apply bg-opacity-20;
-  @apply text-opacity-100;
-  @apply hover:bg-opacity-50;
+  @apply bg-gray-500 bg-opacity-20 hover:bg-opacity-50;
+}
+
+.sidebar__item--isCurrent .sidebar__item__text,
+.sidebar__item--isCurrent .sidebar__item__icon {
+  @apply text-brand-primary;
 }
 
 .sidebar__heading {
-  @apply text-opacity-25 font-bold text-white text-sm py-4 px-6 uppercase;
-
-  display: flex;
-  flex-shrink: 0;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  font-size: inherit;
-  order: 0;
-  border: none;
+  @apply pt-4 px-6 uppercase;
 }
 
-.sidebar__item {
-  @apply text-opacity-50 py-4 px-3 text-sm;
-
-  min-height: 52px;
-  display: flex;
-  flex-shrink: 0;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  font-size: inherit;
-  order: 0;
-  border: none;
+.sidebar__item__icon {
+  @apply mr-2;
 }
 
 .sidebar__item__text {

@@ -25,9 +25,8 @@ const routes = [
   r.APPLICATION_CREDENTIALS,
 ]
 
-const Dashboard = ({breadcrumbs, history}) => {
+const Dashboard = ({breadcrumbs, history, location}) => {
   const [dashboard, setDashboardState] = useDashboard()
-
   React.useEffect(() => {
     setDashboardState({
       breadcrumbs,
@@ -64,6 +63,7 @@ const Dashboard = ({breadcrumbs, history}) => {
           <Breadcrumb items={dashboard.breadcrumbs} />
         </Header>
         <Sidebar
+          currentItemPath={location.pathname}
           isVisible={dashboard.isSidebarOpen}
           isExpanded
           onToggleMenu={handleMenuToggle}
