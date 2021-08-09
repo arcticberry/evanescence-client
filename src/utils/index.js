@@ -1,6 +1,22 @@
 import {NOUN_POOL, ADJECTIVE_POOL} from '../constants/strings'
 
 /**
+ * Replaces params passed in a hashmap
+ *
+ * @param {string} path
+ * @param {Object} params
+ *
+ * @returns
+ */
+export const replaceParams = (path, params) => {
+  Object.entries(params).forEach(([param, paramValue]) => {
+    path = path.replace(`:${param}`, paramValue)
+  })
+
+  return path
+}
+
+/**
  * Generates crumbs for a particular route
  *
  * @param {Array} routesList
@@ -69,6 +85,11 @@ export function getKeyByValue(object, value) {
   })
 }
 
+/**
+ * Figures out the badge class for a given status type
+ * @param {string} status
+ * @returns {string}
+ */
 export function getBadgeStatus(status) {
   const statusMap = {
     warning: ['pending'],

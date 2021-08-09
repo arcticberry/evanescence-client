@@ -4,7 +4,6 @@ import {Spinner} from '@zendeskgarden/react-loaders'
 import {Accordion} from '@zendeskgarden/react-accordions'
 import {normalize} from 'normalizr'
 
-import LoadingState from 'components/LoadingState'
 import ErrorLoading from 'components/ErrorLoading'
 import Button from 'components/Button'
 
@@ -57,7 +56,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
   if (isLoading || isLoadingApplicationCredentials)
     return (
       <div className="w-full flex items-center justify-center">
-        <LoadingState />
+        <ManageCredentialsLoader />
       </div>
     )
 
@@ -78,8 +77,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
 
   return (
     <>
-      <ManageCredentialsLoader />
-      <div className="py-12 px-4 lg:px-24 flex justify-between">
+      <div className="flex justify-between">
         <section className="">
           <h1 className="text-xl font-bold text-brand-tertiary mb-1">
             Manage vendor credentials
@@ -106,7 +104,7 @@ const ManageCredentials = ({applicationId, handleReset}) => {
         </Button>
       </div>
 
-      <div className="mx-auto lg:px-24 overflow-auto">
+      <div className="mx-auto pt-8 overflow-auto">
         <Accordion level={4} isExpandable>
           {Object.keys(credentialsConfig).map((credentialProvider, idx) => (
             <CredentialListing

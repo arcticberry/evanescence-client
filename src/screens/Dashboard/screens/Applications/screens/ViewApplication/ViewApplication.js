@@ -1,6 +1,5 @@
-import React, {useEffect, useState, Suspense} from 'react'
-import {Redirect} from 'react-router-dom'
-import {connect} from 'react-redux'
+import React, {Suspense} from 'react'
+import {Switch} from 'react-router-dom'
 
 import r from 'constants/routes'
 
@@ -12,51 +11,17 @@ import ErrorLoading from 'components/ErrorLoading'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 
-import {useDashboard} from 'hooks/useDashboard'
-import useMutationNotifications from 'hooks/useMutationNotifications'
 import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
-import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMutation'
 
-import {setSelectedApplication} from 'services/application/application.slice'
 import '../../applications.css'
 
-const routes = [r.APPLICATION_OVERVIEW]
+const routes = [r.APPLICATION_OVERVIEW, r.APPLICATION_SETTINGS]
 
 const ViewApplication = ({match}) => {
-  const [, setApplicationLive] = useState(false)
+  const {id} = match.params
   const {isLoading: isLoadingApplication, isError, data} = useApplicationsQuery(
-    match.params.id,
+    id,
   )
-
-  // Declare application mutation update and handle state changes
-  const [, applicationUpdateState] = useUpdateApplicationMutation(
-    match.params.id,
-  )
-  useMutationNotifications({
-    ...applicationUpdateState,
-    entity: 'application',
-    actionType: 'update',
-  })
-
-  const [, setDashboardState] = useDashboard()
-
-  useEffect(() => {
-    setDashboardState({
-      isUpdatingApplication: applicationUpdateState.isLoading,
-    })
-  }, [applicationUpdateState.isLoading, setDashboardState])
-
-  useEffect(() => {
-    setDashboardState({
-      successFullyUpdatedApplication: applicationUpdateState.isSuccess,
-    })
-  }, [applicationUpdateState.isSuccess, setDashboardState])
-
-  useEffect(() => {
-    if (data) {
-      setApplicationLive(data.payload.isLive)
-    }
-  }, [data])
 
   if (isLoadingApplication)
     return (
@@ -80,21 +45,12 @@ const ViewApplication = ({match}) => {
       </section>
 
       <Suspense fallback={<Loading />}>
-        <>
+        <Switch>
           <RenderRoutes routes={routes} />
-          <Redirect
-            to={r.APPLICATION_OVERVIEW.path.replace(/:id/, match.params.id)}
-          />
-        </>
+        </Switch>
       </Suspense>
     </>
   )
 }
-const mapStateToProps = ({application: {selectedApplication}}) => ({
-  selectedApplication,
-})
 
-const mapDispatchToProps = {setSelectedApplication}
-export default AuthenticatedHoc(
-  connect(mapStateToProps, mapDispatchToProps)(ViewApplication),
-)
+export default AuthenticatedHoc(ViewApplication)

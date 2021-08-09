@@ -53,7 +53,7 @@ const Sidebar = ({
                     to={transformedPath}
                     className={classNames(styles.sidebar__item, {
                       [styles['sidebar__item--isCurrent']]:
-                        currentItemPath === path,
+                        currentItemPath === transformedPath,
                     })}
                   >
                     <div className={classNames(styles.sidebar__item__icon)}>

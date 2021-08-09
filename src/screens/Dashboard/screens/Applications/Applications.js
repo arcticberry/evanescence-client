@@ -10,6 +10,7 @@ import useMutationNotifications from 'hooks/useMutationNotifications'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 
+import Badge from 'components/Badge'
 import Button from 'components/Button'
 import EmptyState from 'components/EmptyState'
 import ErrorLoading from 'components/ErrorLoading'
@@ -18,9 +19,10 @@ import ApplicationsLoader from './components/ApplicationsLoader'
 import {setSelectedApplication} from 'services/application/application.slice'
 
 import {ReactComponent as CreateApplicationIllustration} from 'assets/create-application.svg'
+import {replaceParams} from 'utils'
+import r from 'constants/routes'
 
 import './applications.css'
-import Badge from 'components/Badge'
 
 const NoApplicationsFound = () => (
   <section className="w-full h-full">
@@ -121,7 +123,11 @@ const Applications = () => {
                   )}
                   renderBelow={() => (
                     <div className="w-full bg-white py-4 text-center">
-                      <Link to={`/dashboard/applications/${application.id}`}>
+                      <Link
+                        to={replaceParams(r.APPLICATION_OVERVIEW.path, {
+                          id: application.id,
+                        })}
+                      >
                         <Button>
                           <b>Manage application</b>
                         </Button>

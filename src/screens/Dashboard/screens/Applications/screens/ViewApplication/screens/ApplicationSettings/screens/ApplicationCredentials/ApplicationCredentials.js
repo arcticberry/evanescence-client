@@ -6,9 +6,10 @@ import ManageCredentials from './components/ManageCredentials/ManageCredentials'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import {useDashboard} from 'hooks/useDashboard'
+import useMutationNotifications from 'hooks/useMutationNotifications'
 import useUpdateApplicationCredentialsMutation from 'hooks/queries/useUpdateApplicationCredentialsMutation'
 
-import '../../applications.css'
+// import '../../../applications.css'
 
 const initialCredentialsForm = {
   dirty: false,
@@ -19,6 +20,11 @@ const ApplicationCredentials = ({match}) => {
     doUpdateApplicationCredentials,
     applicationCredentialsUpdateState,
   ] = useUpdateApplicationCredentialsMutation(match.params.id)
+  useMutationNotifications({
+    ...applicationCredentialsUpdateState,
+    entity: 'application credentials',
+    actionType: 'update',
+  })
 
   const [, setDashboardState] = useDashboard()
 

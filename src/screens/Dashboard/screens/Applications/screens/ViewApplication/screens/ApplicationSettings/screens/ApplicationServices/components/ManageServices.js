@@ -5,13 +5,13 @@ import {Spinner} from '@zendeskgarden/react-loaders'
 import {Accordion} from '@zendeskgarden/react-accordions'
 
 import {useDashboard} from 'hooks/useDashboard'
-import useServicesList from '../../../hooks/useServicesList'
+import useServicesList from 'screens/Dashboard/screens/Applications/hooks/useServicesList'
 
 import useShowToast from 'hooks/useShowToast'
 
 import ServiceVendors from 'screens/Dashboard/screens/Applications/components/ServiceVendors'
 import ServiceVendorRadio from 'screens/Dashboard/screens/Applications/components/ServiceVendorRadio'
-import ServiceListing from '../../../components/ServiceListing'
+import ServiceListing from 'screens/Dashboard/screens/Applications/components/ServiceListing'
 import Button from 'components/Button'
 import useTranslator from 'hooks/useTranslator'
 
@@ -57,7 +57,7 @@ const ManageServices = ({services, vendors, allVendors}) => {
 
   return (
     <>
-      <div className="py-12 flex justify-between">
+      <div className="py-6 flex justify-between">
         <section className="">
           <h1 className="text-xl font-bold text-brand-tertiary mb-1">
             {t('services.manage.title')}
