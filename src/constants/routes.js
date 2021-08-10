@@ -46,6 +46,16 @@ const ApplicationCredentials = lazy(() =>
     'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/ApplicationSettings/screens/ApplicationCredentials/index'
   ),
 )
+const ApplicationServices = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/ApplicationSettings/screens/ApplicationServices/ApplicationServices'
+  ),
+)
+const ApplicationNotifications = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/ApplicationSettings/screens/ApplicationNotifications/index'
+  ),
+)
 const CreateApplication = lazy(() =>
   import('screens/Dashboard/screens/Applications/screens/CreateApplication'),
 )
@@ -129,10 +139,15 @@ const routes = {
   APPLICATION_SERVICES: {
     path: '/dashboard/applications/:id/settings/services',
     label: 'Services',
-    component: ApplicationSettings,
+    component: ApplicationServices,
     exact: true,
   },
-
+  APPLICATION_NOTIFICATIONS: {
+    path: '/dashboard/applications/:id/settings/notifications',
+    label: 'Notifications',
+    component: ApplicationNotifications,
+    exact: true,
+  },
   ADD_APPLICATION_NAME: {
     label: 'Create App',
     path: '/dashboard/applications/create',

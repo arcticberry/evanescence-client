@@ -5,8 +5,8 @@ import {Tabs, TabList, Tab, TabPanel} from '@zendeskgarden/react-tabs'
 import r from 'constants/routes'
 import LoadingState from 'components/LoadingState'
 import ErrorLoading from 'components/ErrorLoading'
-import ApplicationServices from './screens/ApplicationServices/ApplicationServices'
-import ApplicationCredentials from './screens/ApplicationCredentials'
+// import ApplicationServices from './screens/ApplicationServices/ApplicationServices'
+// import ApplicationCredentials from './screens/ApplicationCredentials'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 
@@ -18,16 +18,24 @@ import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMuta
 
 import {setSelectedApplication} from 'services/application/application.slice'
 import {replaceParams} from 'utils'
-// import '../../../applications.css'
 
-const tabsList = [
-  {item: 'services', label: 'Manage services', component: ApplicationServices},
-  {
-    item: 'credentials',
-    label: 'Manage credentials',
-    component: ApplicationCredentials,
-  },
-]
+const createTabRoutes = (tabRoutes) => {
+  return tabRoutes.map((tabRoute) => {
+    const segments = tabRoute.path.split('/')
+    const item = segments[segments.length - 1]
+
+    return {
+      ...tabRoute,
+      item,
+    }
+  })
+}
+
+const tabRoutes = createTabRoutes([
+  r.APPLICATION_SERVICES,
+  r.APPLICATION_CREDENTIALS,
+  r.APPLICATION_NOTIFICATIONS,
+])
 
 const ApplicationSettings = (props) => {
   const {match, history} = props
@@ -99,18 +107,20 @@ const ApplicationSettings = (props) => {
 
         <Tabs selectedItem={selectedTab} onChange={doSelectTab}>
           <TabList className="overflow-scroll">
-            {tabsList.map((tab) => (
-              <Tab item={tab.item} key={tab.item}>
-                <span
-                  style={{fontWeight: selectedTab === tab.item ? 600 : 400}}
-                >
-                  {tab.label}
-                </span>
-              </Tab>
-            ))}
+            {tabRoutes.map((tab) => {
+              return (
+                <Tab item={tab.item} key={tab.item}>
+                  <span
+                    style={{fontWeight: selectedTab === tab.item ? 600 : 400}}
+                  >
+                    {tab.label}
+                  </span>
+                </Tab>
+              )
+            })}
           </TabList>
 
-          {tabsList.map(({item, component: Component}) => (
+          {tabRoutes.map(({item, component: Component}) => (
             <TabPanel item={item} key={item}>
               <Component {...props} />
             </TabPanel>
