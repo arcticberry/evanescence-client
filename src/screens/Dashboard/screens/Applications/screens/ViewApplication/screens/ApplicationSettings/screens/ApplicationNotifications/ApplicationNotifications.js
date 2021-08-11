@@ -2,25 +2,35 @@ import React from 'react'
 import {Formik} from 'formik'
 
 import ManageWebhooks from './components/ManageWebhooks/ManageWebhooks'
+import LoadingState from 'components/LoadingState'
+import ErrorLoading from 'components/ErrorLoading'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
+
 import {useDashboard} from 'hooks/useDashboard'
 import useMutationNotifications from 'hooks/useMutationNotifications'
-import useUpdateApplicationCredentialsMutation from 'hooks/queries/useUpdateApplicationCredentialsMutation'
+import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
+import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMutation'
 
 const initialFormValues = {
   dirty: false,
-  url: ''
+  url: '',
 }
 
 const ApplicationNotifications = ({match}) => {
+  const {
+    isLoading: isLoadingApplication,
+    isError,
+    data: application,
+  } = useApplicationsQuery(match.params.id)
+
   const [
-    ,
-    applicationCredentialsUpdateState,
-  ] = useUpdateApplicationCredentialsMutation(match.params.id)
+    doUpdateApplicationWebhook,
+    applicationWebhookUpdateState,
+  ] = useUpdateApplicationMutation(match.params.id + '/webhook', 'put')
   useMutationNotifications({
-    ...applicationCredentialsUpdateState,
-    entity: 'application credentials',
+    ...applicationWebhookUpdateState,
+    entity: 'application webhook',
     actionType: 'update',
   })
 
@@ -28,25 +38,46 @@ const ApplicationNotifications = ({match}) => {
 
   React.useEffect(() => {
     setDashboardState({
-      isUpdatingApplicationCredentials:
-        applicationCredentialsUpdateState.isLoading,
+      isUpdatingApplicationWebhook: applicationWebhookUpdateState.isLoading,
     })
-  }, [applicationCredentialsUpdateState.isLoading, setDashboardState])
+  }, [applicationWebhookUpdateState.isLoading, setDashboardState])
 
   React.useEffect(() => {
     setDashboardState({
-      successFullyUpdatedApplicationCredentials:
-        applicationCredentialsUpdateState.isSuccess,
+      successFullyUpdatedApplicationWebhook:
+        applicationWebhookUpdateState.isSuccess,
     })
-  }, [applicationCredentialsUpdateState.isSuccess, setDashboardState])
+  }, [applicationWebhookUpdateState.isSuccess, setDashboardState])
+
+  if (isLoadingApplication)
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <LoadingState />
+      </div>
+    )
+
+  if (isError)
+    return (
+      <ErrorLoading
+        title="Oops..."
+        message="Something unexpected happened. Please retry."
+      />
+    )
+
+  const handleWebhookFormSubmit = ({url}) => {
+    doUpdateApplicationWebhook({url})
+  }
 
   return (
     <>
-      <Formik initialValues={initialFormValues}>
+      <Formik
+        initialValues={initialFormValues}
+        onSubmit={handleWebhookFormSubmit}
+      >
         {({handleSubmit, handleReset}) => (
           <form onSubmit={handleSubmit}>
             <ManageWebhooks
-              applicationId={match.params.id}
+              url={application.payload.webhook.url}
               handleReset={handleReset}
             />
           </form>

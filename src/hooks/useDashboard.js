@@ -12,6 +12,8 @@ const initialState = {
   isUpdatingApplicationCredentials: false,
   successFullyUpdatedApplicationCredentials: {status: false, message: ''},
   errorUpdatingApplicationCredentials: {status: false, message: ''},
+  isUpdatingApplicationWebhook: false,
+  successFullyUpdatedApplicationWebhook: {status: false, message: ''},
 }
 
 function dashboardReducer(state, action) {

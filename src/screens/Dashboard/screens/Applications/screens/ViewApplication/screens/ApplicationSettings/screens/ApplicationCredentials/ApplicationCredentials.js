@@ -9,8 +9,6 @@ import {useDashboard} from 'hooks/useDashboard'
 import useMutationNotifications from 'hooks/useMutationNotifications'
 import useUpdateApplicationCredentialsMutation from 'hooks/queries/useUpdateApplicationCredentialsMutation'
 
-// import '../../../applications.css'
-
 const initialCredentialsForm = {
   dirty: false,
 }

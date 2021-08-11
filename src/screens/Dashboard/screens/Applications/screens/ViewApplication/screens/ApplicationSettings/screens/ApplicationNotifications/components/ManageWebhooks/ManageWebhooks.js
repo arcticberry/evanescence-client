@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useFormikContext} from 'formik'
 import {Accordion} from '@zendeskgarden/react-accordions'
 import {Spinner} from '@zendeskgarden/react-loaders'
@@ -8,9 +8,20 @@ import {Input} from 'components/Form'
 import Button from 'components/Button'
 
 import {useDashboard} from 'hooks/useDashboard'
-const ManageWebhooks = ({applicationId, handleReset}) => {
-  const {values} = useFormikContext()
+
+const ManageWebhooks = ({url}) => {
+  const {
+    values: {dirty},
+    setFieldValue,
+  } = useFormikContext()
+  const [webhookURL, setWebhookURL] = useState(url)
   const [dashboardState] = useDashboard()
+
+  const doWebhookChange = (value) => {
+    setWebhookURL(value)
+    setFieldValue('url', value)
+    setFieldValue('dirty', true)
+  }
 
   return (
     <>
@@ -23,11 +34,9 @@ const ManageWebhooks = ({applicationId, handleReset}) => {
         <Button
           variant="primary"
           type="submit"
-          disabled={
-            !values.dirty || dashboardState.isUpdatingApplicationCredentials
-          }
+          disabled={!dirty || dashboardState.isUpdatingApplicationWebhook}
         >
-          {dashboardState.isUpdatingApplicationCredentials ? (
+          {dashboardState.isUpdatingApplicationWebhook ? (
             <>
               <Spinner delayMS={0} size={16} />
               <span className="font-bold ml-1">Saving...</span>
@@ -55,7 +64,12 @@ const ManageWebhooks = ({applicationId, handleReset}) => {
               </Accordion.Header>
               <Accordion.Panel className="bg-gray-100">
                 <div className="mb-2">
-                  <Input name="url" label="URL" />
+                  <Input
+                    name="url"
+                    label="URL"
+                    onChange={(e) => doWebhookChange(e.target.value)}
+                    value={webhookURL}
+                  />
                 </div>
               </Accordion.Panel>
             </Accordion.Section>
