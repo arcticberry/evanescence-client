@@ -20,21 +20,36 @@ const RippleLoader = () => (
   </section>
 )
 
-const LoadingState = ({variant}) => {
+const RingLoader = () => (
+  <section className={styles.ring}>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>{' '}
+  </section>
+)
+
+const LoadingState = ({variant, useContainer}) => {
   const variants = {
     bounce: BouncingLoader,
     ripple: RippleLoader,
+    ring: RingLoader,
   }
 
   const LoaderAnimation = variants[variant]
 
-  return <section className={styles.container}>{<LoaderAnimation />}</section>
+  return (
+    <section className={useContainer ? styles.container : ''}>
+      {<LoaderAnimation />}
+    </section>
+  )
 }
 
 LoadingState.propTypes = {}
 
 LoadingState.defaultProps = {
   variant: 'ripple',
+  useContainer: true,
 }
 
 export default LoadingState

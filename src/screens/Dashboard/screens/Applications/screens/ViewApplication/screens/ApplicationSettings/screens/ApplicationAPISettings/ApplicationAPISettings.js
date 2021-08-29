@@ -2,6 +2,7 @@ import React from 'react'
 import {Formik} from 'formik'
 
 import ManageWebhooks from './components/ManageWebhooks/ManageWebhooks'
+import ManageAppAvatar from './components/ManageAppAvatar/ManageAppAvatar'
 import LoadingState from 'components/LoadingState'
 import ErrorLoading from 'components/ErrorLoading'
 
@@ -17,7 +18,7 @@ const initialFormValues = {
   url: '',
 }
 
-const ApplicationNotifications = ({match}) => {
+const ApplicationAPISettings = ({match}) => {
   const {
     isLoading: isLoadingApplication,
     isError,
@@ -80,6 +81,7 @@ const ApplicationNotifications = ({match}) => {
               url={application.payload.webhook.url}
               handleReset={handleReset}
             />
+            <ManageAppAvatar url={application.payload.webhook.url} />
           </form>
         )}
       </Formik>
@@ -87,4 +89,4 @@ const ApplicationNotifications = ({match}) => {
   )
 }
 
-export default AuthenticatedHoc(ApplicationNotifications)
+export default AuthenticatedHoc(ApplicationAPISettings)

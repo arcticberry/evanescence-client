@@ -6,7 +6,6 @@ import r from 'constants/routes'
 import Loading from 'components/LoadingState'
 import {RenderRoutes} from 'components/AppRouter'
 import LoadingState from 'components/LoadingState'
-import ApplicationCallout from './components/ApplicationCallout'
 import ErrorLoading from 'components/ErrorLoading'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
@@ -19,9 +18,7 @@ const routes = [r.APPLICATION_OVERVIEW, r.APPLICATION_SETTINGS]
 
 const ViewApplication = ({match}) => {
   const {id} = match.params
-  const {isLoading: isLoadingApplication, isError, data} = useApplicationsQuery(
-    id,
-  )
+  const {isLoading: isLoadingApplication, isError} = useApplicationsQuery(id)
 
   if (isLoadingApplication)
     return (
@@ -40,10 +37,6 @@ const ViewApplication = ({match}) => {
 
   return (
     <>
-      <section className="h-32">
-        <ApplicationCallout application={data.payload} />
-      </section>
-
       <Suspense fallback={<Loading />}>
         <Switch>
           <RenderRoutes routes={routes} />

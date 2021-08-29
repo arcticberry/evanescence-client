@@ -2,7 +2,7 @@ import {
   Dashboard as DashboardIcon,
   VpnKey as CredentialsIcon,
   Apps as AppsIcon,
-  AddAlert as NotificationsIcon,
+  SettingsEthernet as APISettingsIcon,
   Tune as SettingsIcon,
 } from '@material-ui/icons'
 import {replaceParams} from 'utils'
@@ -37,10 +37,10 @@ export const settings = [
       replaceParams(r.APPLICATION_CREDENTIALS.path, {id: appId}),
   },
   {
-    label: 'Notifications',
-    icon: NotificationsIcon,
+    label: 'API settings',
+    icon: APISettingsIcon,
     path: ({appId}) =>
-      replaceParams(r.APPLICATION_NOTIFICATIONS.path, {id: appId}),
+      replaceParams(r.APPLICATION_API_SETTINGS.path, {id: appId}),
   },
 ]
 

@@ -34,7 +34,7 @@ const createTabRoutes = (tabRoutes) => {
 const tabRoutes = createTabRoutes([
   r.APPLICATION_SERVICES,
   r.APPLICATION_CREDENTIALS,
-  r.APPLICATION_NOTIFICATIONS,
+  r.APPLICATION_API_SETTINGS,
 ])
 
 const ApplicationSettings = (props) => {

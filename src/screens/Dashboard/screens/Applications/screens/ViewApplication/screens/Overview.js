@@ -6,6 +6,7 @@ import {Field, Label, Toggle} from '@zendeskgarden/react-forms'
 import LoadingState from 'components/LoadingState'
 import ErrorLoading from 'components/ErrorLoading'
 import RecentTransactions from '../components/RecentTransactions'
+import ApplicationCallout from '../components/ApplicationCallout'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 
@@ -96,6 +97,10 @@ const Overview = ({match}) => {
 
   return (
     <>
+      <section className="h-32">
+        <ApplicationCallout application={data.payload} />
+      </section>
+
       <section className="py-12 px-4 lg:px-24">
         <section className="mb-6 flex justify-between">
           <div>
