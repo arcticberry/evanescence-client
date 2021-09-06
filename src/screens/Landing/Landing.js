@@ -120,6 +120,16 @@ function Hero({title, description, callToAction}) {
             {description}
           </p>
           <PromoButton gotDropShadow callToAction={callToAction} />
+          <button
+            className="text-brand-primary ml-3"
+            onClick={() => {
+              window.initializePayreflectInline({
+                pubKey: 'pk_test-f30b489a0263f2fcea9ec0c3444fbb6e2f3edb1a',
+              })
+            }}
+          >
+            Try a payment
+          </button>
         </div>
 
         <div className="w-10/12">
