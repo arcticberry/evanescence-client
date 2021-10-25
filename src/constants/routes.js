@@ -31,6 +31,31 @@ const ViewApplication = lazy(() =>
     'screens/Dashboard/screens/Applications/screens/ViewApplication/index'
   ),
 )
+const ApplicationOverview = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/Overview'
+  ),
+)
+const ApplicationSettings = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/ApplicationSettings/index'
+  ),
+)
+const ApplicationCredentials = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/ApplicationSettings/screens/ApplicationCredentials/index'
+  ),
+)
+const ApplicationServices = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/ApplicationSettings/screens/ApplicationServices/ApplicationServices'
+  ),
+)
+const ApplicationAPISettings = lazy(() =>
+  import(
+    'screens/Dashboard/screens/Applications/screens/ViewApplication/screens/ApplicationSettings/screens/ApplicationAPISettings/index'
+  ),
+)
 const CreateApplication = lazy(() =>
   import('screens/Dashboard/screens/Applications/screens/CreateApplication'),
 )
@@ -89,11 +114,40 @@ const routes = {
   },
   VIEW_APPLICATION: {
     path: '/dashboard/applications/:id',
-    label: 'Overview',
+    label: 'View Application',
     component: ViewApplication,
+    exact: false,
+  },
+  APPLICATION_OVERVIEW: {
+    path: '/dashboard/applications/:id/overview',
+    label: 'Overview',
+    component: ApplicationOverview,
     exact: true,
   },
-
+  APPLICATION_SETTINGS: {
+    path: '/dashboard/applications/:id/settings/:setting?',
+    label: 'Settings',
+    component: ApplicationSettings,
+    exact: false,
+  },
+  APPLICATION_CREDENTIALS: {
+    path: '/dashboard/applications/:id/settings/credentials',
+    label: 'Credentials',
+    component: ApplicationCredentials,
+    exact: true,
+  },
+  APPLICATION_SERVICES: {
+    path: '/dashboard/applications/:id/settings/services',
+    label: 'Services',
+    component: ApplicationServices,
+    exact: true,
+  },
+  APPLICATION_API_SETTINGS: {
+    path: '/dashboard/applications/:id/settings/api',
+    label: 'API settings',
+    component: ApplicationAPISettings,
+    exact: true,
+  },
   ADD_APPLICATION_NAME: {
     label: 'Create App',
     path: '/dashboard/applications/create',

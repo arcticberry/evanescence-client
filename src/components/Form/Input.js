@@ -1,27 +1,27 @@
-import React from 'react';
-import { Field } from 'formik';
+import React from 'react'
+import {Field} from 'formik'
 
-import { InputGroup, Input } from '@zendeskgarden/react-forms';
-import { Label } from './';
+import {InputGroup, Input as ZendeskInput} from '@zendeskgarden/react-forms'
+import Label from 'components/Form/Label'
 
-const TelephoneInput = ({ name, label, ...props }) => {
-	return (
-		<>
-			<Label label={label} name={name} />
-			<Field name={name}>
-				{({ field }) => (
-					<InputGroup>
-						<Input {...field} id={name} {...props} />
-					</InputGroup>
-				)}
-			</Field>
-		</>
-	);
-};
+const Input = ({name, label, ...props}) => {
+  return (
+    <>
+      {label ? <Label label={label} name={name} /> : null}
+      <Field name={name}>
+        {({field}) => (
+          <InputGroup>
+            <ZendeskInput {...field} id={name} {...props} />
+          </InputGroup>
+        )}
+      </Field>
+    </>
+  )
+}
 
-TelephoneInput.propTypes = {};
-TelephoneInput.defaultProps = {
-	type: 'text',
-};
+Input.propTypes = {}
+Input.defaultProps = {
+  type: 'text',
+}
 
-export default TelephoneInput;
+export default Input

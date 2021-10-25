@@ -1,19 +1,12 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-
-const colors = {
-  'cerulean-crayola': '#00b4d8',
-  'star-command-blue': '#0077b6',
-  'sky-blue-crayola': '#90e0ef',
-  'powder-blue': '#caf0f8',
-  'carribean-green': '#06d6a0',
-  'oxford-blue': '#001b2e',
-  slate: '#496179',
-  'sweet-pink': '#ef476f',
-  yangtze: '#ffd166',
-}
+const {brand, colors} = require('./src/config/palette.js')
 
 module.exports = {
-  purge: ['./src/**/*.jsx', './src/**/*.tsx'],
+  purge: [
+    './src/components/**/*.{js,jsx}',
+    './src/screens/**/*.{js,jsx}',
+    './public/index.html',
+  ],
   theme: {
     fontFamily: {
       ...defaultTheme.fontFamily,
@@ -25,9 +18,8 @@ module.exports = {
     },
     extend: {
       colors: {
-        'brand-primary': colors['cerulean-crayola'],
-        'brand-secondary': colors['star-command-blue'],
-        'brand-tertiary': colors['slate'],
+        ...brand,
+        ...colors,
       },
       borderRadius: (theme) => ({
         2: theme('spacing.2'),

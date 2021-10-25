@@ -1,66 +1,70 @@
 .Table {
-	@apply w-full shadow-lg px-4;
-	border-collapse: collapse;
-	margin: 0;
+  @apply w-full shadow-lg px-4;
+  border-collapse: collapse;
+  margin: 0;
 }
 
 .Tr {
-	@apply p-3 bg-gray-100;
+  @apply p-3 bg-gray-100;
 }
 
 .Thead {
-	@apply shadow-lg rounded-lg;
+  @apply shadow-lg rounded-lg;
 }
 
 .Th {
-	@apply p-6 text-xs uppercase bg-gray-100 text-gray-500  tracking-wide text-left;
+  @apply p-6 text-xs uppercase bg-gray-200 text-gray-700  tracking-wide text-left;
 }
 
 .Td {
-	@apply py-4 px-6 text-sm bg-white;
+  @apply py-4 px-6 text-sm text-gray-600 bg-white;
+}
+
+.Td[data-label='S/N'] {
+  @apply text-gray-500;
 }
 
 @media screen and (max-width: 600px) {
-	.Table {
-		border: 0;
-	}
+  .Table {
+    border: 0;
+  }
 
-	table .Th {
-		border: none;
-		clip: rect(0 0 0 0);
-		height: 1px;
-		margin: -1px;
-		overflow: hidden;
-		padding: 0;
-		position: absolute;
-		width: 1px;
-	}
+  table .Th {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
 
-	.Table .Tr {
-		display: block;
-		margin-bottom: 0.625em;
-	}
+  .Table .Tr {
+    display: block;
+    margin-bottom: 0.625em;
+  }
 
-	.Table .Td {
-		@apply flex justify-between border border-solid border-gray-100 bg-white shadow-lg;
-		font-size: 0.8em;
-		text-align: right;
-	}
+  .Table .Td {
+    @apply flex justify-between border border-solid border-gray-100 bg-white shadow-lg;
+    font-size: 0.8em;
+    text-align: right;
+  }
 
-	.Table .Td::before {
-		/* aria-label has no advantage, it won't be read inside a table */
-		@apply py-3;
-		content: attr(data-label);
-		float: left;
-		font-weight: bold;
-		text-transform: uppercase;
-	}
+  .Table .Td::before {
+    /* aria-label has no advantage, it won't be read inside a table */
+    @apply py-3;
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
 
-	.Table .Td:last-child {
-		border-bottom: 0;
-	}
+  .Table .Td:last-child {
+    border-bottom: 0;
+  }
 
-	.Td__inner {
-		@apply p-3 flex flex-col items-end text-sm;
-	}
+  .Td__inner {
+    @apply p-3 flex flex-col items-end text-sm;
+  }
 }

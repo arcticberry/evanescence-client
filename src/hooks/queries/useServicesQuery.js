@@ -1,12 +1,17 @@
 import React from 'react'
 import {useQuery} from 'react-query'
 import {normalize} from 'normalizr'
-import serviceSchema from 'services/application/services'
+import serviceSchema from 'schema/services.schema'
 
 import api from 'services/api'
 
 const transformServices = ({data}) => {
-  const services = normalize(data, serviceSchema)
+  data = {
+    ...data,
+    id: data._id,
+  }
+
+  const services = normalize(data, [serviceSchema])
 
   return services
 }

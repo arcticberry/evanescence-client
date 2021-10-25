@@ -1,5 +1,4 @@
 import React, {lazy, Suspense} from 'react'
-import {connect} from 'react-redux'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import {Formik} from 'formik'
 import {isEqual} from 'lodash'
@@ -15,8 +14,6 @@ import useCreateApplicationMutation from 'hooks/queries/useCreateApplicationMuta
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
 import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
 
-import {fetchServices} from 'services/application/service.slice'
-
 const NotFound = lazy(() => import('screens/NotFound'))
 
 const routes = [
@@ -26,17 +23,19 @@ const routes = [
 ]
 
 const transformServices = (services) =>
-  Object.keys(services).map((serviceId) => ({
-    serviceId: serviceId,
-    vendors: services[serviceId],
-  }))
+  Object.keys(services)
+    .filter((serviceId) => services[serviceId].length)
+    .map((serviceId) => ({
+      serviceId: serviceId,
+      vendors: services[serviceId],
+    }))
 
 const initialFormState = {
   name: '',
   services: {},
 }
 
-const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
+const CreateApplication = ({breadcrumbs, history}) => {
   const [
     doCreateApplication,
     applicationCreationState,
@@ -50,9 +49,23 @@ const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
   }, [dashboard.breadcrumbs, setDashboardState, breadcrumbs])
 
   React.useEffect(() => {
-    if (applicationCreationState.isSuccess)
-      history.push(r.APP_CREATION_SUCCESS.path)
-  }, [history, applicationCreationState.isSuccess])
+    if (applicationCreationState.isSuccess) {
+      const {data} = applicationCreationState.data
+
+      history.push({
+        pathname: r.APP_CREATION_SUCCESS.path,
+        state: {
+          applicationSecretKey: data.secretKey,
+          applicationPublicKey: data.publicKey,
+          applicationId: data._id,
+        },
+      })
+    }
+  }, [
+    history,
+    applicationCreationState.isSuccess,
+    applicationCreationState.data,
+  ])
 
   React.useEffect(() => {
     setDashboardState({
@@ -91,16 +104,4 @@ const CreateApplication = ({match: {path}, breadcrumbs, history}) => {
   )
 }
 
-const mapStateToProps = ({service}) => {
-  return {
-    services: service.services,
-  }
-}
-
-const mapDispatchToProps = {fetchServices}
-
-export default AuthenticatedHoc(
-  WithBreadcrumbs(routes)(
-    connect(mapStateToProps, mapDispatchToProps)(CreateApplication),
-  ),
-)
+export default AuthenticatedHoc(WithBreadcrumbs(routes)(CreateApplication))

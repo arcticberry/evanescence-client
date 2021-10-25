@@ -2,10 +2,13 @@
 import axios from 'axios'
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
-import {getStoredAuthToken} from 'utils/authToken'
+import {getStoredAuthToken, removeStoredAuthToken} from 'utils/authToken'
+import r from 'constants/routes'
 
 // create a new axios instance
-export const instance = axios.create()
+export const instance = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+})
 
 instance.interceptors.request.use((config) => {
   const token = getStoredAuthToken()
@@ -44,5 +47,21 @@ instance.interceptors.response.use(
       }
     }
     throw error
+  },
+)
+
+// Add a 401 response interceptor
+instance.interceptors.response.use(
+  function (response) {
+    return response
+  },
+  function (error) {
+    if (401 === error.response.status) {
+      removeStoredAuthToken()
+
+      window.location = r.LOGIN.path
+    } else {
+      return Promise.reject(error)
+    }
   },
 )

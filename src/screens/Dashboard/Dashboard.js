@@ -1,4 +1,4 @@
-import React, {Suspense, lazy} from 'react'
+import React, {useEffect, Suspense, lazy} from 'react'
 import {Route, Redirect, Switch} from 'react-router-dom'
 import Breadcrumb from 'components/Breadcrumb'
 import Loading from 'components/LoadingState'
@@ -9,22 +9,34 @@ import WithBreadcrumbs from 'HOC/WithBreadcrumbs'
 import WithDashboardHOC from 'HOC/WithDashboard'
 
 import {useDashboard} from 'hooks/useDashboard'
+import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
 
 import Sidebar from 'screens/Dashboard/components/Sidebar'
 import Header from 'screens/Dashboard/components/Header'
 import './dashboard.scss'
 import r from 'constants/routes'
+import navItems, {settings} from 'constants/nav'
 
 import {removeStoredAuthToken} from 'utils/authToken'
 
 const routes = [r.CREATE_APPLICATION, r.APPLICATIONS_LIST, r.VIEW_APPLICATION]
 
-const Dashboard = ({breadcrumbs, history}) => {
+const Dashboard = ({breadcrumbs, history, location}) => {
   const [dashboard, setDashboardState] = useDashboard()
+  const fetchDefaultApp = useApplicationsQuery('default')
 
   React.useEffect(() => {
-    setDashboardState({breadcrumbs})
+    setDashboardState({
+      breadcrumbs,
+      navItems,
+    })
   }, [setDashboardState, breadcrumbs])
+
+  useEffect(() => {
+    if (fetchDefaultApp.isSuccess) {
+      setDashboardState({defaultApp: fetchDefaultApp.data.payload.appid})
+    }
+  }, [fetchDefaultApp.data, fetchDefaultApp.isSuccess, setDashboardState])
 
   const NotFound = lazy(() => import('screens/NotFound'))
   const handleLogout = () => {
@@ -34,6 +46,15 @@ const Dashboard = ({breadcrumbs, history}) => {
   const handleMenuToggle = () =>
     setDashboardState({isSidebarOpen: !dashboard.isSidebarOpen})
 
+  const appSettings = settings.map((setting) => ({
+    ...setting,
+    appId: dashboard.defaultApp,
+  }))
+  let updatedNavItems = {
+    ...dashboard.navItems,
+    ...(dashboard.defaultApp ? {settings: appSettings} : {}),
+  }
+
   return (
     <div
       className={`dashboard ${
@@ -41,15 +62,17 @@ const Dashboard = ({breadcrumbs, history}) => {
       }`}
       id="wrapper"
     >
-      <section className="h-full w-full" id="page-content-wrapper">
+      <section className="h-full w-full">
         <Header onToggleMenu={handleMenuToggle}>
           <Breadcrumb items={dashboard.breadcrumbs} />
         </Header>
         <Sidebar
+          currentItemPath={location.pathname}
           isVisible={dashboard.isSidebarOpen}
           isExpanded
           onToggleMenu={handleMenuToggle}
           onLogout={handleLogout}
+          items={updatedNavItems}
         />
 
         <Suspense fallback={<Loading />}>

@@ -1,39 +1,28 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {StarHalf} from '@material-ui/icons'
 
-import useApplications from 'hooks/queries/useApplicationsQuery'
+import useApplicationsQuery from 'hooks/queries/useApplicationsQuery'
+import useUpdateApplicationMutation from 'hooks/queries/useUpdateApplicationMutation'
+import {useDashboard} from 'hooks/useDashboard'
+import useMutationNotifications from 'hooks/useMutationNotifications'
 
 import AuthenticatedHoc from 'HOC/WithAuthenticated'
+
+import Badge from 'components/Badge'
 import Button from 'components/Button'
 import EmptyState from 'components/EmptyState'
-import LoadingState from 'components/LoadingState'
-import CalloutCard, {variants} from 'components/Card/CalloutCard'
+import ErrorLoading from 'components/ErrorLoading'
+import CalloutCard from 'components/Card/CalloutCard'
+import ApplicationsLoader from './components/ApplicationsLoader'
 import {setSelectedApplication} from 'services/application/application.slice'
 
 import {ReactComponent as CreateApplicationIllustration} from 'assets/create-application.svg'
-import {ReactComponent as ErrorOccurredIllustration} from 'assets/error-occurred.svg'
+import {replaceParams} from 'utils'
+import r from 'constants/routes'
 
 import './applications.css'
-
-const ErrorLoading = ({title = 'Something unexpected happened', message}) => {
-  return (
-    <EmptyState
-      artwork={<ErrorOccurredIllustration />}
-      title={title}
-      message={message}
-    >
-      <Link
-        to="/dashboard/applications"
-        className="btn btn-primary btn-md font-weight-bold px-4"
-      >
-        Retry
-        <i className="ml-1 mdi mdi-reload" />
-      </Link>
-    </EmptyState>
-  )
-}
 
 const NoApplicationsFound = () => (
   <section className="w-full h-full">
@@ -55,18 +44,30 @@ const NoApplicationsFound = () => (
 )
 
 const Applications = () => {
+  const [appId, setAppId] = useState(null)
   const {
     isLoading: loadingApplications,
     error,
     data: applications,
-  } = useApplications()
+  } = useApplicationsQuery()
+  const [dashboard, setDashboardState] = useDashboard()
+  const [
+    doUpdateApplication,
+    applicationUpdateState,
+  ] = useUpdateApplicationMutation('default')
+  useMutationNotifications({
+    ...applicationUpdateState,
+    entity: 'application',
+    actionType: 'update',
+  })
 
-  if (loadingApplications)
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <LoadingState />
-      </div>
-    )
+  useEffect(() => {
+    if (appId && applicationUpdateState.isSuccess) {
+      setDashboardState({defaultApp: appId})
+    }
+  }, [appId, applicationUpdateState.isSuccess, setDashboardState])
+
+  if (loadingApplications) return <ApplicationsLoader />
 
   if (error)
     return (
@@ -78,9 +79,12 @@ const Applications = () => {
 
   return applications.length ? (
     <>
-      <CalloutCard variant="mu">
+      <CalloutCard variant="phi">
         <div className="px-8 md:px-24 pb-8 flex items-center justify-between text-gray-100">
-          <span>{applications.length} applications</span>
+          <span>
+            {applications.length}{' '}
+            {applications.length > 1 ? 'applications' : 'application'}
+          </span>
           <Link to="/dashboard/applications/create">
             <Button>Create application</Button>
           </Link>
@@ -89,23 +93,48 @@ const Applications = () => {
       <div className="container mt-5">
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {applications.map((application, idx) => {
-            let variant = variants[idx % variants.length]
+            const isDefaultApp = dashboard.defaultApp === application.id
+
+            const onMakeDefaultApp = () => {
+              setAppId(application.id)
+              doUpdateApplication({
+                appId: application.id,
+              })
+            }
+
             return (
-              <section className="mb-8 shadow-lg h-3/4" key={idx}>
+              <section className="mb-8 shadow-xl h-3/4" key={idx}>
                 <CalloutCard
+                  variant="blanco"
                   icon={
-                    <StarHalf size="md" fontSize="large" htmlColor="#fff" />
+                    <StarHalf size="md" fontSize="large" htmlColor="#496179" />
                   }
-                  variant={variant}
                   title={application.label}
+                  renderCenter={() => (
+                    <div className="absolute top-4 right-6">
+                      {isDefaultApp ? (
+                        <Badge variant="success">Default</Badge>
+                      ) : (
+                        <Button size="x-small" onClick={onMakeDefaultApp}>
+                          Make default
+                        </Button>
+                      )}
+                    </div>
+                  )}
+                  renderBelow={() => (
+                    <div className="w-full bg-white py-4 text-center">
+                      <Link
+                        to={replaceParams(r.APPLICATION_OVERVIEW.path, {
+                          id: application.id,
+                        })}
+                      >
+                        <Button>
+                          <b>Manage application</b>
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 />
-                <div className="w-full bg-white py-4 text-center">
-                  <Link to={`/dashboard/applications/${application.id}`}>
-                    <Button>
-                      <b>Select application</b>
-                    </Button>
-                  </Link>
-                </div>
               </section>
             )
           })}

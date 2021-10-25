@@ -1,6 +1,8 @@
+/// <reference types="cypress" />
+
 describe('login', () => {
   it('should login an existing user', () => {
-    cy.createUser().then((user) => {
+    cy.createUserIfNotExists().then((user) => {
       cy.visit('/')
       cy.findByText(/Login/i).click()
       cy.findByLabelText(/Email/i).type(user.email)

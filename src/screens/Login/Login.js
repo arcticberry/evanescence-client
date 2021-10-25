@@ -66,7 +66,12 @@ const Login = ({history}) => {
                   </a>
                 </section>
 
-                <PasswordInput name="password" id="password" required />
+                <PasswordInput
+                  label=""
+                  name="password"
+                  id="password"
+                  required
+                />
               </div>
 
               <div className="my-8">

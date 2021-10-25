@@ -3,8 +3,17 @@ import React from 'react'
 const DashboardContext = React.createContext()
 const initialState = {
   isSidebarOpen: false,
+  navItems: {},
   breadcrumbs: [],
+  defaultApplication: null,
   isCreatingApplication: false,
+  isUpdatingApplication: false,
+  successFullyUpdatedApplication: false,
+  isUpdatingApplicationCredentials: false,
+  successFullyUpdatedApplicationCredentials: {status: false, message: ''},
+  errorUpdatingApplicationCredentials: {status: false, message: ''},
+  isUpdatingApplicationWebhook: false,
+  successFullyUpdatedApplicationWebhook: {status: false, message: ''},
 }
 
 function dashboardReducer(state, action) {

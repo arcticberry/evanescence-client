@@ -1,3 +1,4 @@
+import {DEFAULT_THEME} from '@zendeskgarden/react-theming'
 import {css} from 'styled-components'
 
 const brand = {
@@ -23,6 +24,9 @@ const themeCreator = (parentTheme) => ({
         outline: none;
       }
     `,
+    'forms.input': css`
+      font-weight: ${(p) => p.theme.fontWeights.medium};
+    `,
     'forms.checkbox_label': css`
       font-weight: 400;
 
@@ -32,6 +36,9 @@ const themeCreator = (parentTheme) => ({
       }
     `,
     'accordions.panel': css``,
+    'tab.tabslist': css`
+      overflow-x: scroll;
+    `,
   },
   palette: {
     ...parentTheme.palette,
@@ -46,5 +53,7 @@ const themeCreator = (parentTheme) => ({
     primaryHue: 'brand',
   },
 })
+
+export const theme = themeCreator(DEFAULT_THEME)
 
 export default themeCreator

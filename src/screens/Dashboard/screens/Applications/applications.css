@@ -5,3 +5,12 @@
 .app-creation-shell {
   /* @apply border-4 border-brand-primary border-opacity-25 bg-white; */
 }
+
+.skeleton-loader {
+  @apply flex w-full;
+}
+
+.skeleton-loader > * {
+  padding: 10px 0;
+  width: 100%;
+}

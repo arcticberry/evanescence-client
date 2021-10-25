@@ -5,6 +5,7 @@ const API_BASE_URL = Cypress.env('API_BASE_URL')
 const userCredentials = {
   email: Cypress.env('USER_EMAIL'),
   password: Cypress.env('USER_PASSWORD'),
+  phone: Cypress.env('USER_PHONE'),
 }
 
 const user = userBuilder({
@@ -12,15 +13,22 @@ const user = userBuilder({
   password: userCredentials.password,
 })
 
-Cypress.Commands.add('createUser', (overrides) => {
-  return Promise.resolve(user)
-  //   return cy
-  //     .request({
-  //       url: [API_BASE_URL, e.CREATE_USER].join(''),
-  //       method: 'POST',
-  //       body: user,
-  //     })
-  //     .then(({body}) => body.user)
+Cypress.Commands.add('getDefaultUser', () => {
+  return Promise.resolve(
+    userBuilder({
+      phone: userCredentials.phone,
+    }),
+  )
+})
+
+Cypress.Commands.add('createUser', () => {
+  return cy
+    .request({
+      url: [API_BASE_URL, e.CREATE_USER].join(''),
+      method: 'POST',
+      body: user,
+    })
+    .then(({body}) => body.user)
 })
 
 Cypress.Commands.add('login', (user) => {
@@ -39,6 +47,24 @@ Cypress.Commands.add('login', (user) => {
 Cypress.Commands.add('loginAsNewUser', () => {
   cy.createUser().then((user) => {
     cy.login(user)
+  })
+})
+
+Cypress.Commands.add('requestPasswordReset', () => {
+  return cy.request({
+    url: [API_BASE_URL, e.REQUEST_PASSWORD_RESET].join(''),
+    method: 'POST',
+    body: {email: user.email},
+  })
+})
+
+Cypress.Commands.add('createUserIfNotExists', () => {
+  cy.requestPasswordReset().then((response) => {
+    if (response.status !== 200) {
+      return cy.createUser(user)
+    }
+
+    return user
   })
 })
 
