@@ -4,6 +4,7 @@ import {
   Apps as AppsIcon,
   SettingsEthernet as APISettingsIcon,
   Tune as SettingsIcon,
+  PowerTwoTone as WebhookIcon,
 } from '@material-ui/icons'
 import {replaceParams} from 'utils'
 import r from './routes'
@@ -20,6 +21,11 @@ const nav = {
       label: 'Apps',
       icon: AppsIcon,
       path: r.APPLICATIONS_LIST.path,
+    },
+    {
+      label: r.WEBHOOKS.label,
+      icon: WebhookIcon,
+      path: r.WEBHOOKS.path,
     },
   ],
 }

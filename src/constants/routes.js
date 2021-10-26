@@ -60,6 +60,8 @@ const CreateApplication = lazy(() =>
   import('screens/Dashboard/screens/Applications/screens/CreateApplication'),
 )
 
+const Webhooks = lazy(() => import('screens/Dashboard/screens/Webhooks'))
+
 const APPLICATIONS_LIST_PATH = '/dashboard/applications'
 const DASHBOARD_PATH = '/dashboard'
 
@@ -164,6 +166,12 @@ const routes = {
     path: '/dashboard/applications/create/success',
     label: 'Success',
     component: AppCreationSuccess,
+  },
+  WEBHOOKS: {
+    path: '/dashboard/webhooks',
+    label: 'Webhooks',
+    exact: true,
+    component: Webhooks,
   },
 }
 

@@ -19,7 +19,12 @@ import navItems, {settings} from 'constants/nav'
 
 import {removeStoredAuthToken} from 'utils/authToken'
 
-const routes = [r.CREATE_APPLICATION, r.APPLICATIONS_LIST, r.VIEW_APPLICATION]
+const routes = [
+  r.CREATE_APPLICATION,
+  r.APPLICATIONS_LIST,
+  r.VIEW_APPLICATION,
+  r.WEBHOOKS,
+]
 
 const Dashboard = ({breadcrumbs, history, location}) => {
   const [dashboard, setDashboardState] = useDashboard()
